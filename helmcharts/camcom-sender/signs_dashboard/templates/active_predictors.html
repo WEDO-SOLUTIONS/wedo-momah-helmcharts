@@ -1,0 +1,64 @@
+{% extends "navbar.html" %}
+{% block title %}Active predictors{% endblock %}
+{% block styles %}
+  {{ super() }}
+  <link href="/static/select2/4.1/select2.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+  <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+          charset="UTF-8"></script>
+  <script src="/static/select2/4.1/select2.min.js"></script>
+{% endblock %}
+{% block content %}
+  <style>
+      body {
+          padding-top: 50px;
+      }
+
+      .starter-template {
+          padding: 40px 15px;
+          text-align: center;
+      }
+
+      .table {
+          text-align: left;
+      }
+
+      .row {
+          margin-bottom: 20px;
+      }
+
+      .row .row {
+          margin-top: 10px;
+          margin-bottom: 0;
+      }
+  </style>
+
+  <div class="container">
+    <div class="starter-template">
+      <div class="row">
+        <table class="table table-striped table-sm">
+          <tr>
+            <th>Predictor</th>
+            <th>Labels</th>
+          </tr>
+          {% for predictor in predictors %}
+            <tr>
+              <td>
+                {{ predictor.name }}
+              </td>
+              <td>
+                {{ predictor.labels }}
+              </td>
+            </tr>
+          {% endfor %}
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

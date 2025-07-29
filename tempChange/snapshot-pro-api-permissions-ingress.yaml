@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"meta.helm.sh/release-name":"snapshot-pro-api","meta.helm.sh/release-namespace":"urbi","nginx.ingress.kubernetes.io/cors-allow-headers":"DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization","nginx.ingress.kubernetes.io/cors-allow-methods":"GET, POST","nginx.ingress.kubernetes.io/enable-cors":"true","nginx.ingress.kubernetes.io/server-snippet":"location ~* \"^/swagger/\" {\n    deny all;\n    return 403;\n  }\n"},"creationTimestamp":"2025-05-02T02:20:34Z","generation":1,"labels":{"app.kubernetes.io/instance":"snapshot-pro-api-permissions","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"snapshot-pro-api-permissions","app.kubernetes.io/version":"2.13.0","helm.sh/chart":"pro-api-1.38.0"},"name":"snapshot-pro-api-permissions","namespace":"urbi","resourceVersion":"51914940","uid":"7d4ae12f-35cc-4fde-8415-0eb38aad8967"},"spec":{"ingressClassName":"urbi","rules":[{"host":"cityview-pro-api-permissions.momah.gov.sa","http":{"paths":[{"backend":{"service":{"name":"snapshot-pro-api-permissions","port":{"number":80}}},"path":"/","pathType":"Prefix"}]}}],"tls":[{"hosts":["cityview-pro-api-permissions.momah.gov.sa"]}]},"status":{"loadBalancer":{"ingress":[{"ip":"10.246.8.88"}]}}}
+    meta.helm.sh/release-name: snapshot-pro-api
+    meta.helm.sh/release-namespace: urbi
+    nginx.ingress.kubernetes.io/cors-allow-headers: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, OPTIONS, PUT, DELETE
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* "^/swagger/" {
+          deny all;
+          return 403;
+        }
+  labels:
+    app.kubernetes.io/instance: snapshot-pro-api-permissions
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: snapshot-pro-api-permissions
+    app.kubernetes.io/version: 2.13.0
+    helm.sh/chart: pro-api-1.38.0
+  name: snapshot-pro-api-permissions
+  namespace: urbi
+spec:
+  ingressClassName: urbi
+  rules:
+  - host: cityview-pro-api-permissions.momah.gov.sa
+    http:
+      paths:
+      - backend:
+          service:
+            name: snapshot-pro-api-permissions
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - cityview-pro-api-permissions.momah.gov.sa
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.246.8.88

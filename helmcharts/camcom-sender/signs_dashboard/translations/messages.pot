@@ -1,0 +1,244 @@
+# ВРУЧНУЮ поддерживаемые переводы, которые не могут быть найдены автодетектом
+
+#: signs_dashboard/templates/navbar.html:19
+msgid "drivers"
+msgstr ""
+
+msgid "tracks"
+msgstr ""
+
+msgid "audit"
+msgstr ""
+
+msgid "reload_statuses"
+msgstr ""
+
+msgid "signs"
+msgstr ""
+
+msgid "frames"
+msgstr ""
+
+msgid "dump"
+msgstr ""
+
+msgid "reload_track"
+msgstr ""
+
+msgid "help"
+msgstr ""
+
+msgid "users"
+msgstr ""
+
+msgid "map"
+msgstr ""
+
+msgid "pro"
+msgstr ""
+
+msgid "camcom_stats"
+msgstr ""
+
+msgid "interest_zones"
+msgstr ""
+
+#: signs_dashboard/templates/track.html:86
+msgid "camcom"
+msgstr "n camcom predictions"
+
+msgid "labels"
+msgstr "n labels predictions"
+
+msgid "signs"
+msgstr "n signs predictions"
+
+msgid "surface"
+msgstr "n surface predictions"
+
+#: track_upload_text_status
+msgid "Загружен"
+msgstr ""
+
+msgid "Ошибка обработки"
+msgstr ""
+
+msgid "Не полностью"
+msgstr ""
+
+#: dashboard/signs_dashboard/template_decorators.py:13
+msgid "ч"
+msgstr ""
+
+msgid "м"
+msgstr ""
+
+#: dashboard/signs_dashboard/models/track.py:43
+msgid "Загружется с телефона"
+msgstr ""
+
+msgid "Ожидает обработки"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обработан"
+msgstr ""
+
+msgid "Некорректный трек"
+msgstr ""
+
+msgid "Некорректный трек"
+msgstr ""
+
+msgid "Нет распознанных знаков"
+msgstr ""
+
+msgid "Ошибка"
+msgstr ""
+
+msgid "Ошибка"
+msgstr ""
+
+msgid "Ошибка"
+msgstr ""
+
+msgid "В запросе нет фреймов"
+msgstr ""
+
+msgid "Нет распознанных знаков"
+msgstr ""
+
+msgid "Ошибка притяжки трека"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Плохое качество"
+msgstr ""
+
+msgid "Отменено"
+msgstr ""
+
+msgid "Трек отправлен в Fiji"
+msgstr ""
+
+msgid "Трек не загружен полностью"
+msgstr ""
+
+msgid "Трек отправлен в PRO"
+msgstr ""
+
+msgid "Трек без предиктов отправлен в PRO"
+msgstr ""
+
+msgid "Трек будет отправлен в PRO"
+msgstr ""
+
+msgid "Трек будет скрыт из PRO"
+msgstr ""
+
+msgid "Трек скрыт из PRO"
+msgstr ""
+
+msgid "Трек будет отправлен в Fiji"
+msgstr ""
+
+msgid "Трек отправляется в Fiji"
+msgstr ""
+
+msgid "Fiji не доступен"
+msgstr ""
+
+msgid "Неподдерживаемый тип трека"
+msgstr ""
+
+msgid "Ожидается"
+msgstr ""
+
+msgid "Выполняется"
+msgstr ""
+
+msgid "Выполнена"
+msgstr ""
+
+msgid "Ошибка"
+msgstr ""
+
+msgid "Не выполнялась"
+msgstr ""
+
+msgid "Выполняется визуальная притяжка"
+msgstr ""
+
+msgid "Выполнена визуальная притяжка"
+msgstr ""
+
+msgid "Запланирована"
+msgstr ""
+
+#: dashboard/signs_dashboard/query_params/users.py:28
+msgid "invalid email"
+msgstr ""
+
+msgid "password required"
+msgstr ""
+
+msgid "passwords does not match"
+msgstr ""
+
+msgid "Подготовлено к отправке в CamCom"
+msgstr ""
+
+msgid "Ожидаем ответ CamCom"
+msgstr ""
+
+msgid "Успешно получен ответ CamCom"
+msgstr ""
+
+msgid "Будет отправлено в CamCom"
+msgstr ""
+
+msgid "zone_type__any_region_intersection_as_attribute"
+msgstr ""
+
+msgid "zone_type__region_name_as_attribute"
+msgstr ""
+
+msgid "zone_type__search_by_region"
+msgstr ""
+
+msgid "not_moderated"
+msgstr ""
+
+msgid "moderated_wrong"
+msgstr ""
+
+msgid "moderated_good"
+msgstr ""
+
+msgid "cvat_upload"
+msgstr ""
+
+msgid "Date_recorded"
+msgstr "Дата съемки"
+
+msgid "Date_uploaded"
+msgstr "Дата загрузки"

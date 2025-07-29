@@ -1,0 +1,142 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Interest zones') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link href="/static/select2/4.1/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/leaflet/leaflet.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/leaflet/leaflet.js"></script>
+    <script src="/static/select2/4.1/select2.min.js"></script>
+    <script>
+        window.base_layer_tile_url = '{{ base_layer_tileserver_url_template | safe }}';
+        window.zone_regions = {{ zone_regions | tojson }};
+
+        $(document).ready(function() {
+            try {
+                document.getElementById('nav_interest_zones').className = 'active';
+            } catch (e) {
+                console.log('Unable to update navbar selection: ' + e);
+            }
+
+            $('.select2').select2();
+
+            setupZonesMaps();
+        });
+
+        function setupZonesMaps() {
+            $('.map').each(function() {
+                const map = new L.map(this.id, {
+                    crs: L.CRS.EPSG3857,
+                    zoom: 14,
+                    attributionControl: false,
+                });
+                const base_layer = new L.tileLayer(window.base_layer_tile_url, { maxZoom: 22 });
+                map.addLayer(base_layer);
+
+                let polygons = window.zone_regions;
+                if (polygons) {
+                    polygons = JSON.parse(polygons);
+                    let poly_layer = new L.GeoJSON(polygons, {
+                          onEachFeature: function(feature, layer) {
+                              layer.on('click', function(e) {
+                                  console.log(e)
+                                  console.log('Clicked on region: ' + feature.properties.name);
+                                  var popup = L.popup()
+                                      .setLatLng(e.latlng)
+                                      .setContent('Name: ' + feature.properties.name)
+                                      .openOn(map);
+                              });
+                          }
+                    });
+                    map.addLayer(poly_layer);
+                    map.fitBounds(poly_layer.getBounds(), {maxZoom: 22});
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 0px 15px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+    <div class="container">
+        <div class="starter-template">
+            <div class="row">
+                <div class="col-md-12">
+                <h3>{{ _('Interest zone') }} "{{ zone.name }}"</h3>
+                    <p>{{ _('Zone type:') }} {{ _('zone_type__' + zone.zone_type.name) }}</p>
+                    {% if zone_regions %}
+                    <div
+                        class="map"
+                        id="map_{{ zone.name }}"
+                        style="height: 500px;"
+                        data-zoom="15"
+                        data-zone-name="{{ zone.name }}"
+                    ></div>
+                    {% else %}
+                    <p>{{ _('No polygons present for this zone!') }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <a download role="button" class="btn btn-default" href="{{ url_for('download_zone_geojson', zone_name=zone.name) }}">
+                        <span class="glyphicon glyphicon-download"></span> {{ _('Download as GeoJSON') }}
+                    </a>
+                </div>
+                <div class="col-md-1"></div>
+                <form
+                    method="post"
+                    action="{{ url_for('update_interest_zone', zone_name=zone.name) }}"
+                    enctype="multipart/form-data"
+                >
+                <div class="col-md-5 form-group">
+                    <label for="add_iz_regions">{{ _('Interest zone regions') }}</label>
+                    <input type="file" id="add_iz_regions" name="regions" class="form-control" accept=".geojson" required>
+                    <small class="form-text text-muted help-block">
+                        {{ _('Please select GeoJSON file. The file should contain a FeatureCollection with features of type Polygon.') }}
+                    </small>
+                </div>
+                <div class="col-md-3 form-group">
+                    <button type="submit" class="btn btn-default">
+                        {% if zone_regions %}
+                        {{ _('Replace polygons') }}
+                        {% else %}
+                        {{ _('Add polygons') }}
+                        {% endif %}
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

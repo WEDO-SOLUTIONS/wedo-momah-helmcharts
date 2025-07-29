@@ -1,0 +1,39 @@
+Дата,Email,"Длина, км.","Время, ч.",Статус good,Статус rejected,Статус failed,Всего ошибок,Обработано ошибок,Полезных ошибок,Всего уточнений,Обработано уточнений,Полезных уточнений,SLA,Способ съемки,КПД,Плотность знаков,Плотность знаков до
+{% set comma = ',' %}
+{%- for stat in drivers_stat -%}
+    {{ stat.date -}}
+    {{- comma -}}
+    {{- stat.email -}}
+    {{- comma -}}
+    {{- stat.distance -}}
+    {{- comma -}}
+    {{- stat.duration -}}
+    {{- comma -}}
+    {{- stat.good_statuses_count -}}
+    {{- comma -}}
+    {{- stat.rejected_statuses_count -}}
+    {{- comma -}}
+    {{- stat.failed_statuses_count -}}
+    {{- comma -}}
+    {{- stat.total_errors_count -}}
+    {{- comma -}}
+    {{- stat.resolved_errors_count -}}
+    {{- comma -}}
+    {{- stat.good_errors_count -}}
+    {{- comma -}}
+    {{- stat.clarifications_count -}}
+    {{- comma -}}
+    {{- stat.resolved_clarifications_count -}}
+    {{- comma -}}
+    {{- stat.good_clarifications_count -}}
+    {{- comma -}}
+    {{- stat.sla -}}
+    {{- comma -}}
+    {{- stat.type -}}
+    {{- comma -}}
+    {{- stat.kpd -}}
+    {{- comma -}}
+    {{- stat.signs_density -}}
+    {{- comma -}}
+    {{- stat.signs_density_before }}
+{% endfor %}

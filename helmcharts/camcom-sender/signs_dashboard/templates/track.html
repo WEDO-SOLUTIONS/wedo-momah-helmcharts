@@ -1,0 +1,328 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Track %(uuid)s', uuid=track_uuid) }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {% include "track_scripts.html" %}
+{% endblock %}
+
+{% block content %}
+    <style>
+        .checkbox-inline {
+            margin-top: 10px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .panel-body form {
+            margin-bottom: 0;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+
+    <div class="container">
+        {% if not track_exists %}
+        <div class="row" style="background-color: mistyrose">
+            <p>{{ _('Этот трек загружен не полностью. Обратитесь в поддержку.') }}</p>
+            <br>
+            <p>{{ _('Дата первого кадра') }}: {{ first_frame_tstamp }}</p>
+        </div>
+        {% endif %}
+
+        <h1 style="overflow-wrap: anywhere;">UUID: {{ track_uuid }}</h1>
+        {% if track_comment %}<h5><i>{{ track_comment }}</i></h5>{% endif %}
+
+        <ul class="list-inline">
+        {%- if track_map_enabled %}
+            <li><a href="{{ url_for("tracks_map_view", uuid=track_uuid) }}">{{ _('View track on map') }}</a></li>
+        {%- endif %}
+            <li>
+                <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>
+                <a download href="{{ url_for("tracks_download_kml", uuid=track_uuid) }}">{{ _('Download kml') }}</a>
+            </li>
+            <li><a href="{{ url_for("frames", track_uuid=track_uuid, from_date="", to_date="" ) }}">{{ _('Track Frames') }}</a></li>
+        {%- if track_recorded %}
+            {%- set _recorded_date = track_recorded.date().strftime('%d-%m-%Y') %}
+            <li><a href="{{ url_for("tracks", email=track_user_email, from_date=_recorded_date, to_date=_recorded_dat, date_type="recorded") }}">{{ _('Driver tracks') }}</a></li>
+            <li><a href="{{ url_for("drivers", email=track_user_email, from_date=_recorded_date, to_date=_recorded_date, date_type="recorded") }}">{{ _('Driver statistics') }}</a></li>
+        {%- else %}
+            <li><a href="{{ url_for("tracks", email=track_user_email) }}">{{ _('Driver tracks') }}</a></li>
+            <li><a href="{{ url_for("drivers", email=track_user_email) }}">{{ _('Driver statistics') }}</a></li>
+        {%- endif %}
+        </ul>
+
+        <!-- Modal initTime -->
+        <div class="modal fade" id="initTime" tabindex="-1" role="dialog" aria-labelledby="initTimeLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="initTimeLabel">{{ _('init time') }}</h4>
+              </div>
+              <div class="modal-body">
+                  <label for="init_metadata_area">{{ _('init metadata') }}</label>
+                  <pre><code id="init_metadata_area">{{ track_init_metadata }}</code></pre>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{{ _('Close') }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal gpsTime -->
+        <div class="modal fade" id="gpsTime" tabindex="-1" role="dialog" aria-labelledby="gpsTimeLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gpsTimeLabel">{{ _('gps time') }}</h4>
+              </div>
+              <div class="modal-body">
+                  <label for="gps_points_area">{{ _('gps points') }}</label>
+                  <pre><code id="gps_points_area" rows="3">{{ track_gps_points }}</code></pre>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{{ _('Close') }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Информационные блоки -->
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Блок информации о водителе -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        {{ _('Driver info') }}
+                    </div>
+                    <div class="panel-body">
+                    {% for field_name, field_title, value in api_user_info %}
+                        <p>{{ field_title or field_name }}: <b><span id="driver_oidc_{{ field_name }}">{{ value }}</span></b></p>
+                    {% endfor %}
+                        <p>{{ _('Email') }}: <b>{{ track_user_email }}</b></p>
+                    </div>
+                </div>
+
+                <!-- Блок информации о треке -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        {{ _('Track info') }}
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ _('Recording date') }}: <b>{{ track_recorded|prettify_date }}</b></p>
+                        {%- if track_recorded and track_recorded_not_utc %}
+                        <p>
+                            {{ _('Recording date (UTC%(tz_offset_str)s)', tz_offset_str=track_timezone_offset_str) }}: <b>{{ (track_recorded + track_timezone_offset)|prettify_date }}</b>
+                        </p>
+                        {%- endif %}
+                        <p>{{ _('App version') }}: <b>{{ track_type }}{% if track_app_version != '0' %} / {{ track_app_version }}{% endif %}</b></p>
+                        <p>{{ _('Length') }}: <b>{{ track_distance }}{{ _('km') }}</b></p>
+                        <p>{{ _('Duration') }}: <b>{{ track_duration|prettify_hours }}</b></p>
+                    </div>
+                </div>
+
+                <!-- Блок статуса предиктов -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {%- set has_all_predictions = predictions.has_all_predictions() and predictions.frame_ids | length == total_frames_count -%}
+                        <span class="glyphicon {% if has_all_predictions %}glyphicon-ok{% else %}glyphicon-refresh glyphicon-refresh-animate{% endif %}" aria-hidden="true"></span>
+                        {{ _('Predictions status') }}
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            {% if camcom_enabled %}
+                            <div data-content-type="predictor_stat_checkbox">
+                                <label class="checkbox-inline">
+                                    <input
+                                        type="checkbox"
+                                        value=""
+                                        {% if camcom_stats_obj.sent == camcom_stats_obj.all_frames %}checked{% endif %}
+                                        onclick="return false;"
+                                    >
+                                    {{ camcom_stats_obj.sent }} / {{ camcom_stats_obj.all_frames }} ({{ _('Errors') }} {{ camcom_stats_obj.errors }}) {{ _('sent_to_camcom') }}
+                                </label>
+                            </div>
+                            {% endif %}
+                            {% for predictor_name in predictions.predictors | sort %}
+                            <div data-content-type="predictor_stat_checkbox">
+                                <label class="checkbox-inline">
+                                    <input
+                                        type="checkbox"
+                                        value=""
+                                        {% if predictions.count_predictions(predictor_name) == total_frames_count %}checked{% endif %}
+                                        onclick="return false;"
+                                    >
+                                    {{ predictions.count_predictions(predictor_name) }} / {{ total_frames_count }} {{ _('n_{name}'.format(name=predictor_name)) }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Блок статуса загрузки -->
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="glyphicon {% if track_complete_time %}glyphicon-ok{% else %}glyphicon-refresh glyphicon-refresh-animate{% endif %}" aria-hidden="true"></span>
+                        {{ _('Upload status') }}
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="" {% if track_init_time %}checked{% endif %} onclick="return false;">
+                                    <a href="#initTime" data-toggle="modal">{{ _('init time') }}</a>
+                                    ({{ track_init_time|prettify_date }})
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="" {% if track_gps_time %}checked{% endif %} onclick="return false;">
+                                    {% if track_gps_time %}
+                                    <a href="#gpsTime" data-toggle="modal">{{ _('gps time') }}</a> ({{ track_gps_time|prettify_date }})
+                                    {% else %}
+                                    {{ _('gps time') }}
+                                    {% endif %}
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="" {% if frames | length == total_frames_count %}checked{% endif %} onclick="return false;">
+                                        <a href="{{ url_for("frames", from_date="", to_date="", track_uuid=track_uuid) }}">
+                                            {{ frames | length }}
+                                        </a> / {{ total_frames_count }} {{ _('received from mobile') }}
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="" {% if frames | sum(attribute='uploaded_photo') == total_frames_count %}checked{% endif %}>
+                                        <a href="{{ url_for("frames", from_date="", to_date="", track_uuid=track_uuid) }}">
+                                            {{ frames | sum(attribute='uploaded_photo') }}
+                                        </a> / {{ total_frames_count }} {{ _('uploaded to s3') }}
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="" {% if track_complete_time %}checked{% endif %} onclick="return false;">
+                                    {{ _('complete time') }}
+                                    {% if track_complete_time %}({{ track_complete_time|prettify_date }}){% endif %}
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Блок статуса репортеров -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        {{ _('Results processing and export status') }}
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            {% if map_matching_enabled or visual_localization_enabled %}
+                            <div class="form-group">
+                                <label>
+                                    {{ _('Притяжка трека') }}:
+                                <span id="map_matching_status">{{ _(track_map_matching_text_status) }}</span>
+                                </label>
+                            </div>
+                            {% endif %}
+                            {% if track_localization_enabled %}
+                            <div class="form-group">
+                                <label>
+                                    {{ _('Локализация детекций') }}:
+                                    <span id="loc_track_{{ track_uuid }}_status">{{ _(track_localization_text_status) }}</span>
+                                    {% if track_localization_can_be_forced %}
+                                        <button
+                                            id="loc_track_{{ track_uuid }}_btn"
+                                            title="{{ _('Локализовать') }}"
+                                            class="glyphicon glyphicon-repeat"
+                                            onclick="forceTrackLocalization('{{ url_for("api_update_track", uuid=track_uuid) }}', 'loc_track_{{ track_uuid }}_status', 'loc_track_{{ track_uuid }}_btn')"
+                                        ></button>
+                                    {% endif %}
+                                </label>
+                            </div>
+                            {% endif %}
+                            {% if 'pro' is feature_enabled %}
+                            <div class="form-group">
+                                <label>
+                                    {{ _('Процессинг') }} PRO:
+                                    <a href="{{ url_for("frames", from_date="", to_date="", track_uuid=track_uuid) }}" data-toggle="tooltip">
+                                        {{ _(track_pro_text_status) }}
+                                    </a>
+                                </label>
+                            </div>
+                            {% endif %}
+                            {% if 'fiji' is feature_enabled %}
+                            <div class="form-group">
+                                <label>
+                                    {{ _('Процессинг') }} Fiji:
+                                    <a
+                                        id="fiji_track_{{ track_uuid }}_status"
+                                        href="{{ url_for("frames", from_date="", to_date="", track_uuid=track_uuid) }}"
+                                        data-toggle="tooltip"
+                                        title="{{ track_filtering_description }}"
+                                    >{{ _(track_fiji_text_status) }}</a>
+                                </label>
+                                {% if track_sending_to_fiji_can_be_forced %}
+                                    <button
+                                        id="fiji_track_{{ track_uuid }}_btn"
+                                        class="glyphicon glyphicon-repeat"
+                                        onclick="forceLowQualityFramesTrackToFiji('{{ url_for("api_update_track", uuid=track_uuid) }}', 'fiji_track_{{ track_uuid }}_status', 'fiji_track_{{ track_uuid }}_btn')"
+                                    >{{ _('Отправить в Fiji') }}</button>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Блок логов -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ _('mobile app logs') }}</div>
+                    <div class="panel-body">
+                        {% for log in track_logs %}
+                        <a download href="{{ url_for("tracks_download_log", uuid=track_uuid, log_id=log.filename) }}">
+                            <p>
+                                {{ log.filename }} ({{ _('log file uploaded') }} {{ log.last_modified }}, {{ log.size_kb }}KB)
+                                <button class="glyphicon glyphicon-save-file"></button>
+                            </p>
+                        </a>
+                        {% endfor %}
+                        {% if not track_logs %}
+                           <p>
+                               {{ _('no mobile app logs saved') }}
+                           </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

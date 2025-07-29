@@ -1,0 +1,302 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Tracks') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link href="/static/select2/4.1/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script src="/static/select2/4.1/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            document.getElementById('nav_tracks').className = 'active';
+            $("#projects_select").select2({
+                multiple: true,
+            });
+            $("#interest_zone_region_selector").select2({
+                multiple: true,
+            });
+        });
+
+    function selectAllCheckboxes(source){
+        let checkboxes = document.getElementsByName('upload_checkbox')
+        for(let i = 0; i < checkboxes.length; i++){
+           checkboxes[i].checked = source.checked
+        }
+    }
+    </script>
+
+    {% include "track_scripts.html" %}
+    {% include "predictors_form_scripts.html" %}
+
+    {% if cvat_uploading_enabled %}
+    {% include "cvat_form_scripts.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="exampleModalLabel">{{ _('Статус загрузки трека') }}</h5>
+              </div>
+              <div class="modal-body">
+                  <div style="overflow: scroll; height: 300px">
+                      <div id="download-status"></div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                 <a href="{{ url_for("reload_statuses") }}">{{ _('Перейти на страницу с загрузками') }}</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ _('Close') }}</button>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <div class="container">
+        <div class="starter-template">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Дата') }}</span>
+                            <select class="form-control" name="date_type">
+                              <option value="uploaded" {% if query_params.date_type == 'uploaded' %}selected {% endif %}>{{ _('Загрузки') }}</option>
+                              <option value="recorded" {% if query_params.date_type == 'recorded' %}selected {% endif %}>{{ _('Съемки') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                            <span class="input-group-addon">{{ _('От') }}</span>
+                            <input name="from_date" type="text" class="form-control" value="{{ query_params.from_date }}">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Polygon') }}</span>
+                            <select class="select2 form-control" id="interest_zone_region_selector" name="interest_zone_regions" size="1" multiple="multiple" style="width: 100%">
+                                {% for region in search_regions %}
+                                    <option
+                                        value="{{ region.id }}"
+                                        {%- if region.id in query_params.interest_zone_regions %} selected {% endif %}
+                                        >{{ region.zone_name }}: {{ region.region_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <input name="status" type="text" class="form-control" placeholder="{{ _('Статус') }}" value="{{ query_params.status|join(',')}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Тип') }}&nbsp;&nbsp;</span>
+                            <select class="form-control" name="track_type">
+                              <option value="" {% if query_params.type == '' %}selected {% endif %}>{{ _('Все') }}</option>
+                              <option value="mobile" {% if query_params.type == 'mobile' %}selected {% endif %}>{{ _('Моб.приложение') }}</option>
+                              <option value="dashcam" {% if query_params.type == 'dashcam' %}selected {% endif %}>{{ _('Видеорегистратор') }}</option>
+                              <option value="video_360" {% if query_params.type == 'video_360' %}selected {% endif %}>{{ _('Видео 360') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                            <span class="input-group-addon">{{ _('До') }}</span>
+                            <input name="to_date" type="text" class="form-control" value="{{ query_params.to_date }}">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input name="email" type="text" class="form-control" placeholder="Email" value="{{ query_params.email }}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-default">{{ _('Submit') }}</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>{{ _('Тип') }}</th>
+                        <th>
+                            {{ _('Дата загрузки / съемки') }}
+                        </th>
+                        <th>{{ _('Track ID') }}</th>
+                        <th>{{ _('Длина / Время') }}</th>
+                        <th>{{ _('Количество кадров') }}</th>
+                        <th>{{ _('Загрузка') }}</th>
+                        {% if map_matching_enabled %}
+                        <th>{{ _('Притяжка трека') }}</th>
+                        {% endif %}
+                        {% if track_localization_enabled %}
+                        <th>{{ _('Локализация детекций') }}</th>
+                        {% endif%}
+                        {% if 'pro' is feature_enabled %}
+                        <th>{{ _('Процессинг') }} PRO</th>
+                        {% endif %}
+                        {% if 'fiji' is feature_enabled %}
+                        <th>{{ _('Процессинг') }}</th>
+                        <th>{{ _('Зн/Ош/Ут') }}</th>
+                        <th>KML</th>
+                        {% endif %}
+                        <th>
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="selectAllCheckboxes(this)">
+                            <label class="form-check-label" for="exampleCheck1"> </label>
+                        </th>
+                    </tr>
+                    {% for stat in tracks_stat %}
+                        <tr>
+                            <td>
+                                {% if stat.track.type == 'mobile' %}
+                                    mob
+                                {% elif stat.track.type == 'video_360' %}
+                                    vid360
+                                {% else %}
+                                    dash
+                                {% endif %}
+                                {% if stat.track.app_version != '0' %}
+                                    <br />
+                                    {{ stat.track.app_version }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ stat.track.uploaded|prettify_date }} <br />
+                                {% if stat.track.recorded %}
+                                    {{ stat.track.recorded|prettify_date }} <br />
+                                {% endif %}
+                            </td>
+                            <td>
+                                <b>{{ stat.track.uuid }}</b><br />
+                                {{ stat.track.user_email }}
+                            {%- if stat.track.comment %}
+                                <br /><i>{{ stat.track.comment }}</i>
+                            {%- endif %}
+                            </td>
+                            <td>
+                                {% if track_map_enabled %}
+                                <a href="{{ url_for("tracks_map_view", uuid=stat.track.uuid) }}">{{ stat.track.distance }}{{ _('км') }}</a> / {{ stat.track.duration|prettify_hours }}
+                                {% else %}
+                                {{ stat.track.distance }}{{ _('км') }} / {{ stat.track.duration|prettify_hours }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for("frames", from_date="", to_date="", track_uuid=stat.track.uuid) }}">{{ stat.frames_count if stat.frames_count is not none else '' }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for("tracks_view", uuid=stat.track.uuid) }}">{{ _(stat.track.upload.text_status) }}</a>
+                            </td>
+                            {% if map_matching_enabled %}
+                            <td>
+                                <span id="map_matching_status">{{ _(stat.track.map_matching_text_status) }}</span>
+                            </td>
+                            {% endif %}
+                            {% if track_localization_enabled %}
+                            <td>
+                                <span id="loc_track_{{ stat.track.uuid }}_status">{{ _(stat.track.localization_text_status) }}</span>
+                                {% if stat.track.localization_can_be_forced() %}
+                                <button id="loc_track_{{ stat.track.uuid }}_btn" title="{{ _('Локализовать') }}" class="glyphicon glyphicon-repeat" onclick="forceTrackLocalization('{{ url_for("api_update_track", uuid=stat.track.uuid) }}', 'loc_track_{{ stat.track.uuid }}_status', 'loc_track_{{ stat.track.uuid }}_btn')" ></button>
+                                {% endif %}
+                            </td>
+                            {% endif %}
+                            {% if 'pro' is feature_enabled %}
+                            <td>
+                                <a href="{{ url_for("frames", from_date="", to_date="", track_uuid=stat.track.uuid) }}" data-toggle="tooltip">{{ _(stat.track.pro_text_status) }}</a>
+                            </td>
+                            {% endif %}
+                            {% if 'fiji' is feature_enabled %}
+                            <td>
+                                <a id="fiji_track_{{ stat.track.uuid }}_status" href="{{ url_for("frames", from_date="", to_date="", track_uuid=stat.track.uuid) }}" data-toggle="tooltip" title="{{ stat.track.filtering_description }}">{{ _(stat.track.fiji_text_status) }}</a>
+                                {% if stat.track.sending_to_fiji_can_be_forced() %}
+                                <button id="fiji_track_{{ stat.track.uuid }}_btn" class="glyphicon glyphicon-repeat" onclick="forceLowQualityFramesTrackToFiji('{{ url_for("api_update_track", uuid=stat.track.uuid) }}', 'fiji_track_{{ stat.track.uuid }}_status', 'fiji_track_{{ stat.track.uuid }}_btn')">{{ _('Отправить в Fiji') }}</button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ stat.track.num_detections }} / {{ stat.total_errors_count }} / {{ stat.clarifications_count }}
+                            </td>
+                            <td>
+                                {% if stat.track.fiji_status != 0 %}
+                                    <a href="{{ url_for("tracks_download_kml", uuid=stat.track.uuid) }}">
+                                        <button class="glyphicon glyphicon-save-file"></button>
+                                    </a>
+                                {% endif %}
+                            </td>
+                            {% endif %}
+                            <td>
+                                <input type="checkbox" class="form-check-input" id="{{ stat.track.uuid | safe}}_upload_cb" name="upload_checkbox">
+                                <label class="form-check-label" for="exampleCheck1"></label>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+                {% if 'pro' is feature_enabled %}
+                <button class="btn btn-default" onclick="tracksProActions('hide')">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    {{ _('Скрыть из ПРО') }}
+                </button>
+                 <button class="btn btn-default" onclick="tracksProActions('resend')">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    {{ _('Отправить в ПРО') }}
+                </button>
+                {% endif %}
+                {% if track_localization_enabled %}
+                 <button class="btn btn-default" onclick="tracksLocalizationActions('force')">
+                    <span class="glyphicon glyphicon-repeat"></span>
+                    {{ _('Перелокализовать треки') }}
+                </button>
+                {% endif %}
+                <a download role="button" class="btn btn-default" href="{{ url_for("tracks", **query_params.to_uri(format="csv")) }}">
+                    <span class="glyphicon glyphicon-download"></span>
+                    {{ _('CSV') }}
+                </a>
+            </div>
+            {% include "predictors_form.html" %}
+            {% if cvat_uploading_enabled %}
+              {% include "cvat_form.html" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

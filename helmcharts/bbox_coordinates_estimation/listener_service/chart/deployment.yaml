@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: citylens-bbox-coordinates-estimator-api
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: citylens-bbox-coordinates-estimator-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: citylens-bbox-coordinates-estimator-api
+    app.kubernetes.io/version: "v1.0"
+    helm.sh/chart: citylens-bbox-coordinates-estimator-api-0.1.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: citylens-bbox-coordinates-estimator-api
+      app.kubernetes.io/name: citylens-bbox-coordinates-estimator-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: citylens-bbox-coordinates-estimator-api
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: citylens-bbox-coordinates-estimator-api
+        app.kubernetes.io/version: "v1.0"
+        helm.sh/chart: citylens-bbox-coordinates-estimator-api-0.1.0
+    spec:
+      containers:
+      - name: citylens-bbox-coordinates-estimator-api
+        image: registry.momrah.gov.sa/urbi-omar/citylens-bbox-coordinates-estimator-api:v1.1
+        ports:
+        - containerPort: 8001
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: citylens-bbox-coordinates-estimator-api-config
+        - secretRef:
+            name: citylens-bbox-coordinates-estimator-api-secrets
+        command: ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8001", "listener_service:app"]
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1024Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+

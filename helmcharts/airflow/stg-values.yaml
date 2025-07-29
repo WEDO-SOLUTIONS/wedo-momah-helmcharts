@@ -1,0 +1,159 @@
+# stg-values.yaml
+
+# -------------------------------
+# Core Airflow & Helm configuration
+# -------------------------------
+# This should match the version in your custom image
+airflowVersion: "2.10.5"
+executor: KubernetesExecutor
+webserverSecretKey: 16f143ec4690e48710cbe27914d2a115dcb16c92e1441206815d09bc93bf5c60
+
+# -------------------------------
+# Disable in-cluster Postgres & PgBouncer
+# -------------------------------
+postgresql:
+  enabled: false
+
+pgbouncer:
+  enabled: false
+
+# -------------------------------
+# External metadata DB configuration
+# -------------------------------
+data:
+  # FIX 1: This section MUST be a structured object like this
+  metadataConnection:
+    user:     airflow_admin
+    pass:     VeryStrongPassword!123
+    protocol: postgresql
+    host:     10.247.3.9
+    port:     5432
+    db:       airflow
+    sslmode:  "require"
+  # resultBackendConnection:     # optional, not needed if you use XComObjectStorageBackend
+
+# -------------------------------
+# Core airflow.cfg overrides
+# -------------------------------
+airflow:
+  config:
+    AIRFLOW_WEBSERVER_BASE_URL: "https://airflow-stg.momrah.gov.sa"
+
+config:
+  core:
+    max_active_tasks_per_dag: 100
+    parallelism:              200
+    dag_concurrency:          5
+
+# -------------------------------
+# Logging / XCom (OCI-S3) validation
+# -------------------------------
+  logging:
+    remote_logging:         'True'
+    logging_level:          INFO
+    remote_base_log_folder: 's3://stg-airflow-logging-xcom/logs'
+    remote_log_conn_id:     oci_s3_conn
+    delete_worker_pods:     'False'
+    encrypt_s3_logs:        'False'
+
+extraEnv: |
+  - name: AIRFLOW_CONN_OCI_S3_CONN
+    value: '{"conn_type": "aws", "extra": {"aws_access_key_id": "24b4caf6bada73a757655743324318ce2a5f0372","aws_secret_access_key": "+aZo3+b7akbfUbTqqDq8M/PA5/wzlFh/2b5VVgy1/jg=", "endpoint_url": "https://axownvq9lhmx.compat.objectstorage.me-jeddah-1.oraclecloud.com", "verify": false}}'
+  - name: AIRFLOW_CORE_XCOM_BACKEND
+    value: 'airflow.providers.common.io.xcom.backend.XComObjectStorageBackend'
+  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_PATH
+    value: 's3://stg-airflow-logging-xcom/xcom'
+  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_THRESHOLD
+    value: '0'
+  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_COMPRESSION
+    value: 'zip'
+  - name: AIRFLOW__CORE_TEST_CONNECTION
+    value: 'Enabled'
+
+# -------------------------------
+# Images, Ingress, Webserver, Scheduler, Triggerer, DAGS, Cleanup
+# -------------------------------
+images:
+  # FIX 2: This section must use a specific version tag
+  airflow:
+    repository: registry.momrah.gov.sa/urbi-omar/momah-airflow
+    tag:        "latest"
+    pullPolicy: Always
+  useDefaultImageForMigration: false
+  statsd:
+    repository: quay.io/prometheus/statsd-exporter
+    tag:        "v0.28.0"
+    pullPolicy: IfNotPresent
+  redis:
+    repository: redis
+    tag:        "7.2-bookworm"
+    pullPolicy: IfNotPresent
+  gitSync:
+    repository: registry.k8s.io/git-sync/git-sync
+    tag:        "v4.3.0"
+    pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  web:
+    enabled:          true
+    host:             airflow-stg.momrah.gov.sa
+    ingressClassName: urbi
+    pathType:         ImplementationSpecific
+    path:             /
+    tls:
+      enabled:        false
+
+workers:
+  replicas: 1
+  serviceAccount:
+    create:                       true
+    automountServiceAccountToken: true
+
+scheduler:
+  enabled: true
+  replicas: 1
+  waitForMigrations:
+    enabled: true
+
+webserver:
+  enabled: true
+  replicas: 1
+  defaultUser:
+    enabled:   true
+    role:      Admin
+    username:  af_admin
+    email:     app.services@wedosolutions.sa
+    firstName: Airflow
+    lastName:  Admin
+    password:  "P@ssw0rd_AF"
+
+triggerer:
+  enabled: true
+  replicas: 1
+  persistence:
+    enabled: true
+    size:    10Gi
+
+dags:
+  gitSync:
+    enabled: true
+    repo:    https://github.com/WEDO-SOLUTIONS/momah-snapshot-airflow-dags.git
+    branch:  main
+    rev:     HEAD
+    subPath: dags
+    period:  5s
+  persistence:
+    enabled: false
+
+cleanup:
+  enabled:  true
+  schedule: '*/15 * * * *'
+  command:  null
+  args:
+    - bash
+    - '-c'
+    - 'exec airflow kubernetes cleanup-pods --namespace={{ .Release.Namespace }}'
+
+
+

@@ -1,0 +1,57 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: snapshot-pro-api
+    meta.helm.sh/release-namespace: urbi
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://cityview-pro.momah.gov.sa"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS, PATCH, DELETE, PUT"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* "^/swagger/" {
+          deny all;
+          return 403;
+        }
+      location ~* "^/version" {
+          deny all;
+          return 403;
+        }
+      location ~* "^/metrics" {
+          deny all;
+          return 403;
+        }
+      location ~* "^_/log" {
+          deny all;
+          return 403;
+        }
+  labels:
+    app.kubernetes.io/instance: snapshot-pro-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: snapshot-pro-api
+    app.kubernetes.io/version: 2.13.0
+    helm.sh/chart: pro-api-1.38.0
+  name: snapshot-pro-api
+  namespace: urbi
+spec:
+  ingressClassName: urbi
+  rules:
+  - host: cityview-pro-api.momah.gov.sa
+    http:
+      paths:
+      - backend:
+          service:
+            name: snapshot-pro-api
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - cityview-pro-api.momah.gov.sa
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.246.8.88

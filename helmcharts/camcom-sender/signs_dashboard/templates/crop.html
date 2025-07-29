@@ -1,0 +1,65 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Detection') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+         .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+    <div class="container">
+        <div class="starter-template">
+            <div class="row">
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>Кроп</th>
+                        <th>Знак</th>
+                        <th>Кадр</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if image_base64 is none %}
+                                <p>Произошла ошибка во время скачивания изображения. Вероятно, <a href="{{ detection.frame.image_url }}">ссылка</a> не валидна</p>
+                            {% else %}
+                                <img src="data:image/jpg;base64, {{ image_base64 }}"/>
+                            {% endif %}
+                        </td>
+                        <td>{% autoescape false %}{{ detection.get_info_as_str(sep='<br>') }}{% endautoescape %}</td>
+                        <td><a href="{{ url_for("frame", frame_id=detection.frame_id) }}"><i class="fa fa-image"></i></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

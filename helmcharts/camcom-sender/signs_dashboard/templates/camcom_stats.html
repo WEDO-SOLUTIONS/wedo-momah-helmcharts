@@ -1,0 +1,128 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Интеграция с CamCom') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script src="/static/select2/4.1/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            document.getElementById('nav_camcom_stats').className = 'active';
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+
+    <div class="container">
+        <div class="starter-template">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                            <span class="input-group-addon">{{ _('От') }}</span>
+                            <input name="from_date" type="text" class="form-control" value="{{ query_params.from_date }}">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                            <span class="input-group-addon">{{ _('До') }}</span>
+                            <input name="to_date" type="text" class="form-control" value="{{ query_params.to_date }}">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-default">{{ _('Submit') }}</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>{{ _('Дата') }}</th>
+                        <th>{{ _('Статус') }}</th>
+                        <th>{{ _('HTTP код') }}</th>
+                        <th>{{ _('Количество кадров') }}</th>
+                        <th>{{ _('Действия') }}</th>
+                    </tr>
+                    {%- set ns = namespace(date_row=True, status_row=True) %}
+                    {%- for stats in send_stats %}
+                        {%- set ns.date_row = True %}
+                        {%- for stats_with_status in stats.statuses %}
+                            {%- set ns.status_row = True %}
+                            {%- for stat in stats_with_status %}
+                                <tr>
+                                {%- if ns.date_row %}
+                                    <td rowspan="{{ stats.rows_count }}">{{ stats.for_date.strftime('%d-%m-%Y') }}</td>
+                                {%- endif %}
+                                {%- if ns.status_row %}
+                                    <td rowspan="{{ stats_with_status | length }}">{{ _(stat.status_text) }}</td>
+                                {%- endif %}
+                                    <td>{% if stat.is_bad_status %}{{ stat.http_code | default('-', true) }}{% endif %}</td>
+                                    <td
+                                        {%- if stat.is_bad_status and stat.sample_response %}
+                                        data-toggle="tooltip"
+                                        data-container="body"
+                                        data-placement="top"
+                                        title="{{ stat.sample_response | truncate(256) }}"
+                                        {%- endif %}
+                                    >{{ stat.frames_count }}</td>
+                                {%- if ns.status_row %}
+                                    <td rowspan="{{ stats_with_status | length }}" style="text-align: left; vertical-align: middle">
+                                        {%- if ns.status_row and stat.is_bad_status %}
+                                        <form action="{{ url_for('api_camcom_resend_by_date', date=stats.for_date) }}" method="post">
+                                        <button type="submit">{{ _('Отправить повторно') }}</button>
+                                        </form>
+                                        {%- endif %}
+                                    </td>
+                                {%- endif %}
+                                {%- set ns.date_row = False %}
+                                {%- set ns.status_row = False %}
+                                </tr>
+                            {%- endfor %}
+                        {%- endfor %}
+                    {%- endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

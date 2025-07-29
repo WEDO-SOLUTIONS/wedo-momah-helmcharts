@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: urbi-pro-user-activity
+  namespace: urbi
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: urbi-pro-user-activity
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8000
+

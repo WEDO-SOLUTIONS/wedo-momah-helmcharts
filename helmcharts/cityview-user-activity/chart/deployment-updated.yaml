@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urbi-pro-user-activity
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: urbi-pro-user-activity
+    app.kubernetes.io/name: urbi-pro-user-activity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: urbi-pro-user-activity
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: urbi-pro-user-activity
+        app.kubernetes.io/name: urbi-pro-user-activity
+    spec:
+      serviceAccountName: user-activity-logger
+      containers:
+        - name: urbi-pro-user-activity
+          image: registry.momrah.gov.sa/urbi-omar/urbi-pro-user-activity:v0.0.23
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2048Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+

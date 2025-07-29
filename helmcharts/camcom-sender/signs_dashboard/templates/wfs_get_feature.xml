@@ -1,0 +1,18 @@
+<wfs:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs/2.0" xmlns:gml="http://www.opengis.net/gml/3.2">
+    {% for frame in frames %}
+        <gml:featureMember>
+            <Frame>
+                <Geom>
+                    <gml:Point>
+                        <gml:pos>{{ frame.get_coords_str(coord_transformer) }}</gml:pos>
+                    </gml:Point>
+                </Geom>
+                <Id>{{ frame.id }}</Id>
+                <TrackId>{{ frame.track_uuid }}</TrackId>
+                <PhotoUrl>{{ url_for('get_frame_predictions', frame_id=frame.id) }}</PhotoUrl>
+                <Azimuth>{{ frame.azimuth }}</Azimuth>
+                <CaptureTime>{{ frame.date|prettify_date_ms }}</CaptureTime>
+            </Frame>
+        </gml:featureMember>
+    {% endfor %}
+</wfs:FeatureCollection>

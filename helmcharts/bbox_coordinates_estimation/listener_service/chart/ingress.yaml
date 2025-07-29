@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bbox-coordinates-estimator-api
+  namespace: urbi
+spec:
+  ingressClassName: urbi-stg
+  rules:
+    - host: urbi-lifestyle-stg.momrah.gov.sa
+      http:
+        paths:
+          - path: /frames/data
+            pathType: Prefix
+            backend:
+              service:
+                name: citylens-bbox-coordinates-estimator-api
+                port:
+                  number: 80
+

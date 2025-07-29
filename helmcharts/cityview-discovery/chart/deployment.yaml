@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urbi-pro-discovery
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: urbi-pro-discovery
+    app.kubernetes.io/name: urbi-pro-discovery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: urbi-pro-discovery
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: urbi-pro-discovery
+        app.kubernetes.io/name: urbi-pro-discovery
+    spec:
+      containers:
+        - name: urbi-pro-discovery
+          image: registry.momrah.gov.sa/urbi-omar/urbi-pro-discovery:v0.0.2
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2048Mi"

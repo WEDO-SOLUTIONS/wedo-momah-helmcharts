@@ -1,0 +1,42 @@
+name: dqp-ui
+namespace: urbi
+replicaCount: 1
+
+image: registry.momrah.gov.sa/urbi-omar/dqp-ui-prod:v0.006
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+ingress:
+  name: be-dqp-ui
+  host: dqp.momah.gov.sa
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  paths:
+    - path: /
+      pathType: Prefix
+
+
+cronjob:
+  enabled: false

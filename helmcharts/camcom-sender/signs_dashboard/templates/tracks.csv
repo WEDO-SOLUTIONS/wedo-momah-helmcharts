@@ -1,0 +1,21 @@
+track_uuid,user_email,track_type,track_reloaded,app_version,recorded_date,uploaded_date,track_length_km,track_duration_hours
+{% set comma = ',' %}
+{%- for stat in tracks_stat -%}
+    "{{ stat.track.uuid -}}"
+    {{- comma -}}
+    "{{- stat.track.user_email -}}"
+    {{- comma -}}
+    "{{- stat.track.type -}}"
+    {{- comma -}}
+    "{{- stat.track.reloaded | string | lower -}}"
+    {{- comma -}}
+    "{{- stat.track.app_version -}}"
+    {{- comma -}}
+    "{{- stat.track.recorded | default('', true) -}}"
+    {{- comma -}}
+    "{{- stat.track.uploaded | default('', true) -}}"
+    {{- comma -}}
+    {{- stat.track.distance -}}
+    {{- comma -}}
+    {{- '%05f' | format(stat.track.duration) }}
+{% endfor %}

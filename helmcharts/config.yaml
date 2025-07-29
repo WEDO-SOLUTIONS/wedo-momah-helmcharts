@@ -1,0 +1,7 @@
+environments:
+  staging:
+    kubeconfig: /home/jbadmin/WEDO/wedo/admin-sa-kubeconfig.yml
+    context: staging
+  production:
+    kubeconfig: /home/jbadmin/WEDO/wedo/admin-sa-kubeconfig.yml
+    context: production

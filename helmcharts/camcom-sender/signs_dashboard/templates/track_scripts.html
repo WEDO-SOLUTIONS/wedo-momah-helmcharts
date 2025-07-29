@@ -1,0 +1,235 @@
+{% block track_scripts %}
+    <script>
+    function _escape_jq_id(elem_id) {
+        return elem_id.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" );
+    }
+
+    {% if 'fiji' is feature_enabled %}
+    async function forceLowQualityFramesTrackToFiji(track_update_url, fiji_status_element_id, fiji_send_btn_id) {
+        await $.ajax(
+            {
+                type: "PUT",
+                url: track_update_url,
+                data: JSON.stringify({fiji_status: 1005}),
+                contentType: "application/json",
+                success: function (result){
+                    console.log('forced track to fiji', result);
+                    $(`#${_escape_jq_id(fiji_status_element_id)}`).text(result.fiji_text_status);
+                    $(`#${_escape_jq_id(fiji_send_btn_id)}`).remove();
+                }
+            }
+        );
+    }
+    {% endif %}
+    async function predictSelected() {
+        let checkboxes = document.getElementsByName('upload_checkbox')
+        let selectedTrackUUIDs = []
+        for (let i = 0; i < checkboxes.length; i++){
+            if(!checkboxes[i].checked){
+                continue
+            }
+            trackId = checkboxes[i].id.replace('_upload_cb', '')
+            selectedTrackUUIDs.push(trackId)
+        }
+        let predictor = getSelectedPredictor()
+        let prompt = getSelectedPredictorPrompt();
+
+        request = {
+            tracks_uuids: selectedTrackUUIDs,
+            predictor: predictor,
+            prompt: prompt,
+        }
+        await $.ajax(
+            {
+                type: "POST",
+                url: '{{ url_for('predict_tracks') }}',
+                data: JSON.stringify(request),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result){
+                      predictor = result['predictor']
+                      tracksUUIDs = result['tracks_uuids']
+
+                      let tracksHtml = '<table class="table"><thead><tr><th>UUID</th></tr></thead><tbody>';
+                      tracksUUIDs.forEach(trackUUID => {
+                          tracksHtml += `<tr><td>${trackUUID}</td></tr>`;
+                      });
+                      tracksSended = '{{ _('tracks_sended') }}'
+                      resultHtml = [
+                          `${tracksSended} ${predictor} <br>`,
+                          tracksHtml
+                      ].join('')
+                      $('#resultMessage').html(resultHtml);
+                      $('#resultModal').modal('show');
+                },
+                  error: function (xhr, status, error) {
+                      tracksSendError = '{{ _('tracks_send_error') }}'
+                      $('#resultMessage').html(tracksSendError);
+                      $('#resultModal').modal('show');
+                  }
+            }
+        )
+      }
+      async function uploadSelectedToCVAT(){
+          let checkboxes = document.getElementsByName('upload_checkbox')
+          let selectedTrackUUIDs = []
+          for (let i = 0; i < checkboxes.length; i++){
+              if(!checkboxes[i].checked){
+                  continue
+              }
+              trackId = checkboxes[i].id.replace('_upload_cb', '')
+              selectedTrackUUIDs.push(trackId)
+          }
+          let selectedProject = $('#cvatProjectSelect').val()
+
+          let projectName = $('#cvatProjectName').val()
+          if (selectedProject !== "") {
+              projectName = selectedProject
+          }
+          request = {
+              tracks_uuids: selectedTrackUUIDs,
+              project_name: projectName,
+          }
+          await $.ajax(
+              {
+                  type: "POST",
+                  url: '{{ url_for('upload_tracks_to_cvat') }}',
+                  data: JSON.stringify(request),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (result) {
+                      resultHtml = `<a target="_blank" href="/cvat_upload_status/${result['upload_uuid']}">Upload UUID: ${result['upload_uuid']}</a>`
+                      $('#cvatUploadMessage').html(resultHtml);
+                      $('#cvatUploadModal').modal('show');
+                  },
+                  error: function (xhr, status, error) {
+                      alert('error')
+                  }
+              }
+          )
+     }
+
+    {% if 'pro' is feature_enabled %}
+    async function tracksProActions(action) {
+        let success_message = ``;
+        let error_message = ``;
+
+        if (action === 'hide') {
+            success_message = `<div id="success_remove">{{ _('Треки будут удалены из PRO') }}</div>`
+            error_message = `<div id="error_remove">{{ _('Ошибка удаления треков из PRO') }}</div>`
+        } else if (action === 'resend') {
+            success_message = `<div id="success_send">{{ _('Треки будут отправлены в Pro') }}</div>`
+            error_message = `<div id="error_send">{{ _('Ошибка отправления треков в PRO') }}</div>`
+        } else {
+            alert(`Unknown action ${action}`)
+        }
+
+        let checkboxes = document.getElementsByName('upload_checkbox')
+        let selectedTrackUUIDs = []
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (!checkboxes[i].checked) {
+                continue
+            }
+            trackId = checkboxes[i].id.replace('_upload_cb', '')
+            selectedTrackUUIDs.push(trackId)
+        }
+
+        $('#resultMessage').html('')
+
+        request = {
+            action: action,
+            track_uuids: selectedTrackUUIDs
+        }
+        await $.ajax(
+            {
+                type: "POST",
+                url: '{{ url_for('api_pro_resend_tracks') }}',
+                data: JSON.stringify(request),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $('#resultMessage').append(success_message)
+
+                    result['track_uuids'].forEach(function(trackUUID) {
+                        $("#resultMessage").append(`<br>${trackUUID}`)
+                    });
+                },
+                error: function (xhr, status, error) {
+                    $('#resultMessage').append(error_message)
+                }
+            }
+        );
+        $('#resultModal').modal('show');
+    }
+    {% endif %}
+
+    {% if track_localization_enabled %}
+    async function forceTrackLocalization(track_update_url, loc_status_element_id, loc_send_btn_id) {
+        await $.ajax(
+            {
+                type: "PUT",
+                url: track_update_url,
+                data: JSON.stringify({localization_status: 2005}),
+                contentType: "application/json",
+                success: function (result){
+                    console.log('forced track localization', result);
+                    $(`#${_escape_jq_id(loc_status_element_id)}`).text(result.localization_text_status);
+                    $(`#${_escape_jq_id(loc_send_btn_id)}`).remove();
+                }
+            }
+        );
+    }
+
+    async function tracksLocalizationActions(action) {
+        let success_message = ``;
+        let error_message = ``;
+
+        if (action === 'force') {
+            success_message = `<div id="success_remove">{{ _('Детекции треков будут перелокализованы') }}</div>`
+            error_message = `<div id="error_remove">{{ _('Ошибка при отправке треков на перелокализацию') }}</div>`
+        } else {
+            alert(`Unknown action ${action}`)
+        }
+
+        let checkboxes = document.getElementsByName('upload_checkbox')
+        let selectedTrackUUIDs = []
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (!checkboxes[i].checked) {
+                continue
+            }
+            trackId = checkboxes[i].id.replace('_upload_cb', '')
+            selectedTrackUUIDs.push(trackId)
+        }
+
+        $('#resultMessage').html('')
+
+        request = {
+            action: action,
+            track_uuids: selectedTrackUUIDs
+        }
+        await $.ajax(
+            {
+                type: "POST",
+                url: '{{ url_for('api_bulk_change_localization_status') }}',
+                data: JSON.stringify(request),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $('#resultMessage').append(success_message)
+
+                    result['track_uuids'].forEach(function(trackUUID) {
+                        $("#resultMessage").append(`<br>${trackUUID}`)
+                    });
+                },
+                error: function (xhr, status, error) {
+                    $('#resultMessage').append(error_message)
+                }
+            }
+        );
+        $('#resultModal').modal('show');
+    }
+
+    {% endif %}
+
+    </script>
+{% endblock %}

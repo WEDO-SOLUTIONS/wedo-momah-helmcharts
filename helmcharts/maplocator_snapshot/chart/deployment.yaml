@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maplocator-snapshot-api
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: maplocator-snapshot-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: maplocator-snapshot-api
+    app.kubernetes.io/version: 0.1.0
+    helm.sh/chart: maplocator-snapshot-api-0.1.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: maplocator-snapshot-api
+      app.kubernetes.io/name: maplocator-snapshot-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: maplocator-snapshot-api
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: maplocator-snapshot-api
+        app.kubernetes.io/version: 0.1.0
+        helm.sh/chart: maplocator-snapshot-api-0.1.0
+    spec:
+      containers:
+        - name: maplocator-snapshot-api
+          image: registry.momrah.gov.sa/urbi-omar/maplocator-snapshot-api:v0.1
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          env:
+            - name: UPLOAD_FOLDER
+              value: "/uploads"
+            - name: LOG_DIR
+              value: "/logs"
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: maplocator-storage-volume
+              mountPath: /uploads
+            - name: maplocator-storage-volume
+              mountPath: /logs
+              subPath: logs
+      volumes:
+        - name: maplocator-storage-volume
+          persistentVolumeClaim:
+            claimName: maplocator-snapshot-api-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

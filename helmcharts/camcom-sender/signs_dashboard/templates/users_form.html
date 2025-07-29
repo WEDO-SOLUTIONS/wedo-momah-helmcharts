@@ -1,0 +1,96 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Users Admin') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        form {
+            text-align: initial;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(document).ready(function() {
+            document.getElementById('nav_users').className = 'active';
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="starter-template">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-md-offset-3">
+                    {% if error.field %}
+                        <div class="alert alert-danger">_('Validation error')</div>
+                    {% endif %}
+
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="id" class="control-label">{{ _('ID') }}</label>
+                            <input type="text" class="form-control" readonly id="id" name="id" value="{{ user.id | default('') }}">
+                        </div>
+
+                        <div class="form-group {% if error.field == 'email' %} has-error {% endif %}">
+                            <label for="email" class="control-label">{{ _('Email') }}</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email | default('') }}" required>
+                            {% if error.field == 'email' %}
+                            <span class="help-block">{{ _(error.message) }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group {% if error.field == 'password' %} has-error {% endif %}">
+                            <label for="password" class="control-label">{{ _('Password') }}</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                            {% if error.field == 'password' %}
+                            <span class="help-block">{{ _(error.message) }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group {% if error.field == 'password_confirm' %} has-error {% endif %}">
+                            <label for="password-confirm" class="control-label">{{ _('Confirm password') }}</label>
+                            <input type="password" class="form-control" id="password-confirm" name="password_confirm">
+                            {% if error.field == 'password_confirm' %}
+                            <span class="help-block">{{ _(error.message) }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="enabled" {% if user.enabled is false %}{% else %} checked {% endif %}>
+                                    {{ _('Enabled') }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
+                            </div>
+                            <div class="col-sm-6" style="text-align: right;">
+                                {% if user.id %}
+                                <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger">{{ _('Delete') }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

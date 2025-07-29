@@ -1,0 +1,155 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Reload Track')}}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script>
+        $(document).ready(function() {
+            try {
+                document.getElementById('nav_reload_track').className = 'active';
+            } catch (e) {
+                console.log('Unable to update navbar selection: ' + e);
+            }
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding-top: 40px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+    <div class="container">
+        <div class="starter-template">
+
+            <form method="post" action="{{ url_for('reload_track') }}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">Tracks</span>
+                            <textarea
+                                    id="uuid_input"
+                                    name="uuids"
+                                    class="form-control"
+                                    required
+                                    placeholder="..."
+                                    rows="10"
+                            >{% for uuid in query.uuids %}{{ uuid }}&#10;{% endfor %}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Source</span>
+                            <input
+                                    id="endpoint_input"
+                                    name="endpoint"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="..."
+                                    value="{{ query.endpoint if query.endpoint is not none else '' }}"
+                            >
+                        </div>
+                        {% if query.show_predictions_reload_toggle %}
+                        <div class="input-group">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default {% if not query.with_detections %}active{% endif %}">
+                                    <input type="radio" name="without_detections" id="without_detections" autocomplete="off"
+                                        {% if not query.with_detections %}checked{% endif %}>
+                                    {{ _('Without detections') }}
+                                </label>
+                                <label class="btn btn-default {% if query.with_detections %}active{% endif %}"
+                                  data-toggle="tooltip" data-placement="bottom" title="{{ _('Detections source will be "manual". Only bboxes supported') | forceescape }}">
+                                    <input type="radio" name="with_detections" id="with_detections" autocomplete="off"
+                                        {% if query.with_detections %}checked{% endif %}>
+                                    {{ _('With detections') }}
+                                </label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if query.show_fiji_host_input %}
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Fiji</span>
+                            <input
+                                    id="fiji_host_input"
+                                    name="fiji_host"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="..."
+                                    value="{{ query.fiji_host if query.fiji_host is not none else '' }}"
+                            >
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-default">Reload</button>
+                    </div>
+                </div>
+
+                {% if tracks_submitted or errors %}
+                    <div class="row">
+                        {% if errors %}
+                            <div class="col-md-11">
+                                <div class="alert alert-danger" role="alert">
+                                    Track with errors:<br />
+                                    {% for uuid in tracks_with_errors %}
+                                        {{ uuid }}<br />
+                                    {% endfor %}
+
+                                    <br /><br />
+                                    {% for error in errors %}
+                                        {{ error }}<br />
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if tracks_submitted %}
+                        <div class="col-md-11">
+                            <div class="alert alert-success" role="alert">
+                                Track submitted to reload:<br />
+                                {% for uuid in tracks_submitted %}
+                                    {{ uuid }}<br />
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

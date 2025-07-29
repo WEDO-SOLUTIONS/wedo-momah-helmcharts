@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-shell
+  labels:
+    app: mongo-shell
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-shell
+  template:
+    metadata:
+      labels:
+        app: mongo-shell
+    spec:
+      containers:
+        - name: mongo-shell
+          image: mongo:7
+          command: ["sleep"]
+          args: ["infinity"]
+          tty: true
+

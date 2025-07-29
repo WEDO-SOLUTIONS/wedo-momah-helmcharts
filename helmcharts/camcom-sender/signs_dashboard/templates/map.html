@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Map</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='wfs_map/index.ff826619.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='wfs_map/pannellum.css') }}" />
+
+        <style>
+            html,body{
+                width:100%;
+                height:100%;
+                margin:0;
+                overflow:hidden;
+            }
+        </style>
+
+        <script>
+            //<![CDATA[
+                window.mapgl_key = '{{ mapgl['key'] }}'
+                window.baseUrl = '/wfs'
+                window.initialProject = "{{ initial_project }}"
+                window.projectList = {{ projects|tojson }}
+            //]]>
+        </script>
+
+        {% if mapgl['host'] %}
+            <script src="https://{{ mapgl['host'] }}/api.js"></script>
+        {% else %}
+            <script src="{{ url_for('static', filename='wfs_map/mapgl_2gis_v1.js') }}"></script>
+        {% endif %}
+        <script type="module" src="{{ url_for('static', filename='wfs_map/index.bdaf78a6.js') }}"></script>
+        <script src="{{ url_for('static', filename='wfs_map/pannellum.js') }}" crossorigin></script>
+    </head>
+    <body></body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "bootstrap/base.html" %}
+
+{% block navbar %}
+    <nav class="navbar navbar-inverse navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" style="position: relative;">
+                    <img src="/static/Icon@2x.svg" style="position: absolute; left: -15px; top: 0; transform: translateY(50%);">
+                    CityLens Web
+                </a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                {% for item in header_items %}
+                    <li id="nav_{{ item }}"><a href="{{ url_for(item) }}">{{ _(item) }}</a></li>
+                {% endfor %}
+                {% if header_help_url %}
+                    <li>
+                        <a href="{{ header_help_url }}" title="{{ _('Instruction') }}">
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
+                    </li>
+                {% endif %}
+                </ul>
+                {% if username %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><span class="navbar-text">{{ username }}</span></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                {% endif %}
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block body_attribs %} {{ super() }} style="padding-top: 0px" {% endblock %}
+
+{% block styles %}
+{{ super() }}
+{% include "common_styles.html" %}
+{% endblock %}

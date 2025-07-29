@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  BY_ID_URL: {{ .Values.env.BY_ID_URL }}
+  AI_URL: {{ .Values.env.AI_URL }}
+  AI_MARKERS_URL: {{ .Values.env.AI_MARKERS_URL }}
+  AI_SUGGEST_URL: {{ .Values.env.AI_SUGGEST_URL }}
+  DEFAULT_PLACES_FORWARD_URL: {{ .Values.env.DEFAULT_PLACES_FORWARD_URL }}
+  DEFAULT_MARKERS_FORWARD_URL: {{ .Values.env.DEFAULT_MARKERS_FORWARD_URL }}
+  DEFAULT_PLACES_FORWARD_URL_BYID: {{ .Values.env.DEFAULT_PLACES_FORWARD_URL_BYID }}
+  DEFAULT_SUGGESTS_FORWARD_URL: {{ .Values.env.DEFAULT_SUGGESTS_FORWARD_URL }}
+  RCMC_AREA_URL: {{ .Values.env.RCMC_AREA_URL }}
+  BY_CATEGORY_URL: {{ .Values.env.BY_CATEGORY_URL }}
+  REGION_ID_URL: {{ .Values.env.REGION_ID_URL }}
+  LOG_LEVEL: {{ .Values.env.LOG_LEVEL }}
+  PORT: "{{ .Values.env.PORT }}"
+  REDIS_CACHE: "{{ .Values.env.REDIS_CACHE }}"
+

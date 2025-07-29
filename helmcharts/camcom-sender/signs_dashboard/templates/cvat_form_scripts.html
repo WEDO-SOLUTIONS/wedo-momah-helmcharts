@@ -1,0 +1,47 @@
+<script>
+  $(document).ready(function () {
+      function handleCVATProjectChange() {
+          var select = document.getElementById("cvatProjectSelect");
+          if (select) {
+              var selectValue = document.getElementById("cvatProjectSelect").value;
+              var projectNameField = document.getElementById("cvatProjectName");
+              projectNameField.readOnly = selectValue !== ''
+          }
+      }
+
+      function load_cvat_projects() {
+          $.ajax({
+              url: "{{ url_for('api_cvat_get_projects') }}",
+              type: "GET",
+              success: function (data) {
+                  var select = document.getElementById("cvatProjectSelect");
+                  if (select) {
+                      if (data.is_ok) {
+                          var projects = data.projects;
+                          for (var i = 0; i < projects.length; i++) {
+                              var project = projects[i];
+                              var option = document.createElement("option");
+                              option.text = project.name;
+                              option.value = project.name;
+                              select.add(option);
+                          }
+                          $('.cvat-loading-banner').addClass('hidden');
+                          $('.cvat-input').removeClass('hidden');
+                      } else {
+                          $('.cvat-loading-banner').addClass('hidden');
+                          $('.cvat-unavailable-banner').removeClass('hidden');
+                      }
+                  }
+                  handleCVATProjectChange();
+              },
+              error: function (data) {
+                  $('.cvat-loading-banner').addClass('hidden');
+                  $('.cvat-unavailable-banner').removeClass('hidden');
+                  console.log(data);
+              }
+          });
+      }
+      load_cvat_projects();
+      $('#cvatProjectSelect').change(handleCVATProjectChange);
+  });
+</script>

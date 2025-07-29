@@ -1,0 +1,49 @@
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="input-group col-md-4">
+      <div class="input-group">
+        <select class="form-control" id="predictorSelect" style="width: 50%">
+          {% for predictor_name in predictors_names %}
+            <option
+                value="{{ predictor_name }}"
+                data-has-prompt="{% if predictor_has_prompt(predictor_name) %}true{% else %}false{% endif %}"
+            >{{ predictor_name }}</option>
+          {% endfor %}
+        </select>
+        <div id="predictorDetails" style="display: block;">
+          <input type="text" class="form-control prompt-input" id="promptField" placeholder="prompt" style="width: 50%">
+        </div>
+        <span class="input-group-btn">
+        <button class="btn btn-default" onclick="predictSelected()">
+          Predict
+        </button>
+
+      </span>
+        <div class="input-group-addon">
+          <a href="{{ url_for("active_predictors") }}" target="_blank" title={{ _('List Active Predictors') }} class="glyphicon glyphicon-info-sign"></a>
+       </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+  <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h5 class="modal-title" id="resultModalLabel">Result</h5>
+        </div>
+        <div class="modal-body">
+          <p id="resultMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

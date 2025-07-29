@@ -1,0 +1,181 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Reload statuses')}}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script>
+        $(document).ready(function() {
+            try {
+                document.getElementById('nav_reload_statuses').className = 'active';
+            } catch (e) {
+                console.log('Unable to update navbar selection: ' + e);
+            }
+        });
+    </script>
+    <script>
+        function selectAllPendingCheckboxes(source) {
+            let checkboxes = document.getElementsByName('pending_checkbox')
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = source.checked
+            }
+        }
+
+        async function stopSelectedPendingTasks() {
+            let checkboxes = document.getElementsByName('pending_checkbox')
+            let stopTasks = []
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (!checkboxes[i].checked) {
+                    continue
+                }
+                stopTasks.push(checkboxes[i].id.split('_')[1])
+            }
+            await $.ajax(
+                {
+                    type: "GET",
+                    url: `/stop_pending_tasks?tasks_ids=${stopTasks.join(',')}`,
+                }
+            )
+            location.reload()
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding-top: 40px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    </style>
+    <div class="container">
+    <div class="starter-template">
+
+        <form>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                        <span class="input-group-addon">{{ _('От') }}</span>
+                        <input name="from_date" type="text" class="form-control"
+                               value="{{ query_params.from_date }}">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                        <span class="input-group-addon">{{ _('До') }}</span>
+                        <input name="to_date" type="text" class="form-control" value="{{ query_params.to_date }}">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">{{ _('Статус') }}</span>
+                        <select class="form-control" name="upload_status">
+                            <option value="all" {% if query_params.status == 'all' %}selected {% endif %}>
+                                {{ _('все') }}
+                            </option>
+                            <option value="pending" {% if query_params.status == 'pending' %}selected {% endif %}>
+                                {{ _('ждёт перезаливки') }}
+                            </option>
+                            <option value="complete" {% if query_params.status == 'complete' %}selected {% endif %}>
+                                {{ _('перезалит') }}
+                            </option>
+                            <option value="stop" {% if query_params.status == 'stop' %}selected {% endif %}>
+                                {{ _('остановлен') }}
+                            </option>
+                            <option value="in_progress"
+                                    {% if query_params.status == 'in_progress' %}selected {% endif %}>
+                                {{ _('перезаливается') }}
+                            </option>
+                            <option value="error" {% if query_params.status == 'error' %}selected {% endif %}>
+                                {{ _('ошибка') }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-default">{{ _('Submit') }}</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+        <div class="row">
+            <table class="table table-striped table-sm">
+                <tr>
+                    <th>
+                        {{ _('Дата загрузки') }}
+                    </th>
+                    <th>{{ _('Track ID') }}</th>
+                    <th>{{ _('Uploaded track ID') }}</th>
+                    <th>{{ _('Статус') }}</th>
+                    <th>{{ _('Прогресс') }}</th>
+                    <th>
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                               onclick="selectAllPendingCheckboxes(this)">
+                        <label class="form-check-label" for="exampleCheck1"> </label>
+                    </th>
+                </tr>
+                {% for task in tasks %}
+                    <tr>
+                        <td>
+                            {{ task.created|prettify_date }}
+                        </td>
+                        <td>{{ task.uuid }}</td>
+                        <td> {{ task.uuid_after_upload }}</td>
+                        <td>{{ _(task.text_status) }}</td>
+                        <td>
+                        {% if task.text_n_frames != 0 or task.text_n_complete_frames != 0 %}
+                            {{ task.text_n_complete_frames }} / {{ task.text_n_frames }}
+                        {% endif %}
+                        </td>
+                        <td>
+                            {% if task.status == 'pending' %}
+                                <input type="checkbox" class="form-check-input" id="cb_{{ task.task_hash }}"
+                                       name="pending_checkbox">
+                                <label class="form-check-label" for="exampleCheck1"></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <button class="btn btn-default" type="submit" onclick="stopSelectedPendingTasks()">
+                {{ _('Отменить') }}
+            </button>
+        </div>
+
+    </div>
+
+{% endblock %}

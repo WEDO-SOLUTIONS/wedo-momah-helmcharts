@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: citylens-bbox-coordinates-estimator-api
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: citylens-bbox-coordinates-estimator-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: citylens-bbox-coordinates-estimator-api
+spec:
+  selector:
+    app.kubernetes.io/instance: citylens-bbox-coordinates-estimator-api
+    app.kubernetes.io/name: citylens-bbox-coordinates-estimator-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8001
+  type: ClusterIP
+

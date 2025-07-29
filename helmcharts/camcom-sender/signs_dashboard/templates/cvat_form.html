@@ -1,0 +1,52 @@
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="input-group col-md-4">
+      <div class="input-group cvat-input hidden">
+        <select class="form-control" id="cvatProjectSelect" style="width: 50%">
+          <option value="">{{ _('New Project') }}</option>
+        </select>
+        <div id="cvatProjectDetails" style="display: block;">
+          <input type="text" class="form-control" id="cvatProjectName" placeholder="Project Name" style="width: 50%" required>
+        </div>
+        <span class="input-group-btn">
+          <button class="btn btn-default" onclick="uploadSelectedToCVAT()">{{ _('Send to CVAT') }}</button>
+        </span>
+      </div>
+      <div class="cvat-loading-banner">
+        <div class="col-md-1"></div>
+        <button class="btn btn-default" style="display: block;" disabled>
+          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span><i> {{ _('Loading CVAT projects list...') }} </i>
+        </button>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="cvat-unavailable-banner hidden">
+        <div class="col-md-1"></div>
+        <button class="btn btn-default" style="display: block;" disabled>
+          <span class="glyphicon glyphicon-remove"></span><i> {{ _('Sending to CVAT is not available') }} </i>
+        </button>
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+  <div class="modal fade" id="cvatUploadModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cvatUploadModalLabel">{{ _('CVAT modal result') }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="cvatUploadMessage"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

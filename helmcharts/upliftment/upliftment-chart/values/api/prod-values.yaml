@@ -1,0 +1,24 @@
+name: momtathel-upliftment-api
+namespace: urbi
+replicaCount: 3
+
+image: registry.momrah.gov.sa/urbi-omar/momtathel-upliftment-apis-prod:v0.5
+containerPort: 5000
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
+ingress:
+  name: be-momtathel-upliftment-api
+  host: upliftment-cis.momah.gov.sa
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  paths:
+    - path: /prweb/api
+

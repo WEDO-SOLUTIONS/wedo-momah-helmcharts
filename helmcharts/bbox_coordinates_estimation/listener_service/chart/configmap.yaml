@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: citylens-bbox-coordinates-estimator-api-config
+  namespace: urbi
+data:
+  KAFKA_BOOTSTRAP_SERVERS: "RUHMSV-APCHKF01.momra.net:9092,RUHMSV-APCHKF02.momra.net:9092,RUHMSV-APCHKF03.momra.net:9092"
+  KAFKA_SECURITY_PROTOCOL: "SASL_PLAINTEXT"
+  KAFKA_SASL_MECHANISM: "SCRAM-SHA-512"
+  HIGH_PRIORITY_TOPIC: "bbox.coordinates.estimator.frames-high-priority"
+  LOW_PRIORITY_TOPIC: "bbox.coordinates.estimator.frames-low-priority"
+  LOG_TOPIC: "bbox.coordinates.estimator.logs"
+  API_HOST: "0.0.0.0"
+  API_PORT: "8001"
+  ALLOWED_ORIGINS: "*"
+

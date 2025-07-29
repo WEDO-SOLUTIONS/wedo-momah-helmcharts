@@ -1,0 +1,475 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Drivers')}}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link href="/static/select2/4.1/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script src="/static/select2/4.1/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            document.getElementById('nav_drivers').className = 'active';
+            $("#projects_select").select2({
+                multiple: true,
+            });
+            $("#interest_zone_region_selector").select2({
+                multiple: true,
+            });
+        });
+        function selectAllChecboxesForPrediction(source) {
+          let checkboxes = document.getElementsByName('driverCheckbox')
+          for (let i = 0; i < checkboxes.length; i++) {
+              checkboxes[i].checked = source.checked
+          }
+        }
+        async function predictSelected() {
+            let checkboxes = document.getElementsByName('driverCheckbox')
+            let selectedDrivers = []
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (!checkboxes[i].checked) {
+                    continue
+                }
+                selectedDrivers.push(JSON.parse(checkboxes[i].value))
+            }
+            let predictor = getSelectedPredictor()
+            let prompt = getSelectedPredictorPrompt();
+
+            request = {
+              drivers: selectedDrivers,
+              predictor: predictor,
+              prompt: prompt,
+            }
+            await $.ajax(
+              {
+                  type: "POST",
+                  url: '{{ url_for('predict_drivers', **query_params.to_uri()) | safe }}',
+                  data: JSON.stringify(request),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (result){
+                      predictor = result['predictor']
+                      drivers = result['drivers']
+                      let driversHtml = '<table class="table"><thead><tr><th>Email</th><th>Date</th></tr></thead><tbody>';
+                      drivers.forEach(driver => {
+                          driversHtml += `<tr><td>${driver.email}</td><td>${driver.date}</td></tr>`;
+                      });
+                      driversHtml += '</tbody></table>';
+                      driversSended = '{{ _('drivers_sended') }}'
+                      resultHtml = [
+                          `${driversSended} ${predictor} <br>`,
+                          driversHtml
+                      ].join('')
+                      $('#resultMessage').html(resultHtml);
+                      $('#resultModal').modal('show');
+                  },
+                  error: function (xhr, status, error) {
+                      driversSendError = '{{ _('drivers_send_error') }}'
+                      $('#resultMessage').html(driversSendError);
+                      $('#resultModal').modal('show');
+                  }
+              }
+            )
+        }
+        async function uploadSelectedToCVAT() {
+            let checkboxes = document.getElementsByName('driverCheckbox')
+            let selectedDrivers = []
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (!checkboxes[i].checked) {
+                    continue
+                }
+                selectedDrivers.push(JSON.parse(checkboxes[i].value))
+            }
+            let selectedProject = $('#cvatProjectSelect').val()
+            let projectName = $('#cvatProjectName').val()
+
+            if (selectedProject !== "") {
+                projectName = selectedProject
+            }
+            request = {
+                drivers: selectedDrivers,
+                project_name: projectName,
+            }
+            await $.ajax(
+              {
+                  type: "POST",
+                  url: '{{ url_for('upload_drivers_to_cvat', **query_params.to_uri()) | safe }}',
+                  data: JSON.stringify(request),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (result){
+                      resultHtml = `<a target="_blank" href="/cvat_upload_status/${result['upload_uuid']}">Upload UUID: ${result['upload_uuid']}</a>`
+                      $('#cvatUploadMessage').html(resultHtml);
+                      $('#cvatUploadModal').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    alert('error')
+                }
+              }
+            )
+        }
+
+        {% if 'pro' is feature_enabled %}
+        async function tracksByDriversProActions(action) {
+            $('div.overlay').addClass('overlay-show');
+            $('div.spanner').addClass('overlay-show');
+
+            let success_message = ``;
+            let error_message = ``;
+
+            if (action === 'hide') {
+                success_message = `<div id="success_remove">{{ _('Треки водителей будут удалены из PRO') }}</div>`;
+                error_message = `<div id="error_remove">{{ _('Ошибка удаления треков водителей из PRO') }}</div>`;
+            } else if (action === 'resend') {
+                success_message = `<div id="success_send">{{ _('Треки водителей будут отправлены в Pro') }}</div>`;
+                error_message = `<div id="error_send">{{ _('Ошибка отправления треков водителей в PRO') }}</div>`;
+            } else {
+                alert(`Unknown action ${action}`);
+            }
+
+            let checkboxes = document.getElementsByName('driverCheckbox');
+            let selectedDrivers = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (!checkboxes[i].checked) {
+                    continue
+                }
+                selectedDrivers.push(JSON.parse(checkboxes[i].value));
+            }
+
+            $('#resultMessage').html('');
+
+            request = {
+                action: action,
+                drivers: selectedDrivers,
+            }
+            await $.ajax(
+                {
+                    type: "POST",
+                    url: '{{ url_for('api_pro_resend_tracks_by_drivers', **query_params.to_uri()) | safe }}',
+                    data: JSON.stringify(request),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        $('div.overlay').removeClass('overlay-show');
+                        $('div.spanner').removeClass('overlay-show');
+                        $('#resultMessage').append(success_message);
+
+                        $("#resultMessage").append(`<br> {{ _('Количество треков') }}: ${result['updated_tracks_count']}<br>`);
+                        result['drivers'].forEach(function(driver) {
+                            $("#resultMessage").append(`<br>${driver}`);
+                        });
+                        $('#resultModal').modal('show');
+                    },
+                    error: function (xhr, status, error) {
+                        $('div.overlay').removeClass('overlay-show');
+                        $('div.spanner').removeClass('overlay-show');
+                        $('#resultMessage').append(error_message);
+                        $('#resultModal').modal('show');
+                    },
+                },
+            );
+        }
+        {% endif %}
+    </script>
+    {% include "predictors_form_scripts.html" %}
+
+    {% if cvat_uploading_enabled %}
+    {% include "cvat_form_scripts.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .spanner{
+          position:absolute;
+          top: 20%;
+          left: 0;
+          width: 100%;
+          display:block;
+          text-align:center;
+          height: 300px;
+          color: #FFF;
+          transform: translateY(-20%);
+          z-index: 10001;
+          visibility: hidden;
+        }
+        .overlay{
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0px;
+          z-index: 10000;
+          background: rgba(0,0,0,0.5);
+          visibility: hidden;
+          left: 0;
+        }
+        .overlay-show{
+          visibility: visible;
+        }
+    </style>
+
+    <div class="container">
+        <div class="starter-template">
+            <form>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Дата') }}</span>
+                            <select class="form-control" name="date_type">
+                              <option value="uploaded" {% if query_params.date_type == 'uploaded' %}selected {% endif %}>{{ _('Загрузки') }}</option>
+                              <option value="recorded" {% if query_params.date_type == 'recorded' %}selected {% endif %}>{{ _('Съемки') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                            <span class="input-group-addon">{{ _('От') }}</span>
+                            <input name="from_date" type="text" class="form-control" value="{{ query_params.from_date }}">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Polygon') }}</span>
+                            <select class="form-control select2" id="interest_zone_region_selector" name="interest_zone_regions" size="1" multiple="multiple" style="width: 100%">
+                                {% for region in search_regions %}
+                                    <option
+                                        value="{{ region.id }}"
+                                        {%- if region.id in query_params.interest_zone_regions %} selected {% endif %}
+                                        >{{ region.zone_name }}: {{ region.region_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Тип')}}&nbsp;&nbsp;</span>
+                            <select class="form-control" name="track_type">
+                              <option value="" {% if query_params.type == '' %}selected {% endif %}>{{ _('Все') }}</option>
+                              <option value="mobile" {% if query_params.type == 'mobile' %}selected {% endif %}>{{ _('Моб.приложение') }}</option>
+                              <option value="dashcam" {% if query_params.type == 'dashcam' %}selected {% endif %}>{{ _('Видеорегистратор') }}</option>
+                              <option value="video_360" {% if query_params.type == 'video_360' %}selected {% endif %}>{{ _('Видео 360') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                            <span class="input-group-addon">{{ _('До') }}</span>
+                            <input name="to_date" type="text" class="form-control" value="{{ query_params.to_date }}">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input name="email" type="text" class="form-control" placeholder="Email" value="{{ query_params.email }}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-default">{{ _('Submit') }}</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>{{ _('Date_' + query_params.date_type) }}</th>
+                        <th>{{ _('Email') }}</th>
+                        <th>{{ _('Длина, км') }}</th>
+                        <th>{{ _('Время') }}</th>
+                        <th>
+                            {%- if map_matching_enabled %}
+                                {{ _('Всего кадров / притянуто') }}
+                            {%- else %}
+                                {{ _('Количество кадров') }}
+                            {%- endif %}
+                        </th>
+                        <th>{{ _('Загрузка') }}</th>
+                        {% if 'fiji' is feature_enabled %}
+                        <th>{{ _('Процессинг') }}</th>
+                        {% endif %}
+                        {% if 'pro' is feature_enabled %}
+                        <th>{{ _('Процессинг') }} PRO</th>
+                        {% endif %}
+                        {% if 'fiji' is feature_enabled %}
+                        <th>{{ _('Ошибки / Уточнения') }}</th>
+                        <th>{{ _('Обработано') }}</th>
+                        <th>{{ _('КПД') }}</th>
+                        {% endif %}
+                        <th>KML</th>
+                        <th>
+                          <input type="checkbox" class="form-check-input" id="checkboxPredictAll"
+                                 onclick="selectAllChecboxesForPrediction(this)">
+                          <label class="form-check-label" for="checkboxPredictAll"> </label>
+                        </th>
+                    </tr>
+                    {% for stat in drivers_stat %}
+                        <tr>
+                            <td>
+                                {{ stat.date }}
+                                <br/>
+                                {{ stat.type }}
+                            </td>
+                            <td>{{ stat.email }}</td>
+                            <td>
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date)) }}">{{ stat.distance }}</a>
+                                <br />
+                                {{ stat.signs_density_before }} ({{ stat.signs_density }})
+                            </td>
+                            <td>{{ stat.duration|prettify_hours }}</td>
+                            <td>
+                                {%- if stat.frames_count %}
+                                    {{ stat.frames_count if stat.frames_count is not none else '' }}
+                                    {%- if map_matching_enabled %}
+                                        / {{ stat.matched_frames_count }}
+                                    {%- endif %}
+                                {%- endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, upload_status='0')) }}">
+                                    {{ stat.total_tracks_received - stat.total_tracks_uploaded }}
+                                </a>
+                                |
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, upload_status='1')) }}">
+                                    {{ stat.total_tracks_uploaded }}
+                                </a>
+                            </td>
+                            {% if 'fiji' is feature_enabled %}
+                            <td>
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, status=track_statuses.GOOD)) }}">
+                                    {{ stat.good_statuses_count }}
+                                </a>
+                                |
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, status=track_statuses.REJECTED)) }}">
+                                    {{ stat.rejected_statuses_count }}
+                                </a>
+                                |
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, status=track_statuses.FAILED)) }}">
+                                    {{ stat.failed_statuses_count }}
+                                </a>
+                            </td>
+                            {% endif %}
+                            {% if 'pro' is feature_enabled %}
+                            <td>
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, status=(track_statuses.SENT_PRO,), status_field='pro_status')) }}">
+                                    {{ stat.pro_good_statuses_count }}
+                                </a>
+                                |
+                                <a href="{{ url_for("tracks", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date, status=track_statuses.REJECTED, status_field='pro_status')) }}">
+                                    {{ stat.pro_failed_statuses_count }}
+                                </a>
+                            </td>
+                            {% endif %}
+                            {% if 'fiji' is feature_enabled %}
+                            <td>
+                                {{ stat.total_errors_count }}
+                                ({{ _('нов') }} {{ stat.new_errors_count }}, {{ _('уд') }} {{ stat.missed_errors_count }})<br/>
+                                {{ stat.clarifications_count }}
+                            </td>
+                            <td>
+                                {{ stat.resolved_errors_count }} | {{ stat.good_errors_count }}<br/>
+                                {{ stat.resolved_clarifications_count }} | {{ stat.good_clarifications_count }}
+                            </td>
+                            <td>
+                                {{ stat.kpd }}
+                            </td>
+                            {% endif %}
+                            <td>
+                                <a href="{{ url_for("drivers_download_kml", **query_params.to_uri(email=stat.email, from_date=stat.date, to_date=stat.date)) }}">
+                                    <button class="glyphicon glyphicon-save-file"></button>
+                                </a>
+                            </td>
+                            <td>
+                              <input type="checkbox" class="form-check-input" id="cb_{{ stat.email }}_{{ stat.date }}" name="driverCheckbox" value='{"email": "{{ stat.email }}", "date": "{{ stat.date }}"}'>
+                              <label class="form-check-label" for="cb_{{ stat.email }}"></label>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{ total_distance }}</td>
+                        <td>{{ total_duration|prettify_hours }}</td>
+                        <td title="{{ total_frames }}"></td>
+                        <td></td>
+                        {% if 'fiji' is feature_enabled %}
+                        <td></td>
+                        {% endif %}
+                        {% if 'pro' is feature_enabled %}
+                        <td></td>
+                        {% endif %}
+                        {% if 'fiji' is feature_enabled %}
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        {% endif %}
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row">
+                {% if 'pro' is feature_enabled %}
+                <button class="btn btn-default" onclick="tracksByDriversProActions('hide')">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    {{ _('Скрыть из ПРО') }}
+                </button>
+                 <button class="btn btn-default" onclick="tracksByDriversProActions('resend')">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    {{ _('Отправить в ПРО') }}
+                </button>
+                {% endif %}
+                <a href="{{ url_for("drivers_download_kml", **query_params.to_uri()) }}">
+                    <button class="btn btn-default"> Download KML</button>
+                </a>
+                <a href="{{ url_for("drivers_download_csv", **query_params.to_uri()) }}">
+                    <button class="btn btn-default"> Download CSV</button>
+                </a>
+            </div>
+        {% include "predictors_form.html" %}
+         {% if cvat_uploading_enabled %}
+           {% include "cvat_form.html" %}
+         {% endif %}
+        </div>
+
+        <div class="overlay"></div>
+        <div class="spanner">
+            <p>{{ _('Обрабатываем треки для синхронизации с PRO') }}</p>
+        </div>
+
+    </div>
+{% endblock %}

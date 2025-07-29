@@ -1,0 +1,21 @@
+<script>
+    function handlePredictorChange() {
+        $('#promptField').prop('readonly', !$('#predictorSelect').find(":selected").data('has-prompt'));
+    }
+
+    function getSelectedPredictor() {
+        return $('#predictorSelect').val();
+    }
+    function getSelectedPredictorPrompt() {
+        let prompt = null;
+        if ($('#predictorSelect').find(":selected").data('has-prompt')) {
+            prompt = $('#promptField').val()
+        }
+        return prompt;
+    }
+
+    $(document).ready(function () {
+        handlePredictorChange();
+        $('#predictorSelect').change(handlePredictorChange);
+    });
+</script>

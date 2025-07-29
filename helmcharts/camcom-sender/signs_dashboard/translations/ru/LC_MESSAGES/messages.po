@@ -1,0 +1,1154 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-02-25 12:04+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:3
+msgid "Интеграция с CamCom"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:57
+#: dashboard/signs_dashboard/templates/cvat_upload_statistics.html:56
+#: dashboard/signs_dashboard/templates/drivers.html:259
+#: dashboard/signs_dashboard/templates/frames.html:343
+#: dashboard/signs_dashboard/templates/reload_statuses.html:84
+#: dashboard/signs_dashboard/templates/tracks.html:107
+msgid "От"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:66
+#: dashboard/signs_dashboard/templates/cvat_upload_statistics.html:65
+#: dashboard/signs_dashboard/templates/drivers.html:294
+#: dashboard/signs_dashboard/templates/frames.html:412
+#: dashboard/signs_dashboard/templates/reload_statuses.html:94
+#: dashboard/signs_dashboard/templates/tracks.html:145
+msgid "До"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:74
+#: dashboard/signs_dashboard/templates/cvat_upload_statistics.html:73
+#: dashboard/signs_dashboard/templates/drivers.html:305
+#: dashboard/signs_dashboard/templates/frames.html:467
+#: dashboard/signs_dashboard/templates/reload_statuses.html:128
+#: dashboard/signs_dashboard/templates/tracks.html:156
+msgid "Submit"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:81
+#: dashboard/signs_dashboard/templates/drivers.html:250
+#: dashboard/signs_dashboard/templates/tracks.html:98
+msgid "Дата"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:82
+#: dashboard/signs_dashboard/templates/reload_statuses.html:103
+#: dashboard/signs_dashboard/templates/reload_statuses.html:143
+#: dashboard/signs_dashboard/templates/tracks.html:128
+msgid "Статус"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:83
+msgid "HTTP код"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:84
+#: dashboard/signs_dashboard/templates/drivers.html:320
+#: dashboard/signs_dashboard/templates/tracks.html:169
+msgid "Количество кадров"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:85
+msgid "Действия"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/camcom_stats.html:113
+msgid "Отправить повторно"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/crop.html:3
+msgid "Detection"
+msgstr "Детекция"
+
+#: dashboard/signs_dashboard/templates/cvat_form.html:7
+msgid "New Project"
+msgstr "Новый проект"
+
+#: dashboard/signs_dashboard/templates/cvat_form.html:13
+msgid "Send to CVAT"
+msgstr "Отправить в CVAT"
+
+#: dashboard/signs_dashboard/templates/cvat_form.html:19
+msgid "Loading CVAT projects list..."
+msgstr "Загружаем список проектов из CVAT..."
+
+#: dashboard/signs_dashboard/templates/cvat_form.html:26
+msgid "Sending to CVAT is not available"
+msgstr "Отправка в CVAT не доступна"
+
+#: dashboard/signs_dashboard/templates/cvat_form.html:39
+msgid "CVAT modal result"
+msgstr "Результат"
+
+#: dashboard/signs_dashboard/templates/cvat_upload.html:2
+msgid "CVAT upload status"
+msgstr "Статус загрузки в CVAT"
+
+#: dashboard/signs_dashboard/templates/cvat_upload.html:48
+msgid "CVAT Project"
+msgstr "Проект в CVAT"
+
+#: dashboard/signs_dashboard/templates/cvat_upload.html:57
+msgid "CVAT Task Name"
+msgstr "Задача"
+
+#: dashboard/signs_dashboard/templates/cvat_upload.html:58
+msgid "CVAT Task Status"
+msgstr "Статус загрузки"
+
+#: dashboard/signs_dashboard/templates/cvat_upload_statistics.html:81
+msgid "CVAT Total Tasks"
+msgstr "Количество задач"
+
+#: dashboard/signs_dashboard/templates/cvat_upload_statistics.html:82
+msgid "CVAT Tasks Completed"
+msgstr "Удачно загружено"
+
+#: dashboard/signs_dashboard/templates/cvat_upload_statistics.html:83
+msgid "CVAT Tasks Error"
+msgstr "Ошибка"
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:147
+msgid "CityLens Inspection&nbsp;Portal"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:152
+msgid "Unable to submit feedback. Try again later"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:155
+msgid "Feedback submitted. You may close window now."
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:160
+msgid "Common Information"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:164
+msgid "Driver"
+msgstr "Водители"
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:171
+msgid "Shooting&nbsp;date"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:177
+msgid "Detections"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:194
+msgid "Error type"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:196
+msgid "Wrong type"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:197
+msgid "No such object"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:198
+msgid "Extra not detected objects"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:208
+msgid "Comment"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:209
+msgid "Details about what's wrong with detections"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:215
+msgid "Apply"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detection_feedback.html:216
+#: dashboard/signs_dashboard/templates/interest_zones.html:139
+#: dashboard/signs_dashboard/templates/interest_zones.html:169
+msgid "Cancel"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/detections_map.html:43
+msgid "back to citylens web"
+msgstr "Назад к Citylens"
+
+#: dashboard/signs_dashboard/templates/drivers.html:3
+msgid "Drivers"
+msgstr "Водители"
+
+#: dashboard/signs_dashboard/templates/drivers.html:69
+msgid "drivers_sended"
+msgstr "Водители были успешно отправлены в"
+
+#: dashboard/signs_dashboard/templates/drivers.html:78
+msgid "drivers_send_error"
+msgstr "Ошибка при отправке водителей"
+
+#: dashboard/signs_dashboard/templates/drivers.html:132
+msgid "Треки водителей будут удалены из PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:133
+msgid "Ошибка удаления треков водителей из PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:135
+msgid "Треки водителей будут отправлены в Pro"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:136
+msgid "Ошибка отправления треков водителей в PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:168
+msgid "Количество треков"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:252
+#: dashboard/signs_dashboard/templates/tracks.html:100
+msgid "Загрузки"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:253
+#: dashboard/signs_dashboard/templates/tracks.html:101
+msgid "Съемки"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:268
+#: dashboard/signs_dashboard/templates/drivers_audit.html:81
+#: dashboard/signs_dashboard/templates/frames.html:437
+#: dashboard/signs_dashboard/templates/tracks.html:116
+msgid "Polygon"
+msgstr "Полигон"
+
+#: dashboard/signs_dashboard/templates/drivers.html:283
+#: dashboard/signs_dashboard/templates/tracks.html:134
+#: dashboard/signs_dashboard/templates/tracks.html:163
+msgid "Тип"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:285
+#: dashboard/signs_dashboard/templates/tracks.html:136
+msgid "Все"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:286
+#: dashboard/signs_dashboard/templates/tracks.html:137
+msgid "Моб.приложение"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:287
+#: dashboard/signs_dashboard/templates/tracks.html:138
+msgid "Видеорегистратор"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:288
+#: dashboard/signs_dashboard/templates/drivers_audit.html:116
+#: dashboard/signs_dashboard/templates/tracks.html:139
+msgid "Видео 360"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:313
+#: dashboard/signs_dashboard/templates/track.html:118
+#: dashboard/signs_dashboard/templates/users.html:43
+#: dashboard/signs_dashboard/templates/users.html:68
+#: dashboard/signs_dashboard/templates/users_form.html:49
+msgid "Email"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:314
+msgid "Длина, км"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:315
+msgid "Время"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:318
+msgid "Всего кадров / притянуто"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:323
+#: dashboard/signs_dashboard/templates/tracks.html:170
+msgid "Загрузка"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:325
+#: dashboard/signs_dashboard/templates/drivers.html:328
+#: dashboard/signs_dashboard/templates/track.html:269
+#: dashboard/signs_dashboard/templates/track.html:279
+#: dashboard/signs_dashboard/templates/tracks.html:178
+#: dashboard/signs_dashboard/templates/tracks.html:181
+msgid "Процессинг"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:331
+msgid "Ошибки / Уточнения"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:332
+msgid "Обработано"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:333
+msgid "КПД"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:402
+msgid "нов"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:402
+msgid "уд"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:451
+#: dashboard/signs_dashboard/templates/tracks.html:278
+msgid "Скрыть из ПРО"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:455
+#: dashboard/signs_dashboard/templates/tracks.html:282
+msgid "Отправить в ПРО"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers.html:473
+msgid "Обрабатываем треки для синхронизации с PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/drivers_audit.html:3
+msgid "Audit"
+msgstr "Аудит"
+
+#: dashboard/signs_dashboard/templates/frame.html:3
+#: dashboard/signs_dashboard/templates/frames.html:311
+#: dashboard/signs_dashboard/templates/frames.html:493
+msgid "Frame"
+msgstr "Кадр"
+
+#: dashboard/signs_dashboard/templates/frame.html:93
+msgid "Трек"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frame.html:96
+msgid "время"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frame.html:102
+msgid "Произошла ошибка во время скачивания изображения. Вероятно,"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frame.html:102
+msgid "ссылка"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frame.html:102
+msgid "не валидна"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:3
+msgid "Frames"
+msgstr "Кадры"
+
+#: dashboard/signs_dashboard/templates/frames.html:112
+msgid "Photo not uploaded"
+msgstr "Картинка не загружена"
+
+#: dashboard/signs_dashboard/templates/frames.html:177
+msgid "frames_sended"
+msgstr "Кадры были отправлены в"
+
+#: dashboard/signs_dashboard/templates/frames.html:186
+msgid "frames_send_error"
+msgstr "Ошибка при отправке кадров"
+
+#: dashboard/signs_dashboard/templates/frames.html:218
+msgid "Фреймы отправлены в Pro"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:330
+#: dashboard/signs_dashboard/templates/reload_statuses.html:141
+#: dashboard/signs_dashboard/templates/tracks.html:167
+msgid "Track ID"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:399
+msgid "Frame IDs"
+msgstr "ID Кадров"
+
+#: dashboard/signs_dashboard/templates/frames.html:405
+msgid "frame_ids_placeholder"
+msgstr "Введите id через запятую"
+
+#: dashboard/signs_dashboard/templates/frames.html:451
+msgid "PRO Moderation Status"
+msgstr "Статус модерации"
+
+#: dashboard/signs_dashboard/templates/frames.html:458
+msgid "moderation_status_all"
+msgstr "Все"
+
+#: dashboard/signs_dashboard/templates/frames.html:488
+msgid "Frame ID"
+msgstr "ID Кадра"
+
+#: dashboard/signs_dashboard/templates/frames.html:489
+msgid "Time"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:490
+msgid "Signs"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:491
+msgid "FrameAttributes"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:492
+msgid "Position"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/frames.html:545
+msgid "No matching frames found"
+msgstr "Нет подходящих кадров"
+
+#: dashboard/signs_dashboard/templates/frames.html:551
+msgid "Отправить в PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:3
+#: dashboard/signs_dashboard/templates/interest_zones.html:3
+msgid "Interest zones"
+msgstr "Зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:95
+msgid "Interest zone"
+msgstr "Зона интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:96
+msgid "Zone type:"
+msgstr "Тип зоны:"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:106
+msgid "No polygons present for this zone!"
+msgstr "Нет полигонов для этой зоны интереса!"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:113
+msgid "Download as GeoJSON"
+msgstr "Скачать в формате GeoJSON"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:123
+#: dashboard/signs_dashboard/templates/interest_zones.html:129
+msgid "Interest zone regions"
+msgstr "Полигоны зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:126
+#: dashboard/signs_dashboard/templates/interest_zones.html:132
+msgid ""
+"Please select GeoJSON file. The file should contain a FeatureCollection "
+"with features of type Polygon."
+msgstr ""
+"Пожалуйста выберите geojson файл. Файл должен содержать FeatureCollection"
+" с полигонами (Polygon)."
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:132
+msgid "Replace polygons"
+msgstr "Заменить полигоны"
+
+#: dashboard/signs_dashboard/templates/interest_zone.html:134
+msgid "Add polygons"
+msgstr "Добавить полигоны"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:101
+#: dashboard/signs_dashboard/templates/interest_zones.html:143
+#: dashboard/signs_dashboard/templates/interest_zones.html:232
+msgid "Add interest zone"
+msgstr "Добавить зону интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:110
+msgid "Interest zone name"
+msgstr "Название зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:116
+msgid "New interest zone name"
+msgstr "Название новой зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:121
+msgid "Interest zone type"
+msgstr "Тип зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:157
+msgid "Deleting interest zone"
+msgstr "Удаление зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:162
+msgid "Please confirm deletion of interest zone"
+msgstr "Пожалуйста подтвердите удаление зоны интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:174
+msgid "Delete interest zone"
+msgstr "Удалить зону интереса"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:186
+msgid "Adding interest zone.."
+msgstr "Добавляем зону интереса.."
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:197
+msgid "Name"
+msgstr "Название"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:198
+msgid "Type"
+msgstr "Тип"
+
+#: dashboard/signs_dashboard/templates/interest_zones.html:199
+msgid "Actions"
+msgstr "Действия"
+
+#: dashboard/signs_dashboard/templates/navbar.html:26
+msgid "Instruction"
+msgstr "Инструкция"
+
+#: dashboard/signs_dashboard/templates/predictors_form.html:21
+msgid "List Active Predictors"
+msgstr "Список активных предикторов"
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:3
+msgid "Reload statuses"
+msgstr "Перезаливка (статусы)"
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:106
+msgid "все"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:109
+msgid "ждёт перезаливки"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:112
+msgid "перезалит"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:115
+msgid "остановлен"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:119
+msgid "перезаливается"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:122
+msgid "ошибка"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:139
+msgid "Дата загрузки"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:142
+msgid "Uploaded track ID"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:144
+msgid "Прогресс"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_statuses.html:175
+msgid "Отменить"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/reload_track.html:3
+msgid "Reload Track"
+msgstr "Перезаливка треков"
+
+#: dashboard/signs_dashboard/templates/reload_track.html:88
+msgid "Without detections"
+msgstr "Без детекций"
+
+#: dashboard/signs_dashboard/templates/reload_track.html:91
+msgid "Detections source will be \"manual\". Only bboxes supported"
+msgstr ""
+"В качестве источника детекций будет указан \"manual\". Будут "
+"экспортированы только bbox-ы"
+
+#: dashboard/signs_dashboard/templates/reload_track.html:94
+msgid "With detections"
+msgstr "С детекциями"
+
+#: dashboard/signs_dashboard/templates/signs.html:3
+msgid "signs"
+msgstr "Знаки"
+
+#: dashboard/signs_dashboard/templates/track.html:3
+#, python-format
+msgid "Track %(uuid)s"
+msgstr "Трек %(uuid)s"
+
+#: dashboard/signs_dashboard/templates/track.html:39
+msgid "Этот трек загружен не полностью. Обратитесь в поддержку."
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:41
+msgid "Дата первого кадра"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:50
+msgid "View track on map"
+msgstr "Трек на карте"
+
+#: dashboard/signs_dashboard/templates/track.html:54
+msgid "Download kml"
+msgstr "Скачать kml"
+
+#: dashboard/signs_dashboard/templates/track.html:56
+msgid "Track Frames"
+msgstr "Кадры трека"
+
+#: dashboard/signs_dashboard/templates/track.html:59
+#: dashboard/signs_dashboard/templates/track.html:62
+msgid "Driver tracks"
+msgstr "Треки водителя"
+
+#: dashboard/signs_dashboard/templates/track.html:60
+#: dashboard/signs_dashboard/templates/track.html:63
+msgid "Driver statistics"
+msgstr "Статистика водителя"
+
+#: dashboard/signs_dashboard/templates/track.html:73
+#: dashboard/signs_dashboard/templates/track.html:194
+msgid "init time"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:76
+msgid "init metadata"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:80
+#: dashboard/signs_dashboard/templates/track.html:99
+#: dashboard/signs_dashboard/templates/tracks.html:86
+msgid "Close"
+msgstr "Закрыть"
+
+#: dashboard/signs_dashboard/templates/track.html:92
+#: dashboard/signs_dashboard/templates/track.html:202
+#: dashboard/signs_dashboard/templates/track.html:204
+msgid "gps time"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:95
+msgid "gps points"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:112
+msgid "Driver info"
+msgstr "Водитель"
+
+#: dashboard/signs_dashboard/templates/track.html:126
+msgid "Track info"
+msgstr "Информация о треке"
+
+#: dashboard/signs_dashboard/templates/track.html:129
+msgid "Recording date"
+msgstr "Дата записи"
+
+#: dashboard/signs_dashboard/templates/track.html:132
+#, python-format
+msgid "Recording date (UTC%(tz_offset_str)s)"
+msgstr "Дата записи (UTC%(tz_offset_str)s)"
+
+#: dashboard/signs_dashboard/templates/track.html:135
+msgid "App version"
+msgstr "Версия приложения"
+
+#: dashboard/signs_dashboard/templates/track.html:136
+msgid "Length"
+msgstr "Длина"
+
+#: dashboard/signs_dashboard/templates/track.html:136
+msgid "km"
+msgstr "км"
+
+#: dashboard/signs_dashboard/templates/track.html:137
+msgid "Duration"
+msgstr "Продолжительность"
+
+#: dashboard/signs_dashboard/templates/track.html:146
+msgid "Predictions status"
+msgstr "Статус предикторов"
+
+#: dashboard/signs_dashboard/templates/track.html:159
+msgid "Errors"
+msgstr "Ошибки"
+
+#: dashboard/signs_dashboard/templates/track.html:159
+msgid "sent_to_camcom"
+msgstr "отправлено в camcom"
+
+#: dashboard/signs_dashboard/templates/track.html:187
+msgid "Upload status"
+msgstr "Статус загрузки"
+
+#: dashboard/signs_dashboard/templates/track.html:213
+msgid "received from mobile"
+msgstr "получено из моб. приложения"
+
+#: dashboard/signs_dashboard/templates/track.html:221
+msgid "uploaded to s3"
+msgstr "загружено на s3"
+
+#: dashboard/signs_dashboard/templates/track.html:227
+msgid "complete time"
+msgstr "время завершения"
+
+#: dashboard/signs_dashboard/templates/track.html:238
+msgid "Results processing and export status"
+msgstr "Обработка результатов и статус экспорта"
+
+#: dashboard/signs_dashboard/templates/track.html:245
+#: dashboard/signs_dashboard/templates/tracks.html:172
+msgid "Притяжка трека"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:253
+#: dashboard/signs_dashboard/templates/tracks.html:175
+msgid "Локализация детекций"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:258
+#: dashboard/signs_dashboard/templates/tracks.html:240
+msgid "Локализовать"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:292
+#: dashboard/signs_dashboard/templates/tracks.html:253
+msgid "Отправить в Fiji"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track.html:307
+msgid "mobile app logs"
+msgstr "Логи мобильного приложения"
+
+#: dashboard/signs_dashboard/templates/track.html:312
+msgid "log file uploaded"
+msgstr "загружено"
+
+#: dashboard/signs_dashboard/templates/track.html:319
+msgid "no mobile app logs saved"
+msgstr "отсутствуют"
+
+#: dashboard/signs_dashboard/templates/track_map.html:48
+msgid "back to track page"
+msgstr "Назад к треку"
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:60
+msgid "tracks_sended"
+msgstr "Треки были успешно отправлены в"
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:69
+msgid "tracks_send_error"
+msgstr "Ошибка при отправке треков"
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:121
+msgid "Треки будут удалены из PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:122
+msgid "Ошибка удаления треков из PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:124
+msgid "Треки будут отправлены в Pro"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:125
+msgid "Ошибка отправления треков в PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:191
+msgid "Детекции треков будут перелокализованы"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/track_scripts.html:192
+msgid "Ошибка при отправке треков на перелокализацию"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:3
+msgid "Tracks"
+msgstr "Треки"
+
+#: dashboard/signs_dashboard/templates/tracks.html:77
+msgid "Статус загрузки трека"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:85
+msgid "Перейти на страницу с загрузками"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:165
+msgid "Дата загрузки / съемки"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:168
+msgid "Длина / Время"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:182
+msgid "Зн/Ош/Ут"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:220
+#: dashboard/signs_dashboard/templates/tracks.html:222
+msgid "км"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:288
+msgid "Перелокализовать треки"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/tracks.html:293
+msgid "CSV"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:3
+#: dashboard/signs_dashboard/templates/twogis_pro.html:129
+msgid "Фильтры"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:106
+msgid "Синхронизация фильтров с PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:110
+msgid "Фильтры успешно синхронизированы!"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:111
+msgid "Произошла ошибка, фильтры не были синхронизированы!"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:115
+msgid "OK"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:123
+msgid "Синхронизируем фильтры с PRO.."
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:138
+msgid "Синхронизировать фильтры с PRO"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/twogis_pro.html:153
+#, python-format
+msgid ""
+"Показать JSON-представление фильтров ассета %(asset_name)s "
+"(%(asset_kind)s)"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:3
+#: dashboard/signs_dashboard/templates/users_form.html:3
+msgid "Users Admin"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:46
+msgid "Status"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:48
+msgid "All"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:49
+msgid "Only enabled"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:50
+msgid "Only disabled"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:58
+msgid "Add User"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:67
+#: dashboard/signs_dashboard/templates/users_form.html:44
+msgid "ID"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:69
+msgid "Created"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:70
+msgid "Active"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:82
+#: dashboard/signs_dashboard/templates/users_form.html:76
+msgid "Enabled"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:84
+msgid "Disabled"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users.html:88
+msgid "Edit"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users_form.html:57
+msgid "Password"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users_form.html:65
+msgid "Confirm password"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users_form.html:83
+msgid "Save"
+msgstr ""
+
+#: dashboard/signs_dashboard/templates/users_form.html:87
+msgid "Delete"
+msgstr ""
+
+#: signs_dashboard/templates/navbar.html:19
+msgid "drivers"
+msgstr "Водители"
+
+msgid "tracks"
+msgstr "Треки"
+
+msgid "audit"
+msgstr "Аудит"
+
+msgid "reload_statuses"
+msgstr "Перезаливка (статусы)"
+
+msgid "frames"
+msgstr "Фреймы"
+
+msgid "dump"
+msgstr "Dump (знаки)"
+
+msgid "reload_track"
+msgstr "Перезаливка"
+
+msgid "help"
+msgstr "Справка"
+
+msgid "users"
+msgstr "Пользователи"
+
+msgid "map"
+msgstr "Карта"
+
+msgid "pro"
+msgstr "PRO"
+
+msgid "camcom_stats"
+msgstr "CamCom"
+
+msgid "interest_zones"
+msgstr "Зоны интереса"
+
+#: signs_dashboard/templates/track.html:86
+msgid "camcom"
+msgstr "n camcom predictions"
+
+msgid "labels"
+msgstr "n labels predictions"
+
+msgid "surface"
+msgstr "n surface predictions"
+
+#: track_upload_text_status
+msgid "Загружен"
+msgstr "Загружен"
+
+msgid "Ошибка обработки"
+msgstr ""
+
+msgid "Не полностью"
+msgstr ""
+
+#: dashboard/signs_dashboard/template_decorators.py:13
+msgid "ч"
+msgstr "ч"
+
+msgid "м"
+msgstr "м"
+
+#: dashboard/signs_dashboard/models/track.py:43
+msgid "Загружется с телефона"
+msgstr ""
+
+msgid "Ожидает обработки"
+msgstr ""
+
+msgid "Обрабатывается"
+msgstr ""
+
+msgid "Обработан"
+msgstr ""
+
+msgid "Некорректный трек"
+msgstr ""
+
+msgid "Нет распознанных знаков"
+msgstr ""
+
+msgid "Ошибка"
+msgstr ""
+
+msgid "В запросе нет фреймов"
+msgstr ""
+
+msgid "Ошибка притяжки трека"
+msgstr ""
+
+msgid "Плохое качество"
+msgstr ""
+
+msgid "Отменено"
+msgstr ""
+
+msgid "Трек отправлен в Fiji"
+msgstr ""
+
+msgid "Трек не загружен полностью"
+msgstr ""
+
+msgid "Трек отправлен в PRO"
+msgstr ""
+
+msgid "Трек без предиктов отправлен в PRO"
+msgstr ""
+
+msgid "Трек будет отправлен в PRO"
+msgstr ""
+
+msgid "Трек будет скрыт из PRO"
+msgstr ""
+
+msgid "Трек скрыт из PRO"
+msgstr ""
+
+msgid "Трек будет отправлен в Fiji"
+msgstr ""
+
+msgid "Трек отправляется в Fiji"
+msgstr ""
+
+msgid "Fiji не доступен"
+msgstr ""
+
+msgid "Неподдерживаемый тип трека"
+msgstr ""
+
+msgid "Ожидается"
+msgstr ""
+
+msgid "Выполняется"
+msgstr ""
+
+msgid "Выполнена"
+msgstr ""
+
+msgid "Не выполнялась"
+msgstr ""
+
+msgid "Выполняется визуальная притяжка"
+msgstr "Выполняется визуальная притяжка"
+
+msgid "Выполнена визуальная притяжка"
+msgstr "Выполнена визуальная притяжка"
+
+msgid "Запланирована"
+msgstr ""
+
+#: dashboard/signs_dashboard/query_params/users.py:28
+msgid "invalid email"
+msgstr "Некорректный формат email"
+
+msgid "password required"
+msgstr "Пароль обязателен"
+
+msgid "passwords does not match"
+msgstr "Указанные пароли не совпадают"
+
+msgid "Подготовлено к отправке в CamCom"
+msgstr ""
+
+msgid "Ожидаем ответ CamCom"
+msgstr ""
+
+msgid "Успешно получен ответ CamCom"
+msgstr ""
+
+msgid "Будет отправлено в CamCom"
+msgstr ""
+
+msgid "zone_type__any_region_intersection_as_attribute"
+msgstr "Аттрибут кадра: true / false"
+
+msgid "zone_type__region_name_as_attribute"
+msgstr "Аттрибут кадра: имя полигона"
+
+msgid "zone_type__search_by_region"
+msgstr "Использовать в поиске"
+
+msgid "not_moderated"
+msgstr "Не модерировался"
+
+msgid "moderated_wrong"
+msgstr "Распознано ошибочно"
+
+msgid "moderated_good"
+msgstr "Распознано правильно"
+
+msgid "cvat_upload"
+msgstr "Загрузка в CVAT"
+
+msgid "Date_recorded"
+msgstr "Дата съемки"
+
+msgid "Date_uploaded"
+msgstr "Дата загрузки"
+
+#~ msgid "Ошибка  треков будут перелокализованы"
+#~ msgstr ""
+
+#~ msgid "Перелокализовать детекции"
+#~ msgstr ""
+
+#~ msgid "Показать JSON-представление фильтров"
+#~ msgstr ""
+

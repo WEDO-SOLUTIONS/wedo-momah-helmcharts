@@ -1,0 +1,224 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}CityLens Inspection Portal{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+
+    <link rel="stylesheet" href="/static/viewer/1.11.2/viewer.min.css" />
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .feedback-panel {
+            margin-top: 2rem;
+        }
+
+        .feedback-panel > .panel-heading {
+            text-align: center;
+        }
+
+        .feedback-panel > .panel-heading h2 {
+            margin-top: 10px!important;
+        }
+
+        .frame-image {
+            width: 100%;
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        .form-start {
+            margin-top: 10px;
+        }
+
+        .form-buttons {
+            text-align: right;
+        }
+
+        .form-buttons button {
+            width: 40%;
+        }
+
+        .attributes-list div {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+
+        .attributes-list div > span:first-child {
+            flex: 0;
+            display: inline-block;
+        }
+
+        .attributes-list div > span:nth-child(2) {
+                width: auto;
+                display: inline-block;
+                flex: 1 100%;
+                border-bottom: 2px dotted black;
+                margin-bottom: calc(1rem / 2);
+                margin-left: 5px;
+                margin-right: 5px;
+        }
+
+        .attributes-list div > span:last-child {
+            flex: 0;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .alert-hidden {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/viewer/1.11.2/viewer.min.js"></script>
+
+    <script>
+        function cancelForm() {
+            document.querySelectorAll('button').forEach(function(item) {
+                item.disabled = true;
+            });
+
+            window.close();
+        }
+
+        (function() {
+            const fimg = document.querySelector('#frame-image');
+            const viewer = new Viewer(fimg, {
+                inline: false,
+                navbar: false,
+                toolbar: false,
+                rotatable: false,
+                scalable: false,
+            });
+
+            fimg.onclick = function() {
+                viewer.show();
+            }
+
+            const form = document.getElementById('feedback-form');
+            form.onsubmit = function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const fd = new FormData(form);
+                const payload = Object.fromEntries(fd);
+
+                fetch(window.location.pathname + window.location.search, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: JSON.stringify(payload),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(function(resp) {
+                    if (resp.status === 201) {
+                        document.querySelector('#success-alert').classList.remove('alert-hidden');
+                        cancelForm();
+                    }
+                    else showError('Unable to submit feedback. Try again later');
+                }).catch(function(error) {
+                    showError('Unable to submit feedback. Try again later');
+                });
+            }
+
+            const alert = document.getElementById('submit-alert');
+            function showError(msg) {
+                document.querySelector('#submit-alert > span').innerText = msg;
+                alert.classList.remove('alert-hidden');
+            }
+
+            function clearError() {
+                alert.classList.add('alert-hidden');
+            }
+            alert.querySelector('button').onclick = clearError;
+        })();
+    </script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="panel panel-warning feedback-panel">
+        <div class="panel-heading"><h2>{{ _('CityLens Inspection&nbsp;Portal') }}</h2></div>
+
+        <div class="panel-body">
+            <div id="submit-alert" class="alert alert-danger alert-dismissible alert-hidden" role="alert">
+                <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span>{{ _('Unable to submit feedback. Try again later') }}</span>
+            </div>
+            <div id="success-alert" class="alert alert-success alert-hidden" role="alert">
+                <span>{{ _('Feedback submitted. You may close window now.') }}</span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>{{ _('Common Information') }}</p>
+                    <ul class="attributes-list">
+                        <li>
+                            <div>
+                                <span>{{ _('Driver') }}</span>
+                                <span></span>
+                                <span>{{ ctx.email }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <span>{{ _('Shooting&nbsp;date') }}</span>
+                                <span></span>
+                                <span>{{ ctx.date | prettify_date }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <p>{{ _('Detections') }}:</p>
+                    <ul>
+                    {% for label in ctx.labels %}
+                        <li>{{ label }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img id="frame-image" class="frame-image" src="{{ ctx['image'] }}" title="Click to zoom" />
+                </div>
+            </div>
+            <form id="feedback-form">
+                <div class="row form-start">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-4">
+                                    <label for="error-type-select">{{ _('Error type') }}</label>
+                                    <select id="error-type-select" name="error-type" class="form-control">
+                                        <option value="wrong_type">{{ _('Wrong type') }}</option>
+                                        <option value="no_object">{{ _('No such object') }}</option>
+                                        <option value="extra_object">{{ _('Extra not detected objects') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="comment">{{ _('Comment') }}</label>
+                            <textarea id="comment" name="comment" class="form-control" rows="5" placeholder="{{ _('Details about what\'s wrong with detections') }}"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6 col-md-offset-6 form-buttons">
+                        <button type="submit" class="btn btn-primary">{{ _('Apply') }}</button>
+                        <button type="button" class="btn btn-default" onclick="cancelForm()">{{ _('Cancel') }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

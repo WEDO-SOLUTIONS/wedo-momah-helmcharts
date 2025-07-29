@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maplocator-snapshot
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: maplocator-snapshot
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: maplocator-snapshot
+    app.kubernetes.io/version: 0.0.0.1
+    helm.sh/chart: maplocator-snapshot-0.1.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: maplocator-snapshot
+      app.kubernetes.io/name: maplocator-snapshot
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: maplocator-snapshot
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: maplocator-snapshot
+        app.kubernetes.io/version: 0.0.0.1
+        helm.sh/chart: maplocator-snapshot-0.1.0
+    spec:
+      containers:
+        - name: maplocator-snapshot
+          image: registry.momrah.gov.sa/urbi-omar/maplocator-upload-api:v0.2
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          env:
+            - name: UPLOAD_FOLDER
+              value: "/uploads"
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: maplocator-storage-volume
+              mountPath: /uploads
+            - name: maplocator-storage-volume
+              mountPath: /logs
+              subPath: logs
+      volumes:
+        - name: maplocator-storage-volume
+          persistentVolumeClaim:
+            claimName: maplocator-storage-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

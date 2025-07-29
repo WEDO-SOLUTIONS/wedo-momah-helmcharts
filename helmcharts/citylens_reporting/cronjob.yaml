@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: citylens-daily-report
+spec:
+  schedule: "0 9,15 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: citylens-reporting
+            image: registry.momrah.gov.sa/urbi-omar/citylens-daily-report:v0.3
+            env:
+            - name: ENV_FILE_PATH
+              value: "/app/.env"

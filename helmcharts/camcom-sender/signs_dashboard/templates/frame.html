@@ -1,0 +1,112 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Frame') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/static/pannellum/2.5.6/pannellum.css"/>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script>
+        {% if display_panorama %}
+        function init() {
+            pannellum.viewer('panorama', {
+                "type": "equirectangular",
+                "autoLoad": true,
+                "panorama": "data:image/jpg;base64, {{ image_base64 }}"
+            });
+        }
+        window.onload = init;
+        {% endif %}
+
+        function to_frame(frame_id, theta) {
+
+        }
+
+        function next() {
+            {% if next_frame %}
+                {% if theta is not none and next_frame.panoramic %}
+                    window.location.href = "{{ url_for("frame_360_crop", frame_id=next_frame.id, theta=theta) }}";
+                {% else %}
+                    window.location.href = "{{ url_for("frame", frame_id=next_frame.id) }}";
+                {% endif %}
+            {% endif %}
+        }
+        function prev() {
+            {% if prev_frame %}
+                {% if theta is not none and prev_frame.panoramic %}
+                    window.location.href = "{{ url_for("frame_360_crop", frame_id=prev_frame.id, theta=theta) }}";
+                {% else %}
+                    window.location.href = "{{ url_for("frame", frame_id=prev_frame.id) }}";
+                {% endif %}
+            {% endif %}
+        }
+
+        document.onkeydown = function (event) {
+            switch (event.keyCode) {
+                case 37:
+                    prev()
+                    break;
+                case 38:
+                    next()
+                    break;
+                case 39:
+                    next()
+                    break;
+                case 40:
+                    prev()
+                    break;
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        #panorama {
+            width: 100%;
+            height: 900px;
+        }
+    </style>
+    <div class="starter-template">
+        <p>
+            {% if prev_frame %}
+                <a href="javascript::void(0)" onclick="prev()">←</a>
+            {% endif %}
+            {{ _('Трек') }}:
+                <a href="{{ url_for("frames", from_date="", to_date="", track_uuid=frame.track_uuid) }}">{{ frame.track_uuid }}</a>
+                (<a href="{{ url_for("tracks_view", uuid=frame.track_uuid) }}">status</a>),
+            {{ _('время') }}: {{ frame.date|prettify_time_ms }}
+            {% if next_frame %}
+                <a href="javascript::void(0)" onclick="next()">→</a>
+            {% endif %}
+        </p>
+        {% if image_base64 is none %}
+            <p>{{ _('Произошла ошибка во время скачивания изображения. Вероятно,') }} <a href="{{ image_s3_path }}">{{ _('ссылка') }}</a> {{ _('не валидна') }}</p>
+        {% else %}
+            {% if display_panorama %}
+                <div id="panorama"></div>
+            {% else %}
+                <img class="img-responsive" src="data:image/jpg;base64, {{ image_base64 }}"/>
+            {% endif %}
+        {% endif %}
+    </div>
+
+{% endblock %}

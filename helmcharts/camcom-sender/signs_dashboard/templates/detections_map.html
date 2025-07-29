@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detections map</title>
+
+    <style>
+        html,body{
+            width:100%;
+            height:100%;
+            margin:0;
+            overflow:hidden;
+        }
+    </style>
+
+    <script>
+    //<![CDATA[
+        window.base_layer_tile_url='{{ base_layer_tileserver_url_template | safe }}';
+        window.frame_url_template='{{ frame_url_template | safe }}';
+        window.crop_url_template = '{{ crop_url_template | safe }}';
+        window.map_center = {{ map_center | tojson }};
+    //]]>
+    </script>
+
+    <script src="/static/leaflet/leaflet.js"></script>
+    <script src="/static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+    <script src="/static/url_control.js"></script>
+    <script src="/static/detections_colors_on_map.js"></script>
+    <link rel="stylesheet" href="/static/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
+
+</head>
+<body>
+<div id="panel" style="
+     position: absolute;
+     z-index: 1000;
+     padding: 10px;
+     margin-left: 50px;
+     margin-right: 50px;
+     margin-top: 10px;
+">
+    <div id="back_to_track" style="float: left; background-color: whitesmoke; padding: inherit">
+        <a href="/">{{ _('back to citylens web') }}</a>
+    </div>
+</div>
+
+<div
+    id="map-container"
+    style="height: 100vh; width: 100vw"
+></div>
+
+</body>
+
+    <script type="application/javascript">
+        var showed_on_map_detections = [];
+        var current_zoom = 0;
+        var loaded_detections_tiles = [];
+        const zoomed_marker_radius = 10;
+        const default_marker_radius = 4;
+
+        function get_object_popup_content(object_as_json) {
+            let content = '';
+            content += '<nobr><p>Label: <b>' + object_as_json.label + '</b>';
+            if (object_as_json.sign_value) {
+                content += ', value: ' + object_as_json.sign_value;
+            }
+            content += '</p></nobr>';
+            if (object_as_json.directions) {
+                content += '<nobr><p>Directions: ' + JSON.stringify(object_as_json.directions) + '</p></nobr>';
+            }
+            content += '<nobr><p>is_tmp: ' + object_as_json.is_tmp + '</p></nobr>';
+            content += '<nobr><p>detector: ' + object_as_json.detector_name + '</p></nobr>';
+            content += '<nobr><p>status: ' + object_as_json.status + '</p></nobr>';
+            content += '<p>';
+            for (const detection of object_as_json.detections) {
+                content += '<a href="' + window.location.origin;
+                content += window.frame_url_template.replace('frame_id_placeholder', detection.frame_id);
+                content += '" target="_blank">';
+                content += '<img src="' + window.crop_url_template.replace('detection_id_placeholder', detection.id) + '">';
+                content += '</a>';
+            }
+            content += '</p>';
+            content += '<nobr><p>Detections count: ' + object_as_json.detections.length + '</p></nobr>'
+            content += '<nobr><small>detected_object id ' + object_as_json.id + ', updated ' + object_as_json.updated + '</small></nobr>';
+            return content;
+        }
+
+        function get_detection_popup_content(detection) {
+            var content = '';
+            content += '<nobr><p>Label: <b>' + detection.params.label + '</b>';
+            if (detection.params.value) {
+                content += ', value: ' + detection.params.value;
+            }
+            content += ', prob: ' + detection.params.prob;
+            content += '</p></nobr>';
+            if (detection.directions) {
+                content += '<nobr><p>Directions: ' + JSON.stringify(detection.params.directions);
+                content += ', directions prob: ' + detection.params.directions_prob + '</p></nobr>';
+            }
+            content += '<nobr><p>is_tmp: ' + detection.params.is_tmp + '</p></nobr>';
+            content += '<nobr><p>is_side: ' + detection.params.is_side + ', is_side_prob: ' + detection.params.is_side_prob + '</p></nobr>';
+            content += '<nobr><p>detector: ' + detection.detector + '</p></nobr>';
+            content += '<nobr><p><img src="' + window.crop_url_template.replace('detection_id_placeholder', detection.id) + '"></p></nobr>';
+            content += '<p><small>detection date: ' + detection.date + '</small></p></nobr>';
+            content += '<nobr><p><small>detection id ' + detection.id + ' from frame id ' + detection.frame_id + '</small></p></nobr>';
+            return content;
+        }
+
+        function onMarkerMouseOver(event) {
+            event.target.setStyle({radius: zoomed_marker_radius});
+        }
+
+        function onMarkerMouseOut(event) {
+            event.target.setStyle({radius: default_marker_radius});
+        }
+
+        function get_tile_features(bbox) {
+            let northEast = L.CRS.EPSG3395.project(bbox.getNorthEast());
+            let southWest = L.CRS.EPSG3395.project(bbox.getSouthWest());
+            let bbox_string = [southWest.x, southWest.y, northEast.x, northEast.y].join(",");
+
+            let wfs_url = '/wfs';
+            let params = {
+                SERVICE: 'WFS',
+                VERSION: '2.0.0',
+                REQUEST: 'getFeature',
+                typeNames: 'detected_objects_with_detections',
+                MaxFeatures: 3000,
+                outputFormat: 'application/json',
+                srsName: 'EPSG:3395',
+                crsName: 'EPSG:4326',
+                BBOX: bbox_string,
+            };
+
+            if (loaded_detections_tiles.indexOf(bbox_string) !== -1) {
+                return;
+            }
+
+            fetch(
+                wfs_url + L.Util.getParamString(params),
+                {
+                    signal: wfs_abort_controller.signal,
+                },
+            )
+                .then(response => response.json())
+                .then(objects_geojson => {
+                    objects_geojson.features = objects_geojson.features.filter((feature) => {
+                        return !showed_on_map_detections.includes(feature.properties.id);
+                    });
+
+                    if (objects_geojson.features.length === 0) {
+                        return;
+                    }
+                    console.log(objects_geojson);
+
+                    for (const feature of objects_geojson.features) {
+                        let object_key = feature.properties.id;
+                        let latlng = L.latLng(
+                            feature.geometry.coordinates[1],
+                            feature.geometry.coordinates[0],
+                        );
+
+                        if (!label_layers[feature.properties.label]) {
+                            label_layers[feature.properties.label] = L.featureGroup([]);
+                            map.addLayer(label_layers[feature.properties.label]);
+                            layer_controls.addOverlay(
+                                label_layers[feature.properties.label],
+                                feature.properties.label,
+                                feature.properties.detector_name,
+                            );
+                        }
+
+                        let object_color = randomClusterColor();
+                        for (const detection of feature.properties.detections) {
+                            let det_marker = L.circleMarker(detection.point, {
+                                radius: 4,
+                                stroke: false,
+                                fillColor: object_color,
+                                fillOpacity: 1,
+                            });
+                            let d_popup = L.popup({ maxWidth: "auto", autoPan: false });
+                            d_popup.setContent(get_detection_popup_content(detection));
+                            det_marker.bindPopup(d_popup);
+                            det_marker.on('mouseover', function (e) {
+                                this.openPopup();
+                            });
+                            det_marker.on('mouseout', function (e) {
+                                this.closePopup();
+                            });
+                            det_marker.on('click', function (e) {
+                                window.open(window.location.origin + window.frame_url_template.replace(
+                                    'frame_id_placeholder',
+                                    detection.frame_id,
+                                ));
+                            });
+                            let det_tie = L.polyline([latlng, detection.point], {color: object_color});
+                            label_layers[feature.properties.label].addLayer(det_marker);
+                            label_layers[feature.properties.label].addLayer(det_tie);
+                        }
+
+                        let marker = L.circleMarker(latlng, {
+                            radius: default_marker_radius,
+                            stroke: false,
+                            fillColor: '#00ffff',
+                            fillOpacity: 1,
+                            riseOnHover: true,
+                        });
+                        let popup = L.popup({ maxWidth: "auto", autoPan: false });
+                        popup.setContent(get_object_popup_content(feature.properties));
+                        marker.bindPopup(popup);
+                        marker.on('mouseover', onMarkerMouseOver);
+                        marker.on('mouseout', onMarkerMouseOut);
+                        marker.on('click', function (e) {
+                            this.openPopup();
+                        });
+                        label_layers[feature.properties.label].addLayer(marker);
+
+                        showed_on_map_detections.push(object_key);
+                    }
+                    loaded_detections_tiles.push(bbox_string);
+                })
+                .catch((err) => {
+                    if (err.name === 'AbortError') {
+                        console.error(`Aborted: ${err.message}`);
+                    } else {
+                        throw err;
+                    }
+                });
+        }
+
+        function onMapMoveEnd() {
+            if (map.getZoom() !== current_zoom) {
+                current_zoom = map.getZoom();
+                loaded_detections_tiles = [];
+                // abort pending wfs requests and re-init abort controller
+                wfs_abort_controller.abort();
+                wfs_abort_controller = new AbortController();
+            }
+            let tiles = getVisibleTiles();
+            console.log('visible', tiles);
+            for (const tile of tiles) {
+                get_tile_features(tile.bounds);
+            }
+        }
+
+        function getVisibleTiles() {
+            let target_zoom = map.getZoom();
+            if (target_zoom < 10) {
+                console.log('Zoom too wide:', target_zoom);
+                return [];
+            }
+
+            let bounds = map.getBounds();
+            let tileSize = 256;
+            let tileSizePoint = new L.Point(256, 256);
+            let tiles = []
+
+            // get NorthWest and SouthEast points
+            let nwTilePoint = map.project(bounds.getNorthWest(), target_zoom).divideBy(tileSize).floor()
+            let seTilePoint = map.project(bounds.getSouthEast(), target_zoom).divideBy(tileSize).floor()
+
+            // get max number of tiles in this zoom level
+            let max = map.options.crs.scale(target_zoom) / tileSize;
+
+            // enumerate visible tiles
+            for (let x = nwTilePoint.x; x <= seTilePoint.x; x++) {
+                for (let y = nwTilePoint.y; y <= seTilePoint.y; y++) {
+                    let xTile = (x + max) % max;
+                    let yTile = (y + max) % max;
+                    let coords = new L.Point(xTile, yTile);
+                    coords.z = target_zoom;
+                    nwPoint = coords.scaleBy(tileSizePoint);
+                    sePoint = nwPoint.add(tileSizePoint);
+                    let nw = map.unproject(nwPoint, target_zoom);
+                    let se = map.unproject(sePoint, target_zoom);
+                    tiles.push({'x': xTile, 'y': yTile, 'zoom': target_zoom, 'bounds': new L.LatLngBounds(nw, se)});
+                }
+            }
+            return tiles
+        }
+
+        const refresh_center = function(ev) {
+            const coords = map.getCenter();
+
+            url_control.change_params({
+                'lat': coords.lat,
+                'lon': coords.lng,
+                'zoom': map.getZoom()
+            });
+        }
+
+        url_control = new UrlControl(
+            default_lat=window.map_center[0],
+            default_lon=window.map_center[1],
+            default_zoom=14,
+            default_base_layer='DGIS',
+        );
+
+        var wfs_abort_controller = new AbortController();
+        const map = L.map('map-container', {
+            crs: L.CRS.EPSG3857,
+            center: [url_control.lat, url_control.lon],
+            zoom: url_control.zoom,
+            maxZoom: 21,
+            minZoom: 5,
+            keyboard: false,
+        });
+        const dgis_map_layer = L.tileLayer(window.base_layer_tile_url, { maxZoom: 21, maxNativeZoom: 18 });
+        const satellite_latest_layer = L.tileLayer.wms('http://wms.d.s/wms', {
+            layers: 'satellite_latest',
+            version: '1.3.0',
+            crs: L.CRS.EPSG3395,
+            maxZoom: 21,
+        })
+        const aero_layer = L.tileLayer.wms('http://wms.d.s/wms', {
+            layers: 'aero',
+            version: '1.3.0',
+            crs: L.CRS.EPSG3395,
+            maxZoom: 21,
+        })
+        var label_layers = {};
+
+        // detections downloaders
+        map.addEventListener('moveend', onMapMoveEnd);
+        map.addEventListener('zoomend', onMapMoveEnd);
+        // urlcontrol
+        map.addEventListener('moveend', refresh_center);
+        map.addEventListener('zoomend', refresh_center);
+        map.on('baselayerchange', function(ev) {
+            url_control.change_param('base', ev.name)
+        });
+
+        const base_layers = {
+            'DGIS': dgis_map_layer,
+            'satellite_latest': satellite_latest_layer,
+            'aero': aero_layer,
+        };
+        const overlay_layers = {};
+        base_layers[url_control.base].addTo(map);
+        var layer_controls = L.control.groupedLayers(
+            base_layers,
+            overlay_layers,
+            {
+                collapsed: false,
+                sortLayers: true,
+                sortGroups: true,
+                groupCheckboxes: true,
+                groupsCollapsable: true,
+                groupsCollapsedByDefault: false,
+            },
+        ).addTo(map);
+        L.control.scale({metric: true, imperial: false}).addTo(map);
+
+        // update map
+        onMapMoveEnd();
+
+    </script>
+
+</html>

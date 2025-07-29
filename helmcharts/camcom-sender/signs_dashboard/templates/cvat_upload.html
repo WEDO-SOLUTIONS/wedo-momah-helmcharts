@@ -1,0 +1,82 @@
+{% extends "navbar.html" %}
+{% block title %}{{ _('CVAT upload status') }}{% endblock %}
+{% block styles %}
+  {{ super() }}
+  <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+        rel="stylesheet">
+  <link href="/static/select2/4.1/select2.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+  <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+          charset="UTF-8"></script>
+  <script src="/static/select2/4.1/select2.min.js"></script>
+{% endblock %}
+{% block content %}
+  <style>
+      body {
+          padding-top: 50px;
+      }
+
+      .starter-template {
+          padding: 40px 15px;
+          text-align: center;
+      }
+
+      .table {
+          text-align: left;
+      }
+
+      .row {
+          margin-bottom: 20px;
+      }
+
+      .row .row {
+          margin-top: 10px;
+          margin-bottom: 0;
+      }
+  </style>
+
+  <div class="container">
+    <div class="starter-template">
+      {% if cvat_upload_tasks %}
+        <div class="row">
+          <div class="col-md-2">
+            <a target="_blank" href="{{ project_url }}">
+              {{ _('CVAT Project') }}: {{ cvat_upload_tasks[0].project_id }}
+            </a>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="row">
+        <table class="table table-striped table-sm">
+          <tr>
+            <th>{{ _('CVAT Task Name') }}</th>
+            <th>{{ _('CVAT Task Status') }}</th>
+          </tr>
+          {% for task in cvat_upload_tasks %}
+            <tr>
+              <td>
+                {% if task.status == 'completed' %}
+                  <a target="_blank" href="{{ task.url }}">
+                    {{ task.name }}
+                  </a>
+                {% else %}
+                  {{ task.name }}
+                {% endif %}
+              </td>
+              <td>
+                {{ task.status }}
+              </td>
+            </tr>
+          {% endfor %}
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,333 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "13"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"12","meta.helm.sh/release-name":"snapshot-pro-api","meta.helm.sh/release-namespace":"urbi"},"labels":{"app.kubernetes.io/instance":"snapshot-pro-api","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"snapshot-pro-api","app.kubernetes.io/version":"2.13.0","helm.sh/chart":"pro-api-1.38.0","manifest":"1750846852"},"name":"snapshot-pro-api","namespace":"urbi"},"spec":{"progressDeadlineSeconds":600,"replicas":10,"revisionHistoryLimit":3,"selector":{"matchLabels":{"app.kubernetes.io/instance":"snapshot-pro-api","app.kubernetes.io/name":"snapshot-pro-api"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"checksum/secret":"61244309c1472069375a2f6d9e9a374c71db0f41be2082b8d1aeebb585b82868","kubectl.kubernetes.io/restartedAt":"2025-05-14T15:23:03Z"},"creationTimestamp":null,"labels":{"app.kubernetes.io/instance":"snapshot-pro-api","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"snapshot-pro-api","app.kubernetes.io/version":"2.13.0","helm.sh/chart":"pro-api-1.38.0"}},"spec":{"containers":[{"env":[{"name":"DEBUG","value":"false"},{"name":"Import__EnableUserAssetsImporter","value":"true"},{"name":"Import__EnableAssetsStreaming","value":"true"},{"name":"Import__AssetImporterJobName","value":"snapshot-pro-api-asset-importer"},{"name":"Import__ExternalLinksProxyUrl","value":"https://cityview-pro-api.momah.gov.sa/v2/proxy?url={0}"},{"name":"Import__ExternalLinksAllowedHosts","value":"citylens-web-urbi-prod.momrah.gov.sa"},{"name":"Import__TtlSecondsAfterFinished","value":"86400"},{"name":"TEMP_PATH","value":"/tmp"},{"name":"CATALOG_API_2GIS_URL","value":"http://catalog-api"},{"name":"CATALOG_API_2GIS_KEY","valueFrom":{"secretKeyRef":{"key":"catalogApi2gisKey","name":"snapshot-pro-api-secret"}}},{"name":"Navi__Url","value":"http://navi-front"},{"name":"Navi__Key","valueFrom":{"secretKeyRef":{"key":"routingApi2gisKey","name":"snapshot-pro-api-secret"}}},{"name":"SEARCH_API_URL","value":"http://search-api"},{"name":"Elastic__InstanceName","value":"elastic"},{"name":"Elastic__Nodes__0__Host","value":"haproxy"},{"name":"Elastic__Nodes__0__Port","value":"9200"},{"name":"Elastic__Secure","value":"false"},{"name":"Elastic__Username","value":"elastic"},{"name":"Elastic__Password","valueFrom":{"secretKeyRef":{"key":"esPassword","name":"snapshot-pro-api-secret"}}},{"name":"Elastic__IndexPrefix","value":"snapprod"},{"name":"Elastic__EnableHttpCompression","value":"false"},{"name":"ENV","value":"snapprod"},{"name":"Common__CorsOrigins"},{"name":"Common__FilterByZoneCodes","value":"false"},{"name":"Postgres__ConnectionString","value":"Server=haproxy;Port=5000;Database=prosnapshot;UID=prosnapshot;Pooling=True;Minimum Pool Size=1;Maximum Pool Size=10;Timeout=15;Connection Idle Lifetime=30;KeepAlive=5;"},{"name":"Postgres__ConnectionStringReadonly"},{"name":"Postgres__Password","valueFrom":{"secretKeyRef":{"key":"dbConnectionPwd","name":"snapshot-pro-api-secret"}}},{"name":"S3Settings__Url","value":"axownvq9lhmx.compat.objectstorage.me-jeddah-1.oci.customer-oci.com"},{"name":"S3Settings__Secure","value":"true"},{"name":"S3Settings__Region","value":"me-jeddah-1"},{"name":"S3Settings__DisablePayloadSigning","value":"true"},{"name":"S3Settings__AssetDataBucket","value":"production-snapshot-pro-assets"},{"name":"S3Settings__UserAssetDataBucket","value":"production-snapshot-pro-userassets"},{"name":"S3Settings__LayerDataBucket","value":"production-snapshot-pro-layers"},{"name":"S3Settings__SnapshotBucket","value":"production-snapshot-pro-snapshot"},{"name":"S3Settings__ResourcesBucket","value":"production-snapshot-pro-resources"},{"name":"S3Settings__AccessKey","valueFrom":{"secretKeyRef":{"key":"s3AccessKey","name":"snapshot-pro-api-secret"}}},{"name":"S3Settings__SecretKey","valueFrom":{"secretKeyRef":{"key":"s3SecretKey","name":"snapshot-pro-api-secret"}}},{"name":"Kafka__BootstrapServers","value":"10.246.2.7:9092,10.246.0.244:9092,10.246.3.17:9092"},{"name":"Kafka__SecurityProtocol","value":"SaslPlaintext"},{"name":"Kafka__SaslMechanism","value":"PLAIN"},{"name":"Kafka__SaslUsername","value":"admin"},{"name":"Kafka__SaslPassword","valueFrom":{"secretKeyRef":{"key":"kafkaSaslPassword","name":"snapshot-pro-api-secret"}}},{"name":"Kafka__AssetTopicsReaderGroupId","value":"pro.asset.group.snapprod"},{"name":"Kafka__CreateTopics","value":"true"},{"name":"Kafka__RefreshAssetsIntervalMinutes","value":"60"},{"name":"Kafka__ImportTasksTopicSettings__Name","value":"dscv.production.autodetection.pro.import"},{"name":"Kafka__ImportTasksTopicSettings__ReaderGroupId","value":"pro.import.task.group.snapprod"},{"name":"Kafka__AssetDataTopicSettings__Name","value":"dscv.production.autodetection.data"},{"name":"Kafka__EventsTopicSettings__Name","value":"dscv.production.autodetection.pro.events"},{"name":"Kafka__EventsTopicSettings__ReaderGroupId","value":"pro.events.group.snapprod"},{"name":"Kafka__UseReplicaTopics","value":"false"},{"name":"Auth__Type","value":"openid10"},{"name":"Auth__Url","value":"https://ssoapp.balady.gov.sa"},{"name":"Auth__UserInfoEndpoint","value":"connect/userinfo"},{"name":"Auth__WellKnownConfigEndpoint","value":".well-known/openid-configuration"},{"name":"Auth__AutoRegisterUsers","value":"false"},{"name":"Auth__TurnOffCertValidation","value":"true"},{"name":"Auth__ApiKey","valueFrom":{"secretKeyRef":{"key":"apiKey","name":"snapshot-pro-api-secret"}}},{"name":"Auth__PermissionsApiUrl","value":"http://snapshot-pro-api-permissions"},{"name":"Auth__PermissionsApiKey","valueFrom":{"secretKeyRef":{"key":"permissionsApiKey","name":"snapshot-pro-api-secret"}}},{"name":"Auth__ShareKeys__0","value":"52de56f3f9ca36e51ca631822f423a4decf7e49a87c8e045ae6f925eb8511d1e"},{"name":"Auth__SkipShareLinksPermissionsCheck","value":"true"},{"name":"License__Key","value":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YWxpZGF0ZV9jZXJ0aWZpY2F0ZSI6dHJ1ZSwibGljZW5zaW5nX21vZGUiOjIsIm5iZiI6MTcxMzI1MDUzMSwiZXhwIjoxNzE0MTE0NTMxLCJpYXQiOjE3MTMxNjQxMzEsImlzcyI6IjJnaXMtcHJvIn0.anzMmwp1D13CZ_pxE-yQyhVAYCjLIM-rs0bNlxACujEwad-OiLHfgKGfd0KHljZfnqdGqF-PmFxj8YziRGTOFXXFXWSMErzllOpTvo0tJ_mCFun7sF0_NqeJaGXxzgbs0Zqi0fnQdoBs1fwokmSXe272OnwJ-ngdegH9MZQwRtRycCOMrgsP4Vy0jtzJMADFrY73iBwMumo4ujMBiGO2JVQnD6fBCDxSvh1zV6ckeSueP61id72Kf1k7hHTTGfzPkjevak9CLwZ1VZVplePTNMiepFdbfJMouWBi4wTgw-6VayjOl7FT_rdAPsIFd_Cb7PbtDPnorw2OtnfocYV_t-xDKj7CWm2ExEoY7jrPn7wH1OZCTkFlyS0T3nyubi8GAoGHRCF8P8HULcmHwd8C9dRJVsuPoZZQnhB8JXo5m9xecmePdW5qRBDGqLPd6SUnszGgUdvzW8SjNjM4I8cceNEDo6HofxqJqlL9uTeNMo-PgJeWo8zcwmwe1otfe-p5g4L2XWVziRg_77xQz0JVKg8pnXvcwRPMGamb8qSQYW0jfbSZh2qu-Ni22oaDHSAf0l1mqC89z4TerzLtHCWp7tDUZgsadX-fX2lNSDimNgUbx8rZ-o1a2HfBv7bi-U8nCxXnCmXW8icSBYjLjcabV4zaaBnvXvZLTh8QlKE2VGw"},{"name":"KEYS_SERVICE_URL","value":"http://keys-api"},{"name":"Redis__Host","value":"redis-redis-cluster"},{"name":"Redis__Port","value":"6379"},{"name":"Redis__Username","value":"default"},{"name":"Redis__Password","valueFrom":{"secretKeyRef":{"key":"redisPassword","name":"snapshot-pro-api-secret"}}},{"name":"Common__Logging__Format","value":"default"},{"name":"Common__Logging__Targets"},{"name":"Common__EsDataCentersCount","value":"1"},{"name":"RateLimiter__RequestsLimit","value":"1024"},{"name":"RateLimiter__WindowSizeInSeconds","value":"1"},{"name":"LocalCache__Enabled","value":"true"},{"name":"LocalCache__TrackStatistics","value":"false"},{"name":"LicensingService__BaseUri","value":"https://license"},{"name":"LayerGeneration__IsochroneLayerMaxPointsCount","value":"500"},{"name":"TasksApi__Url","value":"http://snapshot-pro-api-tasks:8083"},{"name":"TasksApi__UseForLayerDataPreparation","value":"true"},{"name":"BackgroundJobs__InitOnStartupJob__Enabled","value":"true"},{"name":"BackgroundJobs__LayerDataPrepareJob__Enabled","value":"true"},{"name":"BackgroundJobs__ClearCacheJob__Enabled","value":"true"},{"name":"BackgroundJobs__ClearMetadataAndStorageJob__Enabled","value":"true"},{"name":"BackgroundJobs__MetricsCollectionJob__Enabled","value":"true"},{"name":"TileGen__Url","value":"http://tilegen-api"},{"name":"TileGen__UserDataTileSet","value":"userdata"}],"image":"registry.momrah.gov.sa/urbi/2gis-on-premise/urbi-geo-api:feature-pro-6703-customadmdiv-389a32a8","imagePullPolicy":"IfNotPresent","lifecycle":{"preStop":{"exec":{"command":["/bin/sh","-c","sleep 5"]}}},"livenessProbe":{"failureThreshold":5,"httpGet":{"path":"/health/live","port":"http","scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":15,"successThreshold":1,"timeoutSeconds":5},"name":"snapshot-pro-api","ports":[{"containerPort":8080,"name":"http","protocol":"TCP"}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/health/ready","port":"http","scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":5},"resources":{"limits":{"cpu":"3","memory":"4096M"},"requests":{"cpu":"1000m","memory":"1024M"}},"startupProbe":{"failureThreshold":20,"httpGet":{"path":"/health/live","port":"http","scheme":"HTTP"},"initialDelaySeconds":5,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":5},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/tmp","name":"temp-volume"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"serviceAccount":"snapshot-pro-api-runner","serviceAccountName":"snapshot-pro-api-runner","terminationGracePeriodSeconds":300,"volumes":[{"emptyDir":{},"name":"temp-volume"}]}}},"status":{"availableReplicas":5,"conditions":[{"lastTransitionTime":"2025-05-02T07:28:45Z","lastUpdateTime":"2025-06-30T08:06:44Z","message":"ReplicaSet \"snapshot-pro-api-fc58568f4\" has successfully progressed.","reason":"NewReplicaSetAvailable","status":"True","type":"Progressing"},{"lastTransitionTime":"2025-07-02T11:31:54Z","lastUpdateTime":"2025-07-02T11:31:54Z","message":"Deployment has minimum availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"}],"observedGeneration":15,"readyReplicas":5,"replicas":5,"updatedReplicas":5}}
+    meta.helm.sh/release-name: snapshot-pro-api
+    meta.helm.sh/release-namespace: urbi
+  labels:
+    app.kubernetes.io/instance: snapshot-pro-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: snapshot-pro-api
+    app.kubernetes.io/version: 2.13.0
+    helm.sh/chart: pro-api-1.38.0
+    manifest: "1750846852"
+  name: snapshot-pro-api
+  namespace: urbi
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 10
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: snapshot-pro-api
+      app.kubernetes.io/name: snapshot-pro-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/secret: 61244309c1472069375a2f6d9e9a374c71db0f41be2082b8d1aeebb585b82868
+        kubectl.kubernetes.io/restartedAt: "2025-05-14T15:23:03Z"
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: snapshot-pro-api
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: snapshot-pro-api
+        app.kubernetes.io/version: 2.13.0
+        helm.sh/chart: pro-api-1.38.0
+    spec:
+      containers:
+      - env:
+        - name: DEBUG
+          value: "false"
+        - name: Import__EnableUserAssetsImporter
+          value: "true"
+        - name: Import__EnableAssetsStreaming
+          value: "true"
+        - name: Import__AssetImporterJobName
+          value: snapshot-pro-api-asset-importer
+        - name: Import__ExternalLinksProxyUrl
+          value: https://cityview-pro-api.momah.gov.sa/v2/proxy?url={0}
+        - name: Import__ExternalLinksAllowedHosts
+          value: citylens-web-urbi-prod.momrah.gov.sa
+        - name: Import__TtlSecondsAfterFinished
+          value: "86400"
+        - name: TEMP_PATH
+          value: /tmp
+        - name: CATALOG_API_2GIS_URL
+          value: http://catalog-api
+        - name: CATALOG_API_2GIS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: catalogApi2gisKey
+              name: snapshot-pro-api-secret
+        - name: Navi__Url
+          value: http://navi-front
+        - name: Navi__Key
+          valueFrom:
+            secretKeyRef:
+              key: routingApi2gisKey
+              name: snapshot-pro-api-secret
+        - name: SEARCH_API_URL
+          value: http://search-api
+        - name: Elastic__InstanceName
+          value: elastic
+        - name: Elastic__Nodes__0__Host
+          value: haproxy
+        - name: Elastic__Nodes__0__Port
+          value: "9200"
+        - name: Elastic__Secure
+          value: "false"
+        - name: Elastic__Username
+          value: elastic
+        - name: Elastic__Password
+          valueFrom:
+            secretKeyRef:
+              key: esPassword
+              name: snapshot-pro-api-secret
+        - name: Elastic__IndexPrefix
+          value: snapprod
+        - name: Elastic__EnableHttpCompression
+          value: "false"
+        - name: ENV
+          value: snapprod
+        - name: Common__CorsOrigins
+        - name: Common__FilterByZoneCodes
+          value: "false"
+        - name: Postgres__ConnectionString
+          value: Server=haproxy;Port=5000;Database=prosnapshot;UID=prosnapshot;Pooling=True;Minimum
+            Pool Size=1;Maximum Pool Size=10;Timeout=15;Connection Idle Lifetime=30;KeepAlive=5;
+        - name: Postgres__ConnectionStringReadonly
+        - name: Postgres__Password
+          valueFrom:
+            secretKeyRef:
+              key: dbConnectionPwd
+              name: snapshot-pro-api-secret
+        - name: S3Settings__Url
+          value: axownvq9lhmx.compat.objectstorage.me-jeddah-1.oci.customer-oci.com
+        - name: S3Settings__Secure
+          value: "true"
+        - name: S3Settings__Region
+          value: me-jeddah-1
+        - name: S3Settings__DisablePayloadSigning
+          value: "true"
+        - name: S3Settings__AssetDataBucket
+          value: production-snapshot-pro-assets
+        - name: S3Settings__UserAssetDataBucket
+          value: production-snapshot-pro-userassets
+        - name: S3Settings__LayerDataBucket
+          value: production-snapshot-pro-layers
+        - name: S3Settings__SnapshotBucket
+          value: production-snapshot-pro-snapshot
+        - name: S3Settings__ResourcesBucket
+          value: production-snapshot-pro-resources
+        - name: S3Settings__AccessKey
+          valueFrom:
+            secretKeyRef:
+              key: s3AccessKey
+              name: snapshot-pro-api-secret
+        - name: S3Settings__SecretKey
+          valueFrom:
+            secretKeyRef:
+              key: s3SecretKey
+              name: snapshot-pro-api-secret
+        - name: Kafka__BootstrapServers
+          value: 10.246.2.7:9092,10.246.0.244:9092,10.246.3.17:9092
+        - name: Kafka__SecurityProtocol
+          value: SaslPlaintext
+        - name: Kafka__SaslMechanism
+          value: PLAIN
+        - name: Kafka__SaslUsername
+          value: admin
+        - name: Kafka__SaslPassword
+          valueFrom:
+            secretKeyRef:
+              key: kafkaSaslPassword
+              name: snapshot-pro-api-secret
+        - name: Kafka__AssetTopicsReaderGroupId
+          value: pro.asset.group.snapprod
+        - name: Kafka__CreateTopics
+          value: "true"
+        - name: Kafka__RefreshAssetsIntervalMinutes
+          value: "60"
+        - name: Kafka__ImportTasksTopicSettings__Name
+          value: dscv.production.autodetection.pro.import
+        - name: Kafka__ImportTasksTopicSettings__ReaderGroupId
+          value: pro.import.task.group.snapprod
+        - name: Kafka__AssetDataTopicSettings__Name
+          value: dscv.production.autodetection.data
+        - name: Kafka__EventsTopicSettings__Name
+          value: dscv.production.autodetection.pro.events
+        - name: Kafka__EventsTopicSettings__ReaderGroupId
+          value: pro.events.group.snapprod
+        - name: Kafka__UseReplicaTopics
+          value: "false"
+        - name: Auth__Type
+          value: openid10
+        - name: Auth__Url
+          value: https://ssoapp.balady.gov.sa
+        - name: Auth__UserInfoEndpoint
+          value: connect/userinfo
+        - name: Auth__WellKnownConfigEndpoint
+          value: .well-known/openid-configuration
+        - name: Auth__AutoRegisterUsers
+          value: "false"
+        - name: Auth__TurnOffCertValidation
+          value: "true"
+        - name: Auth__ApiKey
+          valueFrom:
+            secretKeyRef:
+              key: apiKey
+              name: snapshot-pro-api-secret
+        - name: Auth__PermissionsApiUrl
+          value: http://snapshot-pro-api-permissions
+        - name: Auth__PermissionsApiKey
+          valueFrom:
+            secretKeyRef:
+              key: permissionsApiKey
+              name: snapshot-pro-api-secret
+        - name: Auth__ShareKeys__0
+          value: 52de56f3f9ca36e51ca631822f423a4decf7e49a87c8e045ae6f925eb8511d1e
+        - name: Auth__SkipShareLinksPermissionsCheck
+          value: "true"
+        - name: License__Key
+          value: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YWxpZGF0ZV9jZXJ0aWZpY2F0ZSI6dHJ1ZSwibGljZW5zaW5nX21vZGUiOjIsIm5iZiI6MTcxMzI1MDUzMSwiZXhwIjoxNzE0MTE0NTMxLCJpYXQiOjE3MTMxNjQxMzEsImlzcyI6IjJnaXMtcHJvIn0.anzMmwp1D13CZ_pxE-yQyhVAYCjLIM-rs0bNlxACujEwad-OiLHfgKGfd0KHljZfnqdGqF-PmFxj8YziRGTOFXXFXWSMErzllOpTvo0tJ_mCFun7sF0_NqeJaGXxzgbs0Zqi0fnQdoBs1fwokmSXe272OnwJ-ngdegH9MZQwRtRycCOMrgsP4Vy0jtzJMADFrY73iBwMumo4ujMBiGO2JVQnD6fBCDxSvh1zV6ckeSueP61id72Kf1k7hHTTGfzPkjevak9CLwZ1VZVplePTNMiepFdbfJMouWBi4wTgw-6VayjOl7FT_rdAPsIFd_Cb7PbtDPnorw2OtnfocYV_t-xDKj7CWm2ExEoY7jrPn7wH1OZCTkFlyS0T3nyubi8GAoGHRCF8P8HULcmHwd8C9dRJVsuPoZZQnhB8JXo5m9xecmePdW5qRBDGqLPd6SUnszGgUdvzW8SjNjM4I8cceNEDo6HofxqJqlL9uTeNMo-PgJeWo8zcwmwe1otfe-p5g4L2XWVziRg_77xQz0JVKg8pnXvcwRPMGamb8qSQYW0jfbSZh2qu-Ni22oaDHSAf0l1mqC89z4TerzLtHCWp7tDUZgsadX-fX2lNSDimNgUbx8rZ-o1a2HfBv7bi-U8nCxXnCmXW8icSBYjLjcabV4zaaBnvXvZLTh8QlKE2VGw
+        - name: KEYS_SERVICE_URL
+          value: http://keys-api
+        - name: Redis__Host
+          value: redis-redis-cluster
+        - name: Redis__Port
+          value: "6379"
+        - name: Redis__Username
+          value: default
+        - name: Redis__Password
+          valueFrom:
+            secretKeyRef:
+              key: redisPassword
+              name: snapshot-pro-api-secret
+        - name: Common__Logging__Format
+          value: default
+        - name: Common__Logging__Targets
+        - name: Common__EsDataCentersCount
+          value: "1"
+        - name: RateLimiter__RequestsLimit
+          value: "1024"
+        - name: RateLimiter__WindowSizeInSeconds
+          value: "1"
+        - name: LocalCache__Enabled
+          value: "true"
+        - name: LocalCache__TrackStatistics
+          value: "false"
+        - name: LicensingService__BaseUri
+          value: https://license
+        - name: LayerGeneration__IsochroneLayerMaxPointsCount
+          value: "500"
+        - name: TasksApi__Url
+          value: http://snapshot-pro-api-tasks:8083
+        - name: TasksApi__UseForLayerDataPreparation
+          value: "true"
+        - name: BackgroundJobs__InitOnStartupJob__Enabled
+          value: "true"
+        - name: BackgroundJobs__LayerDataPrepareJob__Enabled
+          value: "true"
+        - name: BackgroundJobs__ClearCacheJob__Enabled
+          value: "true"
+        - name: BackgroundJobs__ClearMetadataAndStorageJob__Enabled
+          value: "true"
+        - name: BackgroundJobs__MetricsCollectionJob__Enabled
+          value: "true"
+        - name: TileGen__Url
+          value: http://tilegen-api
+        - name: TileGen__UserDataTileSet
+          value: userdata
+        image: registry.momrah.gov.sa/urbi/2gis-on-premise/urbi-geo-api:feature-pro-6703-customadmdiv-389a32a8
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /health/live
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: snapshot-pro-api
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health/ready
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "4"
+            memory: 8192M
+          requests:
+            cpu: "1"
+            memory: 1024M
+        startupProbe:
+          failureThreshold: 20
+          httpGet:
+            path: /health/live
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 5
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp
+          name: temp-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: snapshot-pro-api-runner
+      serviceAccountName: snapshot-pro-api-runner
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - emptyDir: {}
+        name: temp-volume
+status:
+  availableReplicas: 10
+  conditions:
+  - lastTransitionTime: "2025-05-02T07:28:45Z"
+    lastUpdateTime: "2025-07-02T19:28:28Z"
+    message: ReplicaSet "snapshot-pro-api-6c684ccdbc" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2025-07-28T16:00:37Z"
+    lastUpdateTime: "2025-07-28T16:00:37Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 16
+  readyReplicas: 10
+  replicas: 10
+  updatedReplicas: 10

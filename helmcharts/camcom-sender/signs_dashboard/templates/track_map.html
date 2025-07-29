@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Track {{track_uuid}} map</title>
+
+    <style>
+        html,body{
+            width:100%;
+            height:100%;
+            margin:0;
+            overflow:hidden;
+        }
+    </style>
+
+    <script>
+    //<![CDATA[
+        window.track_points= {{ track_points | tojson }};
+        window.matched_track_points = {{ matched_track_points | tojson }};
+        window.track_matched = {{ track_map_matched | tojson }};
+        window.frames = {{ frames | tojson }};
+        window.detected_objects = {{ detected_objects | tojson }};
+        window.base_layer_tile_url='{{ base_layer_tileserver_url_template | safe }}';
+        window.frame_url_template = '{{ frame_url_template | safe }}';
+        window.frame_with_predictions_url_template = '{{ frame_with_predictions_url_template | safe }}';
+        window.crop_url_template = '{{ crop_url_template | safe }}';
+    //]]>
+    </script>
+
+    <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+    <script src="/static/leaflet/leaflet.js"></script>
+    <script src="/static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+    <script src="/static/detections_colors_on_map.js"></script>
+    <link rel="stylesheet" href="/static/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
+
+</head>
+<body>
+<div id="panel" style="
+     position: absolute;
+     z-index: 1000;
+     padding: 10px;
+     margin-left: 50px;
+     margin-right: 50px;
+     margin-top: 10px;
+">
+    <div id="back_to_track" style="float: left; background-color: whitesmoke; padding: inherit">
+        <a href="{{ url_for("tracks_view", uuid=track_uuid) }}">{{ _('back to track page') }}</a>
+    </div>
+</div>
+
+<div
+    id="map-container"
+    style="height: 100vh; width: 100vw"
+></div>
+
+</body>
+
+    <script type="application/javascript">
+        {% if track_localization_enabled %}
+        function get_detection_popup_content(detection, frame_point) {
+            var content = '';
+            content += '<nobr><p>Label: <b>' + detection.params.label + '</b>';
+            if (detection.params.value) {
+                content += ', value: ' + detection.params.value;
+            }
+            content += ', prob: ' + detection.params.prob;
+            content += '</p></nobr>';
+            if (detection.directions) {
+                content += '<nobr><p>Directions: ' + JSON.stringify(detection.params.directions);
+                content += ', directions prob: ' + detection.params.directions_prob + '</p></nobr>';
+            }
+            content += '<nobr><p>is_tmp: ' + detection.params.is_tmp + '</p></nobr>';
+            content += '<nobr><p>is_side: ' + detection.params.is_side + ', is_side_prob: ' + detection.params.is_side_prob + '</p></nobr>';
+            content += '<nobr><p>detector: ' + detection.detector + '</p></nobr>';
+            content += '<nobr><p>Frame to detection: ' + map.distance(L.latLng(detection.point), L.latLng(frame_point)).toFixed(1) + 'm.</p></nobr>';
+            content += '<p><img src="' + window.crop_url_template.replace('detection_id_placeholder', detection.id) + '"></p>';
+            content += '<nobr><small>detection id ' + detection.id + ' from frame id ' + detection.frame_id + '</small></nobr>';
+            return content;
+        }
+
+        function get_object_popup_content(object_as_json) {
+            let content = '';
+            content += '<nobr><p>Label: <b>' + object_as_json.label + '</b>';
+            if (object_as_json.sign_value) {
+                content += ', value: ' + object_as_json.sign_value;
+            }
+            content += '</p></nobr>';
+            if (object_as_json.directions) {
+                content += '<nobr><p>Directions: ' + JSON.stringify(object_as_json.directions) + '</p></nobr>';
+            }
+            content += '<nobr><p>is_tmp: ' + object_as_json.is_tmp + '</p></nobr>';
+            content += '<nobr><p>detector: ' + object_as_json.detector_name + '</p></nobr>';
+            content += '<nobr><p>status: ' + object_as_json.status + '</p></nobr>';
+            content += '<p>';
+            for (const detection of object_as_json.detections) {
+                content += '<a href="' + window.location.origin;
+                content += window.frame_url_template.replace('frame_id_placeholder', detection.frame_id);
+                content += '" target="_blank">';
+                content += '<img src="' + window.crop_url_template.replace('detection_id_placeholder', detection.id) + '">';
+                content += '</a>';
+            }
+            content += '</p>';
+            content += '<nobr><p>Detections count: ' + object_as_json.detections.length + '</p></nobr>'
+            content += '<nobr><small>detection id ' + object_as_json.id + ', updated ' + object_as_json.updated + '</small></nobr>';
+            return content;
+        }
+        {% endif %}
+
+        function get_frame_popup_content(frame) {
+            var content = '';
+            content += '<nobr><p>Frame ' + frame.id + '</p><small>Frame date: '+ frame.date +', azumuth: ' + Math.round(frame.azimuth) + '°</small></nobr>';
+            {% if track_localization_enabled %}
+            content += '<nobr><p>Localized detections: ' + frame.detections.localized.length + '</p></nobr>';
+            content += '<nobr><p>NOT localized detections: ' + frame.detections.not_localized.length + '</p></nobr>';
+            {% else %}
+            content += '<nobr><p>Detections: ' + frame.detections_count + '</p></nobr>';
+            {% endif %}
+            content += '<p><img src="' + window.frame_with_predictions_url_template.replace('frame_id_placeholder', frame.id) + '" style="width: 100%"></p>';
+            return content;
+        }
+
+        function make_marker_popupable(marker) {
+            marker.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            marker.on('mouseout', function (e) {
+                this.closePopup();
+            });
+        }
+        function make_marker_open_frame_on_click(marker, link) {
+            marker.on('click', function (e) {
+                window.open(link);
+            });
+        }
+        function onMarkerMouseOver(event) {
+            event.target.setStyle({radius: zoomed_marker_radius});
+        }
+        function onMarkerMouseOut(event) {
+            event.target.setStyle({radius: default_marker_radius});
+        }
+
+        function createCircleSector(center, radius, startAngle, endAngle) {
+            const points = [];
+            const step = (endAngle - startAngle) / 30;
+            const centerPoint = L.CRS.EPSG3395.project({lat: center[0], lng: center[1]});
+            for (let angle = startAngle; angle <= endAngle; angle += step) {
+                const rad = angle * Math.PI / 180;
+                const y = centerPoint.y + radius * Math.cos(rad);
+                const x = centerPoint.x + radius * Math.sin(rad);
+                const point = L.CRS.EPSG3395.unproject({x: x, y: y});
+                points.push([point.lat, point.lng]);
+            }
+            points.push(center); // Close the sector
+            return points;
+        }
+
+        const map = L.map('map-container', {
+            crs: L.CRS.EPSG3857,
+            center: window.track_points[0],
+            zoom: 18,
+        });
+        const dgis_map_layer = L.tileLayer(window.base_layer_tile_url, { maxZoom: 22 });
+        const satellite_latest_layer = L.tileLayer.wms('http://wms.d.s/wms', {
+            layers: 'satellite_latest',
+            version: '1.3.0',
+            crs: L.CRS.EPSG3395,
+            maxZoom: 22,
+        })
+        const aero_layer = L.tileLayer.wms('http://wms.d.s/wms', {
+            layers: 'aero',
+            version: '1.3.0',
+            crs: L.CRS.EPSG3395,
+            maxZoom: 22,
+        })
+        const track_layer = L.featureGroup([]);
+        const matched_track_layer = L.featureGroup([]);
+        const track_frames_layer = L.featureGroup([]);
+        const track_frames_azimuth_layer = L.featureGroup([]);
+        const matched_track_frames_layer = L.featureGroup([]);
+        const matched_track_frames_connections_layer = L.featureGroup([]);
+        var label_layers = {};
+        var label_layers_connections = {};
+
+        map.addLayer(dgis_map_layer);
+        map.addLayer(track_layer);
+        map.addLayer(track_frames_layer);
+        map.addLayer(track_frames_azimuth_layer);
+        map.addLayer(matched_track_layer);
+        map.addLayer(matched_track_frames_layer);
+        map.addLayer(matched_track_frames_connections_layer);
+
+        const base_layers = {
+            'DGIS': dgis_map_layer,
+            'satellite_latest': satellite_latest_layer,
+            'aero': aero_layer,
+        };
+        var overlay_layers = {
+            '0. Main': {
+                'Track': track_layer,
+                'Track frames': track_frames_layer,
+                'Track frames azumith': track_frames_azimuth_layer,
+            },
+        };
+        if (window.track_matched) {
+            overlay_layers = {
+                '0. Main': {
+                    'Track': matched_track_layer,
+                    'Track frames': matched_track_frames_layer,
+                },
+                '1. Map matching': {
+                    'Original track': track_layer,
+                    'Original frames positions': track_frames_layer,
+                    'Matched frames connections': matched_track_frames_connections_layer,
+                }
+            };
+        }
+        var layer_controls = L.control.groupedLayers(
+            base_layers,
+            overlay_layers,
+            {
+                collapsed: false,
+                sortLayers: true,
+                sortGroups: true,
+                groupCheckboxes: true,
+                groupsCollapsable: true,
+                groupsCollapsedByDefault: false,
+            },
+        ).addTo(map);
+        L.control.scale({metric: true, imperial: false}).addTo(map);
+
+        if (window.track_matched) {
+            var matched_track = L.polyline(window.matched_track_points, {color: '#00ff00'}).addTo(matched_track_layer);
+            for (const matchedTrackPoint of window.matched_track_points) {
+                L.circleMarker(matchedTrackPoint, {
+                    radius: 8,
+                    stroke: false,
+                    fillColor: '#00ff00',
+                    fillOpacity: 0.5,
+                }).addTo(matched_track_layer);
+            }
+            $('div#leaflet-control-layers-group-2 label').click();
+            $('div#leaflet-control-layers-group-2 label input').click();
+        }
+        var track = L.polyline(window.track_points, { color: '#ff0000' }).addTo(track_layer);
+        for (const trackPoint of window.track_points) {
+            L.circleMarker(trackPoint, {
+                radius: 8,
+                stroke: false,
+                fillColor: '#ff0000',
+                fillOpacity: 0.5,
+            }).addTo(track_layer);
+        }
+
+        map.fitBounds(track.getBounds());
+
+        var drawed_objects = {};
+        let detected_object_color = {};
+        const frame_without_detections_opacity = 0.5;
+        const frame_with_detections_opacity = 1;
+        const zoomed_marker_radius = 10;
+        const default_marker_radius = 4;
+
+        for (const frame_index in window.frames) {
+            frame = window.frames[frame_index];
+            frame_opacity = frame.detections_count === 0 ? frame_without_detections_opacity : frame_with_detections_opacity;
+
+            let frame_point = frame.point;
+            if (track_matched) {
+                if (frame.matched === false || frame.matched_point == null || (frame.matched_point[0] == null && frame.matched_point[1] == null)) {
+                    console.debug(`Frame ${frame.id} is matched: ${frame.matched}, but matched_point ${frame.matched_point}`);
+                } else {
+                    frame_point = frame.matched_point;
+                }
+            }
+
+            let sectorRadius = 10;
+            let sectorStartAngle = frame.azimuth - 30;
+            let sectorEndAngle = frame.azimuth + 30;
+            let sectorPoints = createCircleSector(frame_point, sectorRadius, sectorStartAngle, sectorEndAngle);
+            const azimuthSector = L.polygon(sectorPoints, {
+                color: '#ff7800',
+                weight: 1,
+                fillColor: '#ff7800',
+                fillOpacity: 0.5,
+            }).addTo(track_frames_azimuth_layer);
+
+            let matched_frame_marker = null;
+            if (frame.matched) {
+                let matched_connector = L.polyline([frame.point, frame.matched_point], {
+                    color: '#005000',
+                }).addTo(matched_track_frames_connections_layer);
+                matched_frame_marker = L.circleMarker(frame.matched_point, {
+                    radius: 4,
+                    stroke: false,
+                    fillColor: '#009800',
+                    fillOpacity: frame_opacity,
+                }).addTo(matched_track_frames_layer);
+            }
+
+            frame_marker = L.circleMarker(frame.point, {
+                radius: 4,
+                stroke: false,
+                fillColor: '#00ffff',
+                fillOpacity: frame_opacity,
+            }).addTo(track_frames_layer);
+            frame_popup = L.popup({ maxWidth: "auto", autoPan: false });
+            frame_popup.setContent(get_frame_popup_content(frame));
+            frame_marker.bindPopup(frame_popup);
+            make_marker_open_frame_on_click(
+                frame_marker,
+                window.location.origin + window.frame_url_template.replace('frame_id_placeholder', frame.id),
+            );
+            make_marker_popupable(frame_marker);
+            if (matched_frame_marker != null) {
+                matched_frame_marker.bindPopup(frame_popup);
+                make_marker_open_frame_on_click(
+                    matched_frame_marker,
+                    window.location.origin + window.frame_url_template.replace('frame_id_placeholder', frame.id),
+                );
+                make_marker_popupable(matched_frame_marker);
+            }
+
+            {% if track_localization_enabled %}
+            for (const loc_detection_index in frame.detections.localized) {
+                let loc_detection = frame.detections.localized[loc_detection_index];
+
+                let detection_cluster_color = '#dd38ff';
+                if (loc_detection.detected_object_id) {
+                    if (!detected_object_color[loc_detection.detected_object_id]) {
+                        detected_object_color[loc_detection.detected_object_id] = randomClusterColor();
+                    }
+                    detection_cluster_color = detected_object_color[loc_detection.detected_object_id];
+                }
+
+                if (!label_layers[loc_detection.params.label]) {
+                    label_layers[loc_detection.params.label] = L.featureGroup([]);
+                    label_layers_connections[loc_detection.params.label] = L.featureGroup([]);
+                    map.addLayer(label_layers[loc_detection.params.label]);
+                    map.addLayer(label_layers_connections[loc_detection.params.label]);
+                    layer_controls.addOverlay(
+                        label_layers[loc_detection.params.label],
+                        loc_detection.params.label,
+                        loc_detection.detector,
+                    );
+                    layer_controls.addOverlay(
+                        label_layers_connections[loc_detection.params.label],
+                        loc_detection.params.label,
+                        loc_detection.detector + '_conns',
+                    );
+                }
+
+                if (loc_detection.detected_object_id) {
+                    let detected_object = window.detected_objects[loc_detection.detected_object_id];
+                    // detection to detected object
+                    L.polyline(
+                        [
+                            loc_detection.point,
+                            detected_object.point,
+                        ],
+                        {
+                            color: '#7070ff',
+                        },
+                    ).addTo(label_layers[loc_detection.params.label]);
+
+                    if (!drawed_objects[loc_detection.detected_object_id]) {
+                        // detected object
+                        let detected_object_marker = L.circleMarker(detected_object.point, {
+                            radius: 4,
+                            stroke: true,
+                            color: '#000000',
+                            weight: '1',
+                            fillColor: detection_cluster_color,
+                            fillOpacity: 1,
+                        }).addTo(label_layers[loc_detection.params.label]);
+                        detected_object_marker.on('mouseover', onMarkerMouseOver);
+                        detected_object_marker.on('mouseout', onMarkerMouseOut);
+                        detected_object_marker.on('click', function (e) {
+                            this.openPopup();
+                        });
+                        let detected_object_popup = L.popup();
+                        detected_object_popup.setContent(get_object_popup_content(detected_object));
+                        detected_object_marker.bindPopup(detected_object_popup);
+
+                        drawed_objects[loc_detection.detected_object_id] = detected_object;
+                    }
+                }
+
+                // frame to detection
+                L.polyline([frame_point, loc_detection.point], {
+                    color: '#3388ff',  // default
+                }).addTo(label_layers_connections[loc_detection.params.label]);
+                // TODO: highlight frame marker & connnecting line on connecting line hover
+                // detection
+                let detection_marker = L.circleMarker(loc_detection.point, {
+                    radius: 4,
+                    stroke: false,
+                    fillColor: detection_cluster_color,
+                    fillOpacity: 1,
+                }).addTo(label_layers[loc_detection.params.label]);
+                detection_popup = L.popup({ maxWidth: "auto", autoPan: false });
+                detection_popup.setContent(get_detection_popup_content(loc_detection, frame_point));
+                detection_marker.bindPopup(detection_popup);
+                make_marker_popupable(detection_marker);
+                make_marker_open_frame_on_click(
+                    detection_marker,
+                    window.location.origin + window.frame_url_template.replace('frame_id_placeholder', frame.id),
+                );
+            }
+            {% endif %}
+        }
+
+    </script>
+
+</html>

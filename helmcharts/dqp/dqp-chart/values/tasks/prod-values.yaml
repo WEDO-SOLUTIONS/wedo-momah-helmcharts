@@ -1,0 +1,25 @@
+name: dqp-tasks-api
+namespace: urbi
+replicaCount: 3
+image: registry.momrah.gov.sa/urbi-omar/dqp-tasks-api-prod:v0.3
+containerPort: 8084
+servicePort: 80
+serviceType: ClusterIP
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+ingress:
+  name: be-dqp-tasks-api
+  host: dqp.momah.gov.sa
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  paths:
+    - path: /dqp/tasks/api/v2(/|$)(.*)
+
+
+cronjob:
+  enabled: false
+

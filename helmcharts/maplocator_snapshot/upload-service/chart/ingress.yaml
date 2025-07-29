@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: be-maplocator-snapshot
+  namespace: urbi
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: urbi
+  rules:
+  - host: urbi-lifestyle-stg.momrah.gov.sa
+    http:
+      paths:
+      - backend:
+          service:
+            name: maplocator-snapshot-service
+            port:
+              number: 5000
+        path: /upload-snap
+        pathType: Prefix
+      - backend:
+          service:
+            name: maplocator-snapshot-service
+            port:
+              number: 5000
+        path: /get-snap
+        pathType: Prefix
+  tls:
+  - hosts:
+    - urbi-lifestyle-stg.momrah.gov.sa

@@ -1,0 +1,559 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Frames') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link href="/static/select2/4.1/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.js"></script>
+    <script src="/static/bootstrap-datepicker/1.9.0/bootstrap-datepicker.ru.min.js"
+            charset="UTF-8"></script>
+    <script src="/static/select2/4.1/select2.min.js"></script>
+    <script>
+      $(document).ready(function () {
+          document.getElementById('nav_frames').className = 'active';
+          $('.select2').select2();
+          $("#interest_zone_region_selector").select2({
+              multiple: true,
+          });
+      });
+
+        document.onkeydown = function (event) {
+            var modal = $('#framePreviewModal');
+            if (modal.css('display') !== 'none') {
+                switch (event.keyCode) {
+                    case 37:
+                        prevFrame(modal);
+                        break;
+                    case 39:
+                        nextFrame(modal);
+                        break;
+                    case 32:
+                        event.preventDefault();
+                        toggleCheckbox(modal);
+                        break;
+                }
+            }
+        };
+
+        function prevFrame(modal) {
+            var prevFrameId = modal.data('prev_frame_id');
+            var prevBtn = $('a[data-frameid="' + prevFrameId + '"]');
+
+            updateModalData(prevBtn, modal);
+            updateModalWithFrame(modal);
+        }
+
+        function nextFrame(modal) {
+            var nextFrameId = modal.data('next_frame_id');
+            var nextBtn = $('a[data-frameid="' + nextFrameId + '"]');
+
+            updateModalData(nextBtn, modal);
+            updateModalWithFrame(modal);
+        }
+
+        function toggleCheckbox(modal) {
+            var frame_id = modal.data('frame_id');
+            var checkbox = $('#cb_inner_' + frame_id);
+            checkbox.prop('checked', !checkbox.prop('checked'));
+            $('input[name="frameCheckbox"]#cb_' + frame_id).prop('checked', checkbox.prop('checked'));
+        }
+
+        function updateModalData(button, modal) {
+            modal.data('frame_id', button.data('frameid'));
+            modal.data('uploaded_photo', button.data('uploadedphoto'));
+            modal.data('is_first_item', button.data('isfirstitem'));
+            modal.data('is_last_item', button.data('islastitem'));
+            modal.data('prev_frame_id', button.data('prevframeid'));
+            modal.data('prev_uploaded_photo', button.data('prevuploadedphoto'));
+            modal.data('next_frame_id', button.data('nextframeid'));
+            modal.data('next_uploaded_photo', button.data('nextuploadedphoto'));
+        }
+
+        function updateModalWithFrame(modal) {
+            let frame_id = modal.data('frame_id');
+            let frame_preds_url = `{{ frame_with_predictions_url_template | replace('frame_id_placeholder', '${frame_id}') | safe }}`
+            let frame_page_url = `{{ frame_page_url_template | replace('frame_id_placeholder', '${frame_id}') | safe }}`
+
+            modal.find('#framePreviewFrameId').text(frame_id);
+            modal.find('#framePreviewLink').attr('href', frame_page_url);
+
+            if (modal.data('is_first_item') === 'True') {
+                $('#prevFrame').css('visibility', 'hidden');
+            } else {
+                $('#prevFrame').css('visibility', 'visible');
+            }
+
+            if (modal.data('is_last_item') === 'True') {
+                $('#nextFrame').css('visibility', 'hidden');
+            } else {
+                $('#nextFrame').css('visibility', 'visible');
+            }
+
+            if (modal.data('uploaded_photo') === 'True') {
+                modal.find('#modalBody').html(`
+                    <a role="button" data-dismiss="modal"><img id="framePreviewImg" style="width: 100%" src="${frame_preds_url}""></a>
+                `)
+
+                var checked = $('#cb_' + frame_id).prop('checked') ? 'checked' : '';
+                modal.find('#framePreviewCheckbox').html(`
+                    <input type="checkbox" class="form-check-input" id="cb_inner_${frame_id}" name="frameInnerCheckbox" style="transform: scale(2);" ${checked}>
+                    <label class="form-check-label" for="cb_inner_${frame_id}"></label>
+                `);
+            } else {
+                modal.find('#modalBody').html(`
+                    <p>{{ _('Photo not uploaded') }}</p>
+                `);
+                modal.find('#framePreviewCheckbox').html('');
+            }
+        }
+
+        $('#framePreviewModal').on('show.bs.modal', function (event) {
+            var modal = $(this);
+            var button = $(event.relatedTarget);
+
+            updateModalData(button, modal);
+            updateModalWithFrame(modal);
+        });
+
+        $('#prevFrame').click(function() {
+            var modal = $('#framePreviewModal');
+            prevFrame(modal)
+        });
+
+        $('#nextFrame').click(function() {
+            var modal = $('#framePreviewModal');
+            nextFrame(modal)
+        });
+
+      $('#framePreviewModal').on('change', 'input[type="checkbox"][name="frameInnerCheckbox"]', function() {
+          var frame_id = $(this).attr('id').split('_')[2];
+          $('input[name="frameCheckbox"]#cb_' + frame_id).prop('checked', $(this).prop('checked'));
+      });
+
+      function selectAllFrameCheckboxes(source) {
+          let checkboxes = document.getElementsByName('frameCheckbox')
+          for (let i = 0; i < checkboxes.length; i++) {
+              checkboxes[i].checked = source.checked
+          }
+      }
+
+      async function predictSelected() {
+          let checkboxes = document.getElementsByName('frameCheckbox')
+          let selectedFrameIds = []
+          for (let i = 0; i < checkboxes.length; i++) {
+              if (!checkboxes[i].checked) {
+                  continue
+              }
+              selectedFrameIds.push(checkboxes[i].id.split('_')[1])
+          }
+          let predictor = getSelectedPredictor()
+          let prompt = getSelectedPredictorPrompt();
+
+          request = {
+              frame_ids: selectedFrameIds,
+              predictor: predictor,
+              prompt: prompt,
+          }
+          await $.ajax(
+              {
+                  type: "POST",
+                  url: '{{ url_for('predict_frames') }}',
+                  data: JSON.stringify(request),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (result) {
+                      predictor = result['predictor']
+                      framesSended = '{{ _('frames_sended') }}'
+
+                      resultHtml = [
+                          `${framesSended} ${predictor} <br>`,
+                      ].join('')
+                      $('#resultMessage').html(resultHtml);
+                      $('#resultModal').modal('show');
+                  },
+                  error: function (xhr, status, error) {
+                      framesSendError = '{{ _('frames_send_error') }}'
+                      $('#resultMessage').html(framesSendError);
+                      $('#resultModal').modal('show');
+                  }
+
+              }
+          )
+     }
+
+     {% if 'pro' is feature_enabled %}
+
+     async function sendToProSelectedFrames() {
+          let checkboxes = document.getElementsByName('frameCheckbox')
+          let selectedFrames = []
+          for (let i = 0; i < checkboxes.length; i++) {
+              if (!checkboxes[i].checked) {
+                  continue
+              }
+
+              let frameId = checkboxes[i].id.split('_')[1]
+              let frameTrackUUID = document.getElementById('frameTrackUUID_' + frameId).textContent
+              selectedFrames.push({frame_id: frameId, track_uuid: frameTrackUUID})
+          }
+
+          await $.ajax(
+              {
+                  type: "POST",
+                  url: '{{ url_for('api_pro_resend_frames') }}',
+                  data: JSON.stringify(selectedFrames),
+                  contentType: "application/json; charset=utf-8",
+                  success: function (result) {
+                      $('#resultMessage').html('')
+                      $('#resultMessage').append(`<div id="sended">{{ _('Фреймы отправлены в Pro') }}</div>`)
+                      $('#resultModal').modal('show');
+                  },
+                  error: function (xhr, status, error) {
+                      alert('Error send to PRO')
+                  }
+
+              }
+          )
+     }
+     {% endif %}
+
+     async function uploadSelectedToCVAT(){
+          let checkboxes = document.getElementsByName('frameCheckbox')
+          let selectedFrameIds = []
+          for (let i = 0; i < checkboxes.length; i++) {
+              if (!checkboxes[i].checked) {
+                  continue
+              }
+              selectedFrameIds.push(checkboxes[i].id.split('_')[1])
+          }
+          let selectedProject = $('#cvatProjectSelect').val()
+          let projectName = $('#cvatProjectName').val()
+          if (selectedProject !== "") {
+              projectName = selectedProject
+          }
+          request = {
+              frame_ids: selectedFrameIds,
+              project_name: projectName,
+          }
+          await $.ajax(
+              {
+                  type: "POST",
+                  url: '{{ url_for('upload_frames_to_cvat') }}',
+                  data: JSON.stringify(request),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function (result) {
+                      resultHtml = `<a target="_blank" href="/cvat_upload_status/${result['upload_uuid']}">Upload UUID: ${result['upload_uuid']}</a>`
+                      $('#cvatUploadMessage').html(resultHtml);
+                      $('#cvatUploadModal').modal('show');
+                  },
+                  error: function (xhr, status, error) {
+                      alert('error')
+                  }
+              }
+          )
+     }
+
+  </script>
+  {% include "predictors_form_scripts.html" %}
+
+  {% if cvat_uploading_enabled %}
+  {% include "cvat_form_scripts.html" %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .close {
+            margin-left: 30%;
+        }
+    </style>
+
+    <div class="modal fade" id="framePreviewModal" tabindex="-1" role="dialog" aria-labelledby="framePreviewModalLabel">
+      <div class="modal-dialog" role="document" style="width: 90%">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div class="d-flex" style="display: flex; justify-content: space-between; align-items: center;">
+                  <a id="framePreviewLink" style="width: 20%">
+                      <h4 class="modal-title" id="framePreviewModalLabel">{{ _('Frame') }} <span id="framePreviewFrameId"></span></h4>
+                  </a>
+                  <button id="prevFrame" class="btn btn-default"><i class="fa fa-arrow-left"></i></button>
+                  <div class="checkbox-inner" id="framePreviewCheckbox"></div>
+                  <button id="nextFrame" class="btn btn-default"><i class="fa fa-arrow-right"></i></button>
+              </div>
+          </div>
+          <div class="modal-body" id="modalBody"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+        <div class="starter-template">
+            <form>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Track ID') }}</span>
+                            <input
+                                id="track_uuid_input"
+                                name="track_uuid"
+                                type="text"
+                                class="form-control"
+                                placeholder="..."
+                                value="{{ query_params.track_uuid if query_params.track_uuid is not none else '' }}"
+                            >
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                          <span class="input-group-addon">{{ _('От') }}</span>
+                          <input name="from_date" type="text" class="form-control" value="{{ query_params.from_date }}" required>
+                          <div class="input-group-addon">
+                              <span class="glyphicon glyphicon-th"></span>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="input-group">
+                        <span class="input-group-addon">Predictor</span>
+                        <select class="form-control" id="filter-predictor-select" name="predictor">
+                          {% for predictor_name in [""] + search_predictors_names %}
+                            <option value="{{ predictor_name }}" {% if predictor_name == query_params.predictor %}selected {% endif %}>
+                              {% if predictor_name %}
+                              {{ predictor_name }}
+                              {% else %}
+                               all
+                              {% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  <div class="col-md-2">
+                      <div class="input-group">
+                       <span class="input-group-addon">prob</span>
+                       <input
+                           type="number"
+                           class="form-control"
+                           id="prob_min"
+                           placeholder="from"
+                           name="prob_min"
+                           step="0.001"
+                           min="0"
+                           max="1"
+                           value="{{ query_params.prob_min if query_params.prob_min is not none else none }}"
+                       >
+                      </div>
+                  </div>
+                 <div class="col-md-1">
+                         <input
+                             type="number"
+                             class="form-control"
+                             id="prob_max"
+                             placeholder="to"
+                             name="prob_max"
+                             step="0.001"
+                             min="0"
+                             max="1"
+                             value="{{ query_params.prob_max if query_params.prob_max is not none else none }}"
+                         >
+                 </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Frame IDs') }}</span>
+                            <input
+                                id="frame_ids_input"
+                                name="frame_ids"
+                                type="text"
+                                class="form-control"
+                                placeholder="{{ _('frame_ids_placeholder') }}"
+                                value="{{ query_params.frame_ids_raw if query_params.frame_ids_raw is not none else '' }}"
+                            >
+                        </div>
+                    </div>
+                  <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker" data-date-format="dd-mm-yyyy">
+                        <span class="input-group-addon">{{ _('До') }}</span>
+                        <input name="to_date" type="text" class="form-control" value="{{ query_params.to_date }}" required>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <div class="input-group">
+                       <span class="input-group-addon">Label</span>
+                       <input
+                           type="text"
+                           class="form-control"
+                           id="selected_label"
+                           placeholder=""
+                           name="label"
+
+                           value="{{ query_params.label if query_params.label is not none else '' }}"
+                       >
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{ _('Polygon') }}</span>
+                            <select class="select2 form-control" id="interest_zone_region_selector" name="interest_zone_regions" size="1" multiple="multiple" style="width: 100%">
+                                {% for region in search_regions %}
+                                    <option
+                                        value="{{ region.id }}"
+                                        {%- if region.id in query_params.interest_zone_regions %} selected {% endif %}
+                                        >{{ region.zone_name }}: {{ region.region_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="input-group">
+                        <span class="input-group-addon">{{ _('PRO Moderation Status') }}</span>
+                        <select class="form-control" id="filter-moderation-status-select" name="moderation_status">
+                          {% for moderation_status in [""] + moderation_statuses %}
+                            <option value="{{ moderation_status.value }}" {% if moderation_status.value == query_params.moderation_status %}selected {% endif %}>
+                              {% if moderation_status %}
+                              {{ _(moderation_status.name) }}
+                              {% else %}
+                              {{ _('moderation_status_all') }}
+                              {% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  <div class="col-md-3"></div>
+                  <div class="col-md-1">
+                    <button type="submit" class="btn btn-default">{{ _('Submit') }}</button>
+                  </div>
+                </div>
+            </form>
+            {% if frames %}
+                {% if 'fiji' is feature_enabled %}
+                <div class="row">
+                    <a href="{{ url_for("download_crops", **download_params) }}">
+                        <button class="glyphicon glyphicon-save-file">Download crops</button>
+                    </a>
+                    <a href="{{ url_for("download_frames", **download_params) }}">
+                        <button class="glyphicon glyphicon-save-file">Download frames</button>
+                    </a>
+                    <a href="{{ url_for("download_predictions", **download_params) }}">
+                        <button class="glyphicon glyphicon-save-file">Download predictions</button>
+                    </a>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <table class="table table-striped table-sm">
+                        <tr>
+                            <th>{{ _('Frame ID') }}</th>
+                            <th>{{ _('Time') }}</th>
+                            <th>{{ _('Signs') }}</th>
+                            <th>{{ _('FrameAttributes') }}</th>
+                            <th>{{ _('Position') }}</th>
+                            <th>{{ _('Frame') }}</th>
+                            <th>
+                                <input type="checkbox" class="form-check-input" id="checkboxFrameAll"
+                                       onclick="selectAllFrameCheckboxes(this)">
+                                <label class="form-check-label" for="checkboxFrameAll"> </label>
+                            </th>
+                        </tr>
+                        {% for frame in frames %}
+                            <tr>
+                                <td><a href="{{ url_for("frame", frame_id=frame.id) }}" title="Frame id: {{ frame.id }}"><span style="font-size: 80%">{{ frame.id }}</span></a></td>
+                                <td>{{ frame.date|prettify_time_ms }}</td>
+                                <td>{{ signs_stat[frame.id] }}</td>
+                                <td id="frame-{{ frame.id }}-attributes">{{ frames_attributes.get_frame_attributes(frame.id) }}</td>
+                                <td>
+                                    <a href="/map?point={{ frame.lon }},{{ frame.lat }}">
+                                        <i class="fa fa-map-marker"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for("frame", frame_id=frame.id) }}"><i class="fa fa-image"></i></a>
+                                    <a
+                                        role="button"
+                                        data-toggle="modal"
+                                        data-target="#framePreviewModal"
+                                        data-frameid="{{ frame.id }}"
+                                        data-uploadedphoto="{{ frame.uploaded_photo }}"
+                                        {% if loop.previtem %}
+                                        data-prevframeid="{{ loop.previtem.id }}"
+                                        data-prevuploadedphoto="{{ loop.previtem.uploaded_photo }}"
+                                        {% endif %}
+                                        data-isfirstitem="{{ loop.first }}"
+                                        {% if loop.nextitem %}
+                                        data-nextframeid="{{ loop.nextitem.id }}"
+                                        data-nextuploadedphoto="{{ loop.nextitem.uploaded_photo }}"
+                                        {% endif %}
+                                        data-islastitem="{{ loop.last }}"
+                                        {% if not frame.uploaded_photo %} style="display: none;" {% endif %}>
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                  {% if frame.uploaded_photo %}
+                                    <input type="checkbox" class="form-check-input" id="cb_{{ frame.id }}" name="frameCheckbox">
+                                    <label class="form-check-label" for="cb_{{ frame.id }}"></label>
+                                  {% endif %}
+                                </td>
+                                <td style="display: none;" id="frameTrackUUID_{{ frame.id }}">{{ frame.track_uuid }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% else %}
+                <p>{{ _('No matching frames found') }}</p>
+            {% endif %}
+            {% if 'pro' is feature_enabled %}
+            <div class="row">
+                <button class="btn btn-default" onclick="sendToProSelectedFrames()">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    {{ _('Отправить в PRO') }}
+                </button>
+            </div>
+            {% endif %}
+         {% include "predictors_form.html" %}
+         {% if cvat_uploading_enabled %}
+           {% include "cvat_form.html" %}
+         {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

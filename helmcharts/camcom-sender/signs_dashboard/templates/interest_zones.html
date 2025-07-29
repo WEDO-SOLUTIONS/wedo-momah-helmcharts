@@ -1,0 +1,238 @@
+{% extends "navbar.html" %}
+
+{% block title %}{{ _('Interest zones') }}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link id="bsdp-css" href="/static/bootstrap-datepicker3/1.9.0/bootstrap-datepicker3.min.css"
+          rel="stylesheet">
+    <link href="/static/select2/4.1/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/font-awesome/4.7.0/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/leaflet/leaflet.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/leaflet/leaflet.js"></script>
+    <script src="/static/select2/4.1/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            try {
+                document.getElementById('nav_interest_zones').className = 'active';
+            } catch (e) {
+                console.log('Unable to update navbar selection: ' + e);
+            }
+
+            $('.select2').select2({
+                width: 'resolve',
+            });
+
+            $('#deleteInterestZoneModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var deleteEndpoint = button.data('delete-endpoint');
+                var zoneName = button.data('zone-name');
+                var modal = $(this);
+                modal.find('#delete_iz_name').text(zoneName);
+                modal.find('form').attr('action', deleteEndpoint);
+            });
+        });
+        function set_spinner() {
+            $('div.overlay').addClass('overlay-show');
+            $('div.spanner').addClass('overlay-show');
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 0px 15px;
+            text-align: center;
+        }
+
+        .table {
+            text-align: left;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .spanner{
+          position:absolute;
+          top: 20%;
+          left: 0;
+          width: 100%;
+          display:block;
+          text-align:center;
+          height: 300px;
+          color: #FFF;
+          transform: translateY(-20%);
+          z-index: 10001;
+          visibility: hidden;
+        }
+        .overlay{
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0px;
+          z-index: 10000;
+          background: rgba(0,0,0,0.5);
+          visibility: hidden;
+        }
+        .overlay-show{
+          visibility: visible;
+        }
+    </style>
+
+    <div class="modal fade" id="addInterestZoneModal" tabindex="-1" role="dialog" aria-labelledby="addInterestZoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addInterestZoneModalLabel">{{ _('Add interest zone') }}</h5>
+                </div>
+                <form
+                    method="post"
+                    action="{{ url_for('add_interest_zone') }}"
+                    enctype="multipart/form-data"
+                >
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add_iz_zone_name">{{ _('Interest zone name') }}</label>
+                            <input
+                                type="text"
+                                id="add_iz_zone_name"
+                                name="zone_name"
+                                class="form-control"
+                                placeholder="{{ _('New interest zone name') }}"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="add_iz_zone_type">{{ _('Interest zone type') }}</label>
+                            <select id="add_iz_zone_type" name="zone_type" class="form-control select2" style="width: 100%" required>
+                            {% for zone_type in known_zone_types %}
+                                <option value="{{ zone_type.name }}">{{ _('zone_type__' + zone_type.name) }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_iz_regions">{{ _('Interest zone regions') }}</label>
+                            <input type="file" id="add_iz_regions" name="regions" class="form-control" accept=".geojson" required>
+                            <small class="form-text text-muted help-block">
+                                {{ _('Please select GeoJSON file. The file should contain a FeatureCollection with features of type Polygon.') }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="text-align: left">
+                        <div class="row" style="margin-bottom: 0px">
+                            <div class="col-md-6" style="text-align: left">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
+                            </div>
+                            <div class="col-md-6" style="text-align: right">
+                                <button type="submit" class="btn btn-primary" onclick="set_spinner()">
+                                    <span class="glyphicon glyphicon-plus"></span> {{ _('Add interest zone') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteInterestZoneModal" tabindex="-1" role="dialog" aria-labelledby="deleteInterestZoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteInterestZoneModalLabel">{{ _('Deleting interest zone') }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p>
+                            {{ _('Please confirm deletion of interest zone') }} "<span id="delete_iz_name"></span>"
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row" style="margin-bottom: 0px">
+                        <div class="col-md-6" style="text-align: left">
+                            <button type="submit" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
+                        </div>
+                        <div class="col-md-6" style="text-align: right">
+                            <form method="post" enctype="multipart/form-data">
+                                <button type="submit" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ _('Delete interest zone') }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+    <div class="spanner">
+        <p>{{ _('Adding interest zone..') }}</p>
+    </div>
+
+
+    <div class="container">
+        <div class="starter-template">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped table-sm">
+                        <tr>
+                            <th>#</th>
+                            <th>{{ _('Name') }}</th>
+                            <th>{{ _('Type') }}</th>
+                            <th>{{ _('Actions') }}</th>
+                        </tr>
+                        {% for zone in zones %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ zone.name }}</td>
+                            <td>{{ _('zone_type__' + zone.zone_type.name) }}</td>
+                            <td>
+                                <a role="button" href="{{ url_for('view_interest_zone', zone_name=zone.name) }}" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a download role="button" class="btn btn-default" href="{{ url_for('download_zone_geojson', zone_name=zone.name) }}">
+                                    <span class="glyphicon glyphicon-download"></span>
+                                </a>
+                                <button
+                                    role="button"
+                                    class="btn btn-default"
+                                    data-toggle="modal"
+                                    data-target="#deleteInterestZoneModal"
+                                    data-delete-endpoint="{{ url_for('delete_interest_zone', zone_name=zone.name) }}"
+                                    data-zone-name="{{ zone.name }}"
+                                >
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="text-align: left">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addInterestZoneModal">
+                        <span class="glyphicon glyphicon-plus"></span> {{ _('Add interest zone') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
