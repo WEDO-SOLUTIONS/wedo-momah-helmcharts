@@ -17,5 +17,8 @@ data:
   REGION_ID_URL: {{ .Values.env.REGION_ID_URL }}
   LOG_LEVEL: {{ .Values.env.LOG_LEVEL }}
   PORT: "{{ .Values.env.PORT }}"
-  REDIS_CACHE: "{{ .Values.env.REDIS_CACHE }}"
+  REDIS_CACHE: {{ .Values.env.REDIS_CACHE }}
+  REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME }}
+  REDIS_PORT: {{ .Values.env.REDIS_PORT }}
+
 
