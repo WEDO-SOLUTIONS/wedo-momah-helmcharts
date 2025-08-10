@@ -36,9 +36,9 @@ env:
   REGION_ID_URL: http://catalog-api/2.0/region/search
   LOG_LEVEL: info
   PORT: "3000"
-  REDIS_CACHE: true
+  REDIS_CACHE: "true"
   REDIS_HOSTNAME: redis-redis-cluster
-  REDIS_PORT: 6379
+  REDIS_PORT: "6379"
   REDIS_PASSWORD: CVb7saZB4Rtu
 
 # Sensitive environment variables (Secret)

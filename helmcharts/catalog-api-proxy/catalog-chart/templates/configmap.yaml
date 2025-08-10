@@ -19,6 +19,6 @@ data:
   PORT: "{{ .Values.env.PORT }}"
   REDIS_CACHE: "{{ .Values.env.REDIS_CACHE }}"
   REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME }}
-  REDIS_PORT: {{ .Values.env.REDIS_PORT }}
+  REDIS_PORT: "{{ .Values.env.REDIS_PORT }}""
 
 
