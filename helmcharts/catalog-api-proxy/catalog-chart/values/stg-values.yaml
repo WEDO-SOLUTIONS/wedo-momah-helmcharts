@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 1
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.42
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.43
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -34,9 +34,9 @@ env:
   RCMC_AREA_URL: http://rcmc-markers-api/1.0/rcmc-area
   BY_CATEGORY_URL: http://catalog-api/2.0/catalog/rubric/get
   REGION_ID_URL: http://catalog-api/2.0/region/search
-  LOG_LEVEL: info
+  LOG_LEVEL: debug
   PORT: "3000"
-  REDIS_CACHE: "true"
+  REDIS_CACHE: "false"
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: "6379"
   REDIS_PASSWORD: CVb7saZB4Rtu
