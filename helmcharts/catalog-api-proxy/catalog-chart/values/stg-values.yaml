@@ -1,7 +1,7 @@
 # Release metadata
 name: catalog-api-proxy
 namespace: urbi
-replicaCount: 4
+replicaCount: 1
 
 # Docker image configuration
 image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.45
