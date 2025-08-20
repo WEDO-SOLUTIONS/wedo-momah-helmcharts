@@ -40,12 +40,17 @@ env:
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: "6379"
   REDIS_PASSWORD: CVb7saZB4Rtu
+  KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
+  KAFKA_USERNAME : admin
+  KAFKA_TOPIC : dsvc.staging.catalog-api-proxy.google-pois.discrepancy
+  DISCREPANCY_API : http://catalog-api/api/2.0/discrepancy
 
 # Sensitive environment variables (Secret)
 secret:
   REDIS_PASSWORD: "P@ssw0rd"
   AI_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
   AI_GOOGLE_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
+  KAFKA_PASSWORD : "AbsI9dyM8VsXM9MjiQtiWy"
 
 # Ingress configuration
 ingress:
