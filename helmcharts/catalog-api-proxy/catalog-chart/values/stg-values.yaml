@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 1
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.54
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.55
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -43,7 +43,7 @@ env:
   KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
   KAFKA_USERNAME : admin
   KAFKA_TOPIC : dsvc.staging.catalog-api-proxy.google-pois.discrepancy
-  DISCREPANCY_API : http://catalog-api/2.0/discrepancy
+  DISCREPANCY_API : http://balady-discrepancy/2.0/discrepancy
 
 # Sensitive environment variables (Secret)
 secret:
