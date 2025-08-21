@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 6
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.13
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.14
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -34,11 +34,16 @@ env:
   LOG_LEVEL: info
   PORT: "3000"
   REDIS_CACHE: false
+  KAFKA_BROKERS : RUHMPV-URBKDB01.momra.net:9092,RUHMPV-URBKDB02.momra.net:9092,RUHMPV-URBKDB03.momra.net:9092
+  KAFKA_USERNAME : admin
+  KAFKA_TOPIC : dsvc.production.catalog-api-proxy.google-pois.discrepancy
+  DISCREPANCY_API : http://balady-discrepancy/2.0/discrepancy
 
 # Sensitive environment variables (Secret)
 secret:
   REDIS_PASSWORD: "P@ssw0rd"
   AI_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
+  KAFKA_PASSWORD: "BZrGhOGfNylaZcXMSRgz4Y"
 
 # Ingress configuration
 ingress:
