@@ -20,6 +20,7 @@ data:
   REDIS_CACHE: "{{ .Values.env.REDIS_CACHE }}"
   REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME }}
   REDIS_PORT: "{{ .Values.env.REDIS_PORT }}"
+  REDIS_PASSWORD: {{ .Values.env.REDIS_PASSWORD }}
   KAFKA_BROKERS: {{ .Values.env.KAFKA_BROKERS }}
   KAFKA_USERNAME: {{ .Values.env.KAFKA_USERNAME }}
   KAFKA_TOPIC: {{ .Values.env.KAFKA_TOPIC }}

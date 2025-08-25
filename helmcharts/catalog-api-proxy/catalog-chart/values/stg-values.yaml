@@ -36,11 +36,10 @@ env:
   REGION_ID_URL: http://catalog-api/2.0/region/search
   LOG_LEVEL: debug
   PORT: "3000"
-  REDIS_CACHE: "true"
+  REDIS_CACHE: "false"
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: "6379"
   REDIS_PASSWORD: CVb7saZB4Rtu
-  REDIS_USERNAME: default
   KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
   KAFKA_USERNAME : admin
   KAFKA_TOPIC : dsvc.staging.catalog-api-proxy.google-pois.discrepancy
