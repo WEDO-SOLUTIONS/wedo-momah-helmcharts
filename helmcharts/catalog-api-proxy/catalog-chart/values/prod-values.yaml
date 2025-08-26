@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 6
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.64
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v1.66
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
