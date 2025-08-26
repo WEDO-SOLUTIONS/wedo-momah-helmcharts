@@ -40,6 +40,7 @@ env:
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: "6379"
   REDIS_PASSWORD: CVb7saZB4Rtu
+  REDIS_USERNAME : default
   KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
   KAFKA_USERNAME : admin
   KAFKA_TOPIC : dsvc.staging.catalog-api-proxy.google-pois.discrepancy
