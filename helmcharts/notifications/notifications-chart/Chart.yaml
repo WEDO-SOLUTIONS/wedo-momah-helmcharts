@@ -1,0 +1,6 @@
+apiVersion: v2
+name: notifications-generic-chart
+description: Unified chart for RBAC Notifications API and UI
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

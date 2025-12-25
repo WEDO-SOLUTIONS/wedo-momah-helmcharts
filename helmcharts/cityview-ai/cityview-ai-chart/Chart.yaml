@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cityview-ai-generic-chart
+description: Unified chart for CityView AI deployments (prod, dev, dev-es, dev-es-ma)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

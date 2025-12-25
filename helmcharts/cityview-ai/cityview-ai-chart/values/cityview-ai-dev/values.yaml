@@ -1,0 +1,91 @@
+name: cityview-ai-dev
+namespace: urbi
+replicaCount: 1
+appVersion: development
+
+image: registry.momrah.gov.sa/urbi-omar/cityview-ai-dev:v0.00020
+imagePullPolicy: IfNotPresent
+containerPort: 8000
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "12"
+    memory: "16Gi"
+  requests:
+    cpu: "4"
+    memory: "8Gi"
+
+env:
+  # Tavily
+  - name: TAVILY_API_KEY
+    value: "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"
+
+  # Azure OpenAI
+  - name: AZURE_OPENAI_ENDPOINT
+    value: "https://citygpt-resource.cognitiveservices.azure.com"
+  - name: AZURE_OPENAI_API_KEY
+    value: "REPLACE_WITH_SECRET_REF"
+  - name: AZURE_OPENAI_API_VERSION
+    value: "2024-12-01-preview"
+  - name: AZURE_OPENAI_DEPLOYMENT_NAME
+    value: "gpt-4.1"
+
+  # MongoDB
+  - name: MONGO_DB_URL
+    value: "mongodb://mongo-dev:27017"
+  - name: MONGO_DB_NAME
+    value: "checkpointing_db"
+  - name: COLLECTION_NAME
+    value: "checkpoints"
+  - name: USERS_COLLECTION_NAME
+    value: "users"
+  - name: THREADS_COLLECTION_NAME
+    value: "threads"
+  - name: MESSAGES_COLLECTION_NAME
+    value: "messages"
+
+  # Langfuse
+  - name: LANGFUSE_SECRET_KEY
+    value: "disabled"
+  - name: LANGFUSE_PUBLIC_KEY
+    value: "disabled"
+  - name: LANGFUSE_HOST
+    value: "https://cloud.langfuse.com"
+
+  # Silence OTEL exporter 401 spam
+  - name: OTEL_SDK_DISABLED
+    value: "true"
+
+  # SSO details
+  - name: OIDC_ISSUER_URL
+    value: "https://ssoapp.balady.gov.sa"
+  - name: OIDC_AUDIENCE
+    value: "https://ssoapp.balady.gov.sa/resources"
+
+  - name: ADMIN_API_TOKEN
+    value: "hPMXxkqJscEo6lyyl0PSMIZlYoJ4pVEwL9HkQw74JY7paAkpp90TvOgr4awB5Upx"
+
+  # SQLite database path
+  - name: SQLITE_DB_PATH
+    value: "/data/local_data.db"
+
+volumeMounts:
+  - name: sqlite-data
+    mountPath: /data
+    readOnly: true
+
+volumes:
+  - name: sqlite-data
+    claimName: sqlite-pvc
+
+ingress:
+  name: be-cityview-ai-dev
+  host: cityview.momah.gov.sa
+  className: urbi
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  proxyReadTimeout: "300"
+  paths:
+    - path: /api-dev(/.*)
+      pathType: ImplementationSpecific

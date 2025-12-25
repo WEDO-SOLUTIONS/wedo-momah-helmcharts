@@ -1,0 +1,40 @@
+name: rbac-notifications-api
+namespace: urbi
+replicaCount: 1
+appVersion: staging
+
+image: registry.momrah.gov.sa/urbi-omar/rbac-notifications-api-stg:v1.0.8
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
+env:
+  - name: SYSTEMTOKEN
+    value: "TOPSECRET"
+
+livenessProbe:
+  path: /health
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+ingress:
+  name: rbac-notifications-api
+  host: baladyeye-stg.momah.gov.sa
+  className: urbi
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  rewriteTarget: /$2/
+  proxyReadTimeout: "3600"
+  proxySendTimeout: "3600"
+  affinity: cookie
+  sessionCookieName: socketio_affinity
+  paths:
+    - path: /notifications-api(/|$)(.*)
+      pathType: ImplementationSpecific

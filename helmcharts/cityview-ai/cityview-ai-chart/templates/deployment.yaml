@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/instance: {{ .Values.name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/version: {{ .Values.appVersion | default "development" }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Values.name }}
+      app.kubernetes.io/name: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Values.name }}
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: {{ .Values.name }}
+        app.kubernetes.io/version: {{ .Values.appVersion | default "development" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+          {{- if .Values.healthCheck }}
+          {{- if .Values.healthCheck.readiness }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.healthCheck.readiness.path }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: {{ .Values.healthCheck.readiness.initialDelaySeconds | default 10 }}
+            periodSeconds: {{ .Values.healthCheck.readiness.periodSeconds | default 10 }}
+            timeoutSeconds: {{ .Values.healthCheck.readiness.timeoutSeconds | default 3 }}
+            failureThreshold: {{ .Values.healthCheck.readiness.failureThreshold | default 6 }}
+          {{- end }}
+          {{- if .Values.healthCheck.liveness }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.healthCheck.liveness.path }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: {{ .Values.healthCheck.liveness.initialDelaySeconds | default 30 }}
+            periodSeconds: {{ .Values.healthCheck.liveness.periodSeconds | default 20 }}
+            timeoutSeconds: {{ .Values.healthCheck.liveness.timeoutSeconds | default 3 }}
+            failureThreshold: {{ .Values.healthCheck.liveness.failureThreshold | default 6 }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.env }}
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+          {{- end }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+            {{- range .Values.volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              {{- if .readOnly }}
+              readOnly: {{ .readOnly }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+      {{- if .Values.volumes }}
+      volumes:
+        {{- range .Values.volumes }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .claimName }}
+        {{- end }}
+      {{- end }}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

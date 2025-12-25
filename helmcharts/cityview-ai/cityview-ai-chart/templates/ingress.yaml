@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: {{ .Values.ingress.corsAllowMethods | default "GET, POST, PUT, DELETE, OPTIONS, PATCH" }}
+    nginx.ingress.kubernetes.io/cors-allow-headers: {{ .Values.ingress.corsAllowHeaders | quote }}
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .Values.ingress.proxyReadTimeout | default "300" | quote }}
+    {{- if .Values.ingress.proxyBuffering }}
+    nginx.ingress.kubernetes.io/proxy-buffering: {{ .Values.ingress.proxyBuffering | quote }}
+    {{- end }}
+    {{- if .Values.ingress.configurationSnippet }}
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+{{ .Values.ingress.configurationSnippet | indent 6 }}
+    {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className | default "urbi" }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      {{- range .Values.ingress.paths }}
+      - path: {{ .path }}
+        pathType: {{ .pathType | default "ImplementationSpecific" }}
+        backend:
+          service:
+            name: {{ $.Values.name }}
+            port:
+              number: {{ $.Values.servicePort }}
+      {{- end }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
