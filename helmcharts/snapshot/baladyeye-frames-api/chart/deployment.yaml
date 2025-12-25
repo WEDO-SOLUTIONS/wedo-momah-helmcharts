@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baladyeye-frames-api
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: baladyeye-frames-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: baladyeye-frames-api
+    app.kubernetes.io/version: 0.0.0.1
+    helm.sh/chart: baladyeye-frames-api-0.1.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: baladyeye-frames-api
+      app.kubernetes.io/name: baladyeye-frames-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: baladyeye-frames-api
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: baladyeye-frames-api
+        app.kubernetes.io/version: 0.0.0.1
+        helm.sh/chart: baladyeye-frames-api-0.1.0
+    spec:
+      containers:
+        - name: baladyeye-frames-api
+          image: registry.momrah.gov.sa/urbi-omar/cityview-frames-api:v0.007
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+

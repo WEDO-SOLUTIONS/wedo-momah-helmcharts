@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: maplocator-snapshot-api-pvc
+  namespace: urbi
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: oci-block-volume
+  resources:
+    requests:
+      storage: 3Gi

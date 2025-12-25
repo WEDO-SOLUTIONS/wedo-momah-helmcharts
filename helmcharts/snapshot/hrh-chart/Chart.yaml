@@ -1,0 +1,7 @@
+apiVersion: v2
+name: cityview-hrh-app
+description: Helm chart for CityView HRH UI
+type: application
+version: 0.0.1
+appVersion: "v0.51"
+

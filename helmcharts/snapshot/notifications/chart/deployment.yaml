@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rbac-notifications-api
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: rbac-notifications-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: rbac-notifications-api
+    app.kubernetes.io/version: staging
+    helm.sh/chart: rbac-notifications-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: rbac-notifications-api
+      app.kubernetes.io/name: rbac-notifications-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: rbac-notifications-api
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: rbac-notifications-api
+        app.kubernetes.io/version: staging
+        helm.sh/chart: rbac-notifications-api
+    spec:
+      containers:
+        - name: rbac-notifications-api
+          image: registry.momrah.gov.sa/urbi-omar/rbac-notifications-api-stg:v1.0.8
+          ports:
+            - containerPort: 80
+              protocol: TCP
+
+         # Added environment variable here
+          env:
+            - name: SYSTEMTOKEN
+              value: "TOPSECRET"
+
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

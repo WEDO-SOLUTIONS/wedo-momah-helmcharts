@@ -1,0 +1,20 @@
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cityview-reporting-apis
+  namespace: urbi
+  labels:
+    app.kubernetes.io/name: cityview-reporting-apis
+    app.kubernetes.io/instance: cityview-reporting-apis
+spec:
+  selector:
+    app.kubernetes.io/name: cityview-reporting-apis
+    app.kubernetes.io/instance: cityview-reporting-apis
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80          # cluster-facing port
+      targetPort: 8080  # container port from Deployment
+  type: ClusterIP
+

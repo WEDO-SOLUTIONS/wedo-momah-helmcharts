@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: maplocator-snapshot-api-service
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: maplocator-snapshot-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: maplocator-snapshot-api
+spec:
+  selector:
+    app.kubernetes.io/instance: maplocator-snapshot-api
+    app.kubernetes.io/name: maplocator-snapshot-api
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP

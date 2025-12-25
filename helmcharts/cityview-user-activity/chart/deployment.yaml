@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cityview-users-activity
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: cityview-users-activity
+    app.kubernetes.io/name: cityview-users-activity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: cityview-users-activity
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: cityview-users-activity
+        app.kubernetes.io/name: cityview-users-activity
+    spec:
+      serviceAccountName: user-activity-logger
+      containers:
+        - name: cityview-users-activity
+          image: registry.momrah.gov.sa/urbi-omar/pro-user-activity:v0.0007 # Make sure this is the latest tag with the corrected .env
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2048Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true

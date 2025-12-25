@@ -1,0 +1,21 @@
+controller:
+  admissionWebhooks:
+    patch:
+      image:
+        digest: ""
+  image:
+    digest: ""
+  extraArgs:
+    default-ssl-certificate: "ingress-nginx/ingress-cert-momrah-gov-sa"
+  service:
+    annotations:
+      oci.oraclecloud.com/load-balancer-type: "nlb"
+      oci-network-load-balancer.oraclecloud.com/is-preserve-source: "false"
+      oci-network-load-balancer.oraclecloud.com/internal: "true"
+    externalTrafficPolicy: Local
+  ingressClass: ingress-nginx
+  ingressClassResource:
+    name: ingress-nginx
+  allowSnippetAnnotations: true
+  config:
+    annotations-risk-level: Critical

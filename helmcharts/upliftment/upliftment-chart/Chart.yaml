@@ -1,0 +1,7 @@
+apiVersion: v2
+name: upliftment-generic-chart
+description: Unified chart for Momtathel Upliftment API and UI
+type: application
+version: 0.0.1
+appVersion: "0.0.1"
+

@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc-dev-es
+  namespace: urbi
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 300Gi
+  storageClassName: oci-bv
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-dev-es
+  namespace: urbi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-dev-es
+  template:
+    metadata:
+      labels:
+        app: mongo-dev-es
+    spec:
+      containers:
+        - name: mongo-dev-es
+          image: mongo:7.0
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: "CityViewGPT-DB"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "8000m"
+              memory: "8096Mi"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongodb-data
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-pvc-dev-es
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-dev-es
+  namespace: urbi
+spec:
+  type: ClusterIP
+  selector:
+    app: mongo-dev-es
+  ports:
+    - name: mongo
+      port: 27017
+      targetPort: 27017
+

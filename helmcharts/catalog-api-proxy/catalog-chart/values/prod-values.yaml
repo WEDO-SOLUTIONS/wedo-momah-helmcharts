@@ -1,0 +1,88 @@
+# Release metadata
+name: catalog-api-proxy
+namespace: urbi
+replicaCount: 6
+
+# Docker image configuration
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.29
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+# Resource requests & limits
+resources:
+  limits:
+    cpu: "2"
+    memory: "1024Mi"
+  requests:
+    cpu: "500m"
+    memory: "128Mi"
+
+# Non-sensitive environment variables (ConfigMap)
+env:
+  BY_ID_URL: http://catalog-api/3.0/items/byid
+  AI_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/place
+  AI_MARKERS_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/marker
+  AI_SUGGEST_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/suggest
+  DEFAULT_PLACES_FORWARD_URL: http://catalog-api/3.0/items
+  DEFAULT_MARKERS_FORWARD_URL: http://catalog-api/3.0/markers
+  DEFAULT_PLACES_FORWARD_URL_BYID: http://catalog-api/3.0/items/byid
+  DEFAULT_SUGGESTS_FORWARD_URL: http://catalog-api/3.0/suggests
+  RCMC_AREA_URL: http://rcmc-markers-api/1.0/rcmc-area
+  BY_CATEGORY_URL: http://catalog-api/2.0/catalog/rubric/get
+  REGION_ID_URL: http://catalog-api/2.0/region/search
+  LOG_LEVEL: debug
+  PORT: "3000"
+  REDIS_CACHE: false
+  KAFKA_BROKERS: RUHMPV-URBKDB01.momra.net:9092,RUHMPV-URBKDB02.momra.net:9092,RUHMPV-URBKDB03.momra.net:9092
+  KAFKA_USERNAME: admin
+  KAFKA_TOPIC: dsvc.production.catalog-api-proxy.google-pois.discrepancy
+  DISCREPANCY_API: http://balady-discrepancy/2.0/discrepancy
+  AI_MARKERS_URL_01: https://oci-r-004c5qktl0w8.escloud.bytepluses.com/v1/search/marker
+  AI_SUGGEST_URL_01: https://oci-r-004c5qktl0w8.escloud.bytepluses.com/v1/search/suggest
+  AI_URL_01: https://oci-r-004c5qktl0w8.escloud.bytepluses.com/v1/search/place
+  AI_MARKERS_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/marker
+  AI_SUGGEST_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/suggest
+  AI_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/place
+  WEIGHT_01: "100"
+  WEIGHT_02: "0"
+
+# Sensitive environment variables (Secret)
+secret:
+  REDIS_PASSWORD: "P@ssw0rd"
+  AI_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
+  KAFKA_PASSWORD: "BZrGhOGfNylaZcXMSRgz4Y"
+  AI_URL_TOKEN_01: "6ea6edb2-c09d-41af-83e7-653786572aaa"
+  AI_URL_TOKEN_02: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
+
+# Ingress configuration
+ingress:
+  name: be-catalog-api-proxy
+  className: urbi
+  host: urbi-lifestyle.momrah.gov.sa
+
+  # All annotations moved here
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
+
+  # Path rules
+  paths:
+    - path: /3\.0/items$
+      backend: catalog-api-proxy
+    - path: /3\.0/markers$
+      backend: catalog-api
+    - path: /3\.0/suggests$
+      backend: catalog-api-proxy
+    - path: /3\.0/items/byid$
+      backend: catalog-api-proxy
+    - path: /health
+      backend: catalog-api-proxy
+
+

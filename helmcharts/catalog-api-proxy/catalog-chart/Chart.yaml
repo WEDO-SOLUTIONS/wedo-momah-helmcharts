@@ -1,0 +1,7 @@
+apiVersion: v2
+name: catalog-api-proxy
+description: Unified chart for Catalog API Proxy service
+type: application
+version: 0.0.2
+appVersion: "v0.33"
+

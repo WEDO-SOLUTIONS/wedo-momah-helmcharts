@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-reports
+  namespace: urbi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: random-reports
+      app.kubernetes.io/name: random-reports
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: random-reports
+        app.kubernetes.io/name: random-reports
+        app.kubernetes.io/version: 0.0.1
+    spec:
+      containers:
+        - name: random-reports
+          image: registry.momrah.gov.sa/urbi-omar/random-reporting:v0.001
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          env:
+            - name: UPLOAD_FOLDER
+              value: "/uploads"
+            - name: LOG_DIR
+              value: "/logs"
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: maplocator-storage-volume
+              mountPath: /uploads
+            - name: maplocator-storage-volume
+              mountPath: /logs
+              subPath: logs
+      volumes:
+        - name: maplocator-storage-volume
+          persistentVolumeClaim:
+            claimName: maplocator-snapshot-api-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

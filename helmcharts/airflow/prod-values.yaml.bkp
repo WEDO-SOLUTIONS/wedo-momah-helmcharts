@@ -1,0 +1,172 @@
+# prod-values.yaml
+
+# -------------------------------
+# Core Airflow & Helm configuration
+# -------------------------------
+# This should match the version in your custom image
+airflowVersion: "3.1.5"
+executor: KubernetesExecutor
+webserverSecretKey: 16f143ec4690e48710cbe27914d2a115dcb16c92e1441206815d09bc93bf5c60
+
+# -------------------------------
+# Disable in-cluster Postgres & PgBouncer
+# -------------------------------
+postgresql:
+  enabled: false
+
+pgbouncer:
+  enabled: false
+
+# -------------------------------
+# External metadata DB configuration
+# -------------------------------
+data:
+  # FIX 1: This section MUST be a structured object like this
+  metadataConnection:
+    user:     airflow_admin_3
+    pass:     VeryStrongPassword!123
+    protocol: postgresql
+    host:     10.246.3.65
+    port:     5432
+    db:       airflow-3
+    sslmode:  "require"
+  # resultBackendConnection:     # optional, not needed if you use XComObjectStorageBackend
+
+# -------------------------------
+# Core airflow.cfg overrides
+# -------------------------------
+airflow:
+  config:
+    AIRFLOW_WEBSERVER_BASE_URL: "https://cityview-airflow.momah.gov.sa"
+
+config:
+  core:
+    max_active_tasks_per_dag: 200
+    parallelism:              500
+    dag_concurrency:          100
+
+# -------------------------------
+# Logging / XCom (OCI-S3) validation
+# -------------------------------
+  logging:
+    remote_logging:         'True'
+    logging_level:          INFO
+    remote_base_log_folder: 's3://prod-airflow-logging-xcom/logs'
+    remote_log_conn_id:     oci_s3_conn
+    delete_worker_pods:     'False'
+    encrypt_s3_logs:        'False'
+
+extraEnv: |
+  - name: AIRFLOW_CONN_OCI_S3_CONN
+    value: '{"conn_type": "aws", "extra": {"aws_access_key_id": "8b27cd27701b5cacb854d684d00a4e407d0ee75a","aws_secret_access_key": "+e8IrLxwqNdHR0s4SbHKTANaeos7KD22QK/1SMV7qzo=", "endpoint_url": "https://axownvq9lhmx.compat.objectstorage.me-jeddah-1.oraclecloud.com", "verify": false}}'
+  - name: AIRFLOW_CORE_XCOM_BACKEND
+    value: 'airflow.providers.common.io.xcom.backend.XComObjectStorageBackend'
+  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_PATH
+    value: 's3://prod-airflow-logging-xcom/xcom'
+  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_THRESHOLD
+    value: '0'
+  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_COMPRESSION
+    value: 'zip'
+  - name: AIRFLOW__CORE_TEST_CONNECTION
+    value: 'Enabled'
+
+# -------------------------------
+# Images, Ingress, Webserver, Scheduler, Triggerer, DAGS, Cleanup
+# -------------------------------
+images:
+  # FIX 2: This section must use a specific version tag
+  airflow:
+    repository: registry.momrah.gov.sa/urbi-omar/momah-airflow
+    tag:        "3.1.5-python3.12"
+    pullPolicy: IfNotPresent
+  useDefaultImageForMigration: true
+  statsd:
+    repository: quay.io/prometheus/statsd-exporter
+    tag:        "v0.28.0"
+    pullPolicy: IfNotPresent
+  redis:
+    repository: redis
+    tag:        "7.2-bookworm"
+    pullPolicy: IfNotPresent
+  gitSync:
+    repository: registry.k8s.io/git-sync/git-sync
+    tag:        "v4.3.0"
+    pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  web:
+    enabled:          true
+    host:             cityview-airflow.momah.gov.sa
+    ingressClassName: urbi
+    pathType:         ImplementationSpecific
+    path:             /
+    tls:
+      enabled:        false
+
+workers:
+  replicas: 3
+  #autoscaling:
+  #  enabled: true
+  #  minReplicas: 3
+  #  maxReplicas: 50
+  #  targetCPUUtilizationPercentage: 70
+  resources:
+    requests:
+      cpu:    "1000m"
+      memory: "2Gi"
+    limits:
+      cpu:    "4000m"
+      memory: "16Gi"
+  serviceAccount:
+    create:                       true
+    automountServiceAccountToken: true
+
+
+scheduler:
+  enabled: true
+  replicas: 2
+  waitForMigrations:
+    enabled: true
+
+webserver:
+  enabled: true
+  replicas: 2
+  defaultUser:
+    enabled:   true
+    role:      Admin
+    username:  af_admin
+    email:     app.services@wedosolutions.sa
+    firstName: Airflow
+    lastName:  Admin
+    password:  "OmarK@#$1998"
+
+triggerer:
+  enabled: true
+  replicas: 2
+  persistence:
+    enabled: true
+    size:    50Gi
+
+dags:
+  gitSync:
+    enabled: true
+    repo:    https://github.com/WEDO-SOLUTIONS/momah-cityview-airflow-dags.git
+    branch:  main
+    rev:     HEAD
+    subPath: dags
+    period:  5s
+  persistence:
+    enabled: false
+
+cleanup:
+  enabled:  true
+  schedule: '*/5 * * * *'
+  command:  null
+  args:
+    - bash
+    - '-c'
+    - 'exec airflow kubernetes cleanup-pods --namespace={{ .Release.Namespace }}'
+
+
+

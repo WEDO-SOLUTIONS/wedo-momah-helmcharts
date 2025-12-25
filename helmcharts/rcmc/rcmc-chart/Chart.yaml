@@ -1,0 +1,7 @@
+apiVersion: v2
+name: rcmc-chart
+description: Helm chart for RCMC markers API
+type: application
+version: 0.0.2
+appVersion: "v0.5"
+

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hrh-insights
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: hrh-insights
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: hrh-insights
+    app.kubernetes.io/version: production
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8001 # Matches the container's port
+  selector:
+    app.kubernetes.io/instance: hrh-insights
+    app.kubernetes.io/name: hrh-insights

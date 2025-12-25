@@ -1,0 +1,38 @@
+name: baladyeye-widgets-app
+namespace: urbi
+replicaCount: 5
+
+image: registry.momrah.gov.sa/urbi-omar/baladyeye-widgets-app-prod:v0.173
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Ingress configuration for production
+ingress:
+  name: be-baladyeye-widgets-app
+  className: urbi
+  host: cityview-pro.momah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
+
+  # Path rules
+  paths:
+    - path: /customWidgets
+      backend: baladyeye-widgets-app
+

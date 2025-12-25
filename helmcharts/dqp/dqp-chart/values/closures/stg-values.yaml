@@ -1,0 +1,28 @@
+name: dqp-closures-api
+namespace: urbi
+replicaCount: 1
+image: registry.momrah.gov.sa/urbi-omar/dqp-closures-api-stg:v0.001
+containerPort: 8000
+servicePort: 80
+serviceType: ClusterIP
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+ingress:
+  name: be-dqp-closures-api
+  host: dqp-stg.momah.gov.sa
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  paths:
+    - path: /dqp/rc/api/v2(/|$)(.*)
+    - path: /dqp/rc/api/int(/|$)(.*)
+    - path: /dqp/ui/superadmin(/|$)(.*)
+    - path: /dqp/ui/app/static/(.*)
+
+
+cronjob:
+  enabled: false
+

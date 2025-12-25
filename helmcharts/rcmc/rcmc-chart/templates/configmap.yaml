@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  DB_IP: {{ .Values.env.DB_IP }}
+  DB_PORT: "{{ .Values.env.DB_PORT }}"
+  DB_NAME: {{ .Values.env.DB_NAME }}
+  DB_USER: {{ .Values.env.DB_USER }}
+  LOG_LEVEL: {{ .Values.env.LOG_LEVEL }}
+  CERT_FILE: {{ .Values.env.CERT_FILE }}
+  HOST: {{ .Values.env.HOST }}
+  PORT: "{{ .Values.env.PORT }}"
+

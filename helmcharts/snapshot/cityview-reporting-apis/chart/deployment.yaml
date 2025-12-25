@@ -1,0 +1,60 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cityview-reporting-apis
+  namespace: urbi
+  labels:
+    app.kubernetes.io/name: cityview-reporting-apis
+    app.kubernetes.io/instance: cityview-reporting-apis
+    app.kubernetes.io/managed-by: kubectl
+    app.kubernetes.io/version: 1.0.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cityview-reporting-apis
+      app.kubernetes.io/instance: cityview-reporting-apis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cityview-reporting-apis
+        app.kubernetes.io/instance: cityview-reporting-apis
+        app.kubernetes.io/version: 1.0.0
+    spec:
+      containers:
+        - name: cityview-reporting-apis
+          image: registry.momrah.gov.sa/urbi-omar/cityview-reporting-apis:v0.005
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          # Health checks (FastAPI exposes /health in the script)
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          # Uncomment if you load env from a Secret/ConfigMap:
+          # envFrom:
+          #   - secretRef:
+          #       name: cityview-reporting-apis-env
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+

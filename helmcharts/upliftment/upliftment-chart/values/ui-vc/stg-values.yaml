@@ -1,0 +1,25 @@
+name: momtathel-upliftment-vc-ui
+namespace: urbi
+replicaCount: 1
+
+image: registry.momrah.gov.sa/urbi-omar/upliftment-vc-ui-stg:v0.001
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+ingress:
+  name: be-momtathel-upliftment-vc-ui
+  host: upliftment-cis-stg.momah.gov.sa
+  corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  paths:
+    - path: /vc/ui
+      pathType: ImplementationSpecific
+

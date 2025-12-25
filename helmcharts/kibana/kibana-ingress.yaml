@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: urbi-kibana
+  namespace: urbi
+  annotations:
+    # Increase timeout for heavy Kibana queries
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    # Ensure backend protocol is HTTP
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: urbi
+  rules:
+  - host: kibana-urbi-prod.momrah.gov.sa
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kibana-proxy  # Points to the ExternalName service we created in Step 1
+            port:
+              number: 5601
+  tls:
+  - hosts:
+    - kibana-urbi-prod.momrah.gov.sa
+    # Assuming you have a wildcard secret or manage TLS externally like Grafana
+    # If you need a specific secret name, add: secretName: your-tls-secret

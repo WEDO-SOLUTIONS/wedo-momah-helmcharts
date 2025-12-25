@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: citylens-updator
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: citylens-updator
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: citylens-updator
+    app.kubernetes.io/version: v1.0.0
+    helm.sh/chart: citylens-updator-1.0.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: citylens-updator
+      app.kubernetes.io/name: citylens-updator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: citylens-updator
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: citylens-updator
+        app.kubernetes.io/version: v1.0.0
+        helm.sh/chart: citylens-updator-1.0.0
+    spec:
+      containers:
+        - name: citylens-updator
+          image: registry.momrah.gov.sa/urbi-omar/citylens-updator:v1.2.2
+          resources:
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+

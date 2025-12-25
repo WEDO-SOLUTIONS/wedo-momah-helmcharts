@@ -1,0 +1,7 @@
+apiVersion: v2
+name: dqp-generic-chart
+description: Unified chart for DQP Closures, Tasks, and UI
+type: application
+version: 0.0.1
+appVersion: "v2"
+

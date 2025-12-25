@@ -1,0 +1,241 @@
+2025-09-18 14:53:08 - INFO - Starting user registration automation
+2025-09-18 14:53:08 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-7887c7cf96-4zdhq', 'pod/snapshot-pro-ui-7887c7cf96-5g54v', 'pod/snapshot-pro-ui-7887c7cf96-88dd6', 'pod/snapshot-pro-ui-7887c7cf96-frt87', 'pod/snapshot-pro-ui-7887c7cf96-g9fmt', 'pod/snapshot-pro-ui-7887c7cf96-gpnzw', 'pod/snapshot-pro-ui-7887c7cf96-qvwjj', 'pod/snapshot-pro-ui-7887c7cf96-twpvz', 'pod/snapshot-pro-ui-7887c7cf96-w7rx4', 'pod/snapshot-pro-ui-7887c7cf96-wbglr']
+2025-09-18 14:53:08 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-4zdhq
+2025-09-18 14:53:08 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-5g54v
+2025-09-18 14:53:08 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-88dd6
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-frt87
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-g9fmt
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-gpnzw
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-qvwjj
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-twpvz
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-w7rx4
+2025-09-18 14:53:09 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-wbglr
+2025-09-18 14:53:09 - INFO - Found 3 users
+2025-09-18 14:53:09 - INFO - Processing user 1ad8fb0f-54bf-45ce-b100-2ae3ca57c3de
+2025-09-18 14:53:10 - INFO - Register 1ad8fb0f-54bf-45ce-b100-2ae3ca57c3de succeeded: 200 - 
+2025-09-18 14:53:10 - INFO - Activate 1ad8fb0f-54bf-45ce-b100-2ae3ca57c3de succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-18 14:53:10 - INFO - Processing user 49d66d4f-7499-413a-9c1d-b1d6fec48273
+2025-09-18 14:53:11 - INFO - Register 49d66d4f-7499-413a-9c1d-b1d6fec48273 succeeded: 200 - 
+2025-09-18 14:53:12 - INFO - Activate 49d66d4f-7499-413a-9c1d-b1d6fec48273 succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-18 14:53:12 - INFO - Processing user 800d9227-55ad-406b-b167-8eff4af4e79e
+2025-09-18 14:53:12 - INFO - Register 800d9227-55ad-406b-b167-8eff4af4e79e succeeded: 200 - 
+2025-09-18 14:53:13 - INFO - Activate 800d9227-55ad-406b-b167-8eff4af4e79e succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-18 14:53:13 - WARNING - Processing summary: Success=3, Failures=0
+2025-09-18 14:53:55 - INFO - Starting user registration automation
+2025-09-18 14:53:56 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-7887c7cf96-4zdhq', 'pod/snapshot-pro-ui-7887c7cf96-5g54v', 'pod/snapshot-pro-ui-7887c7cf96-88dd6', 'pod/snapshot-pro-ui-7887c7cf96-frt87', 'pod/snapshot-pro-ui-7887c7cf96-g9fmt', 'pod/snapshot-pro-ui-7887c7cf96-gpnzw', 'pod/snapshot-pro-ui-7887c7cf96-qvwjj', 'pod/snapshot-pro-ui-7887c7cf96-twpvz', 'pod/snapshot-pro-ui-7887c7cf96-w7rx4', 'pod/snapshot-pro-ui-7887c7cf96-wbglr']
+2025-09-18 14:53:56 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-4zdhq
+2025-09-18 14:53:56 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-5g54v
+2025-09-18 14:53:56 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-88dd6
+2025-09-18 14:53:56 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-frt87
+2025-09-18 14:53:56 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-g9fmt
+2025-09-18 14:53:56 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-gpnzw
+2025-09-18 14:53:57 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-qvwjj
+2025-09-18 14:53:57 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-twpvz
+2025-09-18 14:53:57 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-w7rx4
+2025-09-18 14:53:57 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-wbglr
+2025-09-18 14:53:57 - INFO - Found 3 users
+2025-09-18 14:53:57 - INFO - Processing user 1ad8fb0f-54bf-45ce-b100-2ae3ca57c3de
+2025-09-18 14:53:57 - ERROR - Register 1ad8fb0f-54bf-45ce-b100-2ae3ca57c3de failed: None - No response
+2025-09-18 14:53:58 - INFO - Activate 1ad8fb0f-54bf-45ce-b100-2ae3ca57c3de succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-18 14:53:58 - INFO - Processing user 49d66d4f-7499-413a-9c1d-b1d6fec48273
+2025-09-18 14:53:58 - ERROR - Register 49d66d4f-7499-413a-9c1d-b1d6fec48273 failed: None - No response
+2025-09-18 14:53:59 - INFO - Activate 49d66d4f-7499-413a-9c1d-b1d6fec48273 succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-18 14:53:59 - INFO - Processing user 800d9227-55ad-406b-b167-8eff4af4e79e
+2025-09-18 14:53:59 - ERROR - Register 800d9227-55ad-406b-b167-8eff4af4e79e failed: None - No response
+2025-09-18 14:54:00 - INFO - Activate 800d9227-55ad-406b-b167-8eff4af4e79e succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-18 14:54:00 - WARNING - Processing summary: Success=3, Failures=0
+2025-09-21 07:46:16 - INFO - Starting user registration automation
+2025-09-21 07:46:17 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-7887c7cf96-4zdhq', 'pod/snapshot-pro-ui-7887c7cf96-5g54v', 'pod/snapshot-pro-ui-7887c7cf96-88dd6', 'pod/snapshot-pro-ui-7887c7cf96-frt87', 'pod/snapshot-pro-ui-7887c7cf96-g9fmt', 'pod/snapshot-pro-ui-7887c7cf96-gpnzw', 'pod/snapshot-pro-ui-7887c7cf96-qvwjj', 'pod/snapshot-pro-ui-7887c7cf96-twpvz', 'pod/snapshot-pro-ui-7887c7cf96-w7rx4', 'pod/snapshot-pro-ui-7887c7cf96-wbglr']
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-4zdhq
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-5g54v
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-88dd6
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-frt87
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-g9fmt
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-gpnzw
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-qvwjj
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-twpvz
+2025-09-21 07:46:17 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-w7rx4
+2025-09-21 07:46:18 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-wbglr
+2025-09-21 07:46:18 - INFO - Found 4 users
+2025-09-21 07:46:18 - INFO - Processing user 0122ce05-7b9e-446e-a048-b275f90d154d
+2025-09-21 07:46:18 - INFO - Register 0122ce05-7b9e-446e-a048-b275f90d154d succeeded: 200 - 
+2025-09-21 07:46:19 - INFO - Activate 0122ce05-7b9e-446e-a048-b275f90d154d succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:46:19 - INFO - Processing user 398246eb-e99a-405d-a415-06686c29223e
+2025-09-21 07:46:19 - INFO - Register 398246eb-e99a-405d-a415-06686c29223e succeeded: 200 - 
+2025-09-21 07:46:20 - INFO - Activate 398246eb-e99a-405d-a415-06686c29223e succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:46:20 - INFO - Processing user 86c39271-8994-4082-b2b6-8df6f3b3d928
+2025-09-21 07:46:20 - INFO - Register 86c39271-8994-4082-b2b6-8df6f3b3d928 succeeded: 200 - 
+2025-09-21 07:46:21 - INFO - Activate 86c39271-8994-4082-b2b6-8df6f3b3d928 succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:46:21 - INFO - Processing user a65719b8-315a-4666-9770-a5d422712c81
+2025-09-21 07:46:21 - INFO - Register a65719b8-315a-4666-9770-a5d422712c81 succeeded: 200 - 
+2025-09-21 07:46:22 - INFO - Activate a65719b8-315a-4666-9770-a5d422712c81 succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:46:22 - WARNING - Processing summary: Success=4, Failures=0
+2025-09-21 07:49:32 - INFO - Starting user registration automation
+2025-09-21 07:49:32 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-7887c7cf96-4zdhq', 'pod/snapshot-pro-ui-7887c7cf96-5g54v', 'pod/snapshot-pro-ui-7887c7cf96-88dd6', 'pod/snapshot-pro-ui-7887c7cf96-frt87', 'pod/snapshot-pro-ui-7887c7cf96-g9fmt', 'pod/snapshot-pro-ui-7887c7cf96-gpnzw', 'pod/snapshot-pro-ui-7887c7cf96-qvwjj', 'pod/snapshot-pro-ui-7887c7cf96-twpvz', 'pod/snapshot-pro-ui-7887c7cf96-w7rx4', 'pod/snapshot-pro-ui-7887c7cf96-wbglr']
+2025-09-21 07:49:32 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-4zdhq
+2025-09-21 07:49:32 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-5g54v
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-88dd6
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-frt87
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-g9fmt
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-gpnzw
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-qvwjj
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-twpvz
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-w7rx4
+2025-09-21 07:49:33 - INFO - Fetching logs from pod/snapshot-pro-ui-7887c7cf96-wbglr
+2025-09-21 07:49:33 - INFO - Found 4 users
+2025-09-21 07:49:33 - INFO - Processing user 0122ce05-7b9e-446e-a048-b275f90d154d
+2025-09-21 07:49:34 - ERROR - Register 0122ce05-7b9e-446e-a048-b275f90d154d failed: None - No response
+2025-09-21 07:49:35 - INFO - Activate 0122ce05-7b9e-446e-a048-b275f90d154d succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:49:35 - INFO - Processing user 398246eb-e99a-405d-a415-06686c29223e
+2025-09-21 07:49:35 - ERROR - Register 398246eb-e99a-405d-a415-06686c29223e failed: None - No response
+2025-09-21 07:49:36 - INFO - Activate 398246eb-e99a-405d-a415-06686c29223e succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:49:36 - INFO - Processing user 86c39271-8994-4082-b2b6-8df6f3b3d928
+2025-09-21 07:49:36 - ERROR - Register 86c39271-8994-4082-b2b6-8df6f3b3d928 failed: None - No response
+2025-09-21 07:49:37 - INFO - Activate 86c39271-8994-4082-b2b6-8df6f3b3d928 succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:49:37 - INFO - Processing user a65719b8-315a-4666-9770-a5d422712c81
+2025-09-21 07:49:37 - ERROR - Register a65719b8-315a-4666-9770-a5d422712c81 failed: None - No response
+2025-09-21 07:49:38 - INFO - Activate a65719b8-315a-4666-9770-a5d422712c81 succeeded: 200 - {"id":"unlimited_v2","version":2,"restrictions":{"access_time_in_days":14,"file_size":100,"max_user_asset_count":5,"editable_analytics":["where_to_open_business"],"available_assets":["branch","demand","building","population","atm_terminals","traffic_aggregated","urban_environment","population_detailed","station"],"max_dashboard_scenes_count":20,"dashboard_copy_to_others_restricted":false,"dashboard_share_access_to_others_restricted":false,"available_sharing_dashboards_by_link":true,"available_asset_permissions_management":true},"type":"unlimited","name":"Unlimited","can_be_upgraded":false}
+2025-09-21 07:49:38 - WARNING - Processing summary: Success=4, Failures=0
+2025-09-21 12:20:25 - INFO - Starting user registration automation
+2025-09-21 12:20:25 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-87886977b-2qwww', 'pod/snapshot-pro-ui-87886977b-4m7wf', 'pod/snapshot-pro-ui-87886977b-4qr8r', 'pod/snapshot-pro-ui-87886977b-b6fcl', 'pod/snapshot-pro-ui-87886977b-dmfk7', 'pod/snapshot-pro-ui-87886977b-dq9fx', 'pod/snapshot-pro-ui-87886977b-h6qj6', 'pod/snapshot-pro-ui-87886977b-jhsvf', 'pod/snapshot-pro-ui-87886977b-pshrj', 'pod/snapshot-pro-ui-87886977b-vhv8m']
+2025-09-21 12:20:25 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-2qwww
+2025-09-21 12:20:25 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-4m7wf
+2025-09-21 12:20:25 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-4qr8r
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-b6fcl
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-dmfk7
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-dq9fx
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-h6qj6
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-jhsvf
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-pshrj
+2025-09-21 12:20:26 - INFO - Fetching logs from pod/snapshot-pro-ui-87886977b-vhv8m
+2025-09-21 12:20:26 - WARNING - No users to process.
+2025-09-22 11:54:47 - INFO - Starting user registration automation
+2025-09-22 11:54:47 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-22 11:54:47 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-22 11:54:47 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-22 11:54:47 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-22 11:54:47 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-22 11:54:47 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-22 11:54:48 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-22 11:54:48 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-22 11:54:48 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-22 11:54:48 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-22 11:54:48 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-22 11:54:48 - WARNING - No users to process.
+2025-09-22 11:56:16 - INFO - Starting user registration automation
+2025-09-22 11:56:17 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-22 11:56:17 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-22 11:56:18 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-22 11:56:18 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-22 11:56:18 - WARNING - No users to process.
+2025-09-24 07:43:30 - INFO - Starting user registration automation
+2025-09-24 07:43:30 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-24 07:43:30 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-24 07:43:30 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-24 07:43:30 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-24 07:43:30 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-24 07:43:31 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-24 07:43:31 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-24 07:43:31 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-24 07:43:31 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-24 07:43:31 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-24 07:43:31 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-24 07:43:31 - WARNING - No users to process.
+2025-09-24 07:59:07 - INFO - Starting user registration automation
+2025-09-24 07:59:08 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-24 07:59:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-24 07:59:09 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-24 07:59:09 - WARNING - No users to process.
+2025-09-28 12:17:58 - INFO - Starting user registration automation
+2025-09-28 12:17:59 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-28 12:17:59 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-28 12:18:00 - WARNING - No users to process.
+2025-09-28 13:10:06 - INFO - Starting user registration automation
+2025-09-28 13:10:07 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-28 13:10:07 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-28 13:10:08 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-28 13:10:08 - WARNING - No users to process.
+2025-09-29 09:23:13 - INFO - Starting user registration automation
+2025-09-29 09:23:14 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-29 09:23:14 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-29 09:23:15 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-29 09:23:15 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-29 09:23:15 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-29 09:23:15 - WARNING - No users to process.
+2025-09-29 10:48:00 - INFO - Starting user registration automation
+2025-09-29 10:48:00 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-29 10:48:00 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-29 10:48:00 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-29 10:48:00 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-29 10:48:00 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-29 10:48:01 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-29 10:48:01 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-29 10:48:01 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-29 10:48:01 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-29 10:48:01 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-29 10:48:01 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-29 10:48:01 - WARNING - No users to process.
+2025-09-29 11:04:25 - INFO - Starting user registration automation
+2025-09-29 11:04:25 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-29 11:04:25 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-29 11:04:25 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-29 11:04:26 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-29 11:04:26 - WARNING - No users to process.
+2025-09-29 13:29:45 - INFO - Starting user registration automation
+2025-09-29 13:29:46 - INFO - Found 10 pods: ['pod/snapshot-pro-ui-69877ddff-4xnv5', 'pod/snapshot-pro-ui-69877ddff-6nmfn', 'pod/snapshot-pro-ui-69877ddff-994pk', 'pod/snapshot-pro-ui-69877ddff-f2tmw', 'pod/snapshot-pro-ui-69877ddff-hh75w', 'pod/snapshot-pro-ui-69877ddff-hndgx', 'pod/snapshot-pro-ui-69877ddff-pkndj', 'pod/snapshot-pro-ui-69877ddff-rzql2', 'pod/snapshot-pro-ui-69877ddff-s27l5', 'pod/snapshot-pro-ui-69877ddff-z6wl6']
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-4xnv5
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-6nmfn
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-994pk
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-f2tmw
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hh75w
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-hndgx
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-pkndj
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-rzql2
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-s27l5
+2025-09-29 13:29:46 - INFO - Fetching logs from pod/snapshot-pro-ui-69877ddff-z6wl6
+2025-09-29 13:29:47 - WARNING - No users to process.

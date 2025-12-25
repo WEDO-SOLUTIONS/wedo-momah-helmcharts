@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snapshot-query
+  namespace: urbi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snapshot-query
+  template:
+    metadata:
+      labels:
+        app: snapshot-query
+    spec:
+      containers:
+      - name: api
+        image: registry.momrah.gov.sa/urbi-omar/snapshot-es-queries:v0.01
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ELASTIC_HOST
+          value: "haproxy.urbi.svc.cluster.local"
+        - name: ELASTIC_PORT
+          value: "9200"
+        - name: ELASTIC_USER
+          value: "elastic"
+        - name: ELASTIC_PASSWORD
+          value: "seNZz8ZNGxJHkCh"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: snapshot-query-svc
+  namespace: urbi
+spec:
+  selector:
+    app: snapshot-query
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5000
+  type: ClusterIP
+
