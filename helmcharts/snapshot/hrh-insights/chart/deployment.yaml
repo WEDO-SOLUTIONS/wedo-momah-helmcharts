@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: hrh-insights
-          image: registry.momrah.gov.sa/urbi-omar/hrh-insights:v1.3.8
+          image: registry.momrah.gov.sa/urbi-omar/hrh-insights:v1.3.9
           ports:
             - containerPort: 8001
               protocol: TCP
