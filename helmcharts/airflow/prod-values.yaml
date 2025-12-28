@@ -64,17 +64,13 @@ config:
   # With 200 DAGs and 30 concurrent runs, need higher pool limits
   database:
     sql_alchemy_pool_enabled: 'True'
-    sql_alchemy_pool_size: 20
+    sql_alchemy_pool_size: 30
     sql_alchemy_pool_recycle: 1800
-    sql_alchemy_max_overflow: 30
+    sql_alchemy_max_overflow: 50
     sql_alchemy_pool_pre_ping: 'True'
+    sql_alchemy_pool_timeout: 30
 
-  # Limit DAG serialization cache to prevent unbounded growth
-  scheduler:
-    max_dagruns_to_create_per_loop: 10
-    max_dagruns_per_loop_to_schedule: 20
-
-  # API Section - NEW in Airflow 3.x (replaces webserver config)
+  # Increase API client timeout for task pods to handle load
   api:
     # Secret key for API authentication (moved from webserver)
     secret_key: "16f143ec4690e48710cbe27914d2a115dcb16c92e1441206815d09bc93bf5c60"
@@ -82,6 +78,8 @@ config:
     base_url: "https://cityview-airflow.momah.gov.sa"
     # Auth backend for API (you can keep FAB if needed)
     auth_backends: "airflow.providers.fab.auth_manager.api.auth.backend.fab_auth"
+    # Increase client timeout for high-load scenarios
+    client_request_timeout: 60
 
   # Webserver section (UI only in Airflow 3.x)
   webserver:
