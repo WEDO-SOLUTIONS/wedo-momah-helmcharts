@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:staging
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v001
           command: ["python", "-u", "src/main.py"]
           ports:
             - containerPort: 8080
@@ -70,30 +70,30 @@ spec:
   type: ClusterIP
 
 ---
-# Consumer Worker Deployment
+# Processor Worker Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: duplicates-middleware-consumer
+  name: duplicates-middleware-processor
   namespace: urbi
   labels:
     app: duplicates-middleware
-    component: consumer
+    component: processor
 spec:
   replicas: 4
   selector:
     matchLabels:
       app: duplicates-middleware
-      component: consumer
+      component: processor
   template:
     metadata:
       labels:
         app: duplicates-middleware
-        component: consumer
+        component: processor
     spec:
       containers:
         - name: consumer
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:staging
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v001
           command: ["python", "-u", "src/consumer_worker.py"]
           env:
             - name: CONFIG_PATH
@@ -107,4 +107,3 @@ spec:
               memory: "2Gi"
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
-
