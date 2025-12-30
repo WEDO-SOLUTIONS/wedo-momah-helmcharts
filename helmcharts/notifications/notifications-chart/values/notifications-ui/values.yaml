@@ -3,7 +3,7 @@ namespace: urbi
 replicaCount: 1
 appVersion: staging
 
-image: registry.momrah.gov.sa/urbi-omar/rbac-notifications-ui-stg:v0.1.4
+image: registry.momrah.gov.sa/urbi-omar/rbac-notifications-ui-stg:v0.1.5
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
