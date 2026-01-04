@@ -109,13 +109,13 @@ ingress:
   # Path rules
   paths:
     - path: /3\.0/items$
-      backend: catalog-api-proxy
+      backend: catalog-api
     - path: /3\.0/markers$
-      backend: catalog-api-proxy
+      backend: catalog-api
     - path: /3\.0/suggests$
-      backend: catalog-api-proxy
+      backend: catalog-api
     - path: /3\.0/items/byid$
-      backend: catalog-api-proxy
+      backend: catalog-api
     - path: /health
-      backend: catalog-api-proxy
+      backend: catalog-api
 
