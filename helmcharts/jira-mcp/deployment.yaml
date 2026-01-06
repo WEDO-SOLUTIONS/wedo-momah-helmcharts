@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: jira-mcp
-          image: registry.momrah.gov.sa/urbi-omar/jira-mcp:v0.5.6
+          image: registry.momrah.gov.sa/urbi-omar/jira-mcp:v0.5.7
           ports:
             - containerPort: 8000
               protocol: TCP
