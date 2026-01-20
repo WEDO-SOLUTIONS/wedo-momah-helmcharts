@@ -24,7 +24,8 @@ spec:
           value: "-Xms1g -Xmx2g"
         volumeMounts:
         - name: geoserver-data
-          mountPath: /opt/geoserver/data_dir
+          #mountPath: /opt/geoserver/data_dir
+          mountPath: /opt/geoserver_data
       volumes:
       - name: geoserver-data
         persistentVolumeClaim:
