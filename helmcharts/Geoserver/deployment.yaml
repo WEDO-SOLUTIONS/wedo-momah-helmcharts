@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: geoserver
-        image: docker.osgeo.org/geoserver:latest
+        image: docker.osgeo.org/geoserver:2.25.2
         ports:
         - containerPort: 8080
         env:
