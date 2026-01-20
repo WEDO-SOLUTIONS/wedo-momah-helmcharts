@@ -1,48 +1,4 @@
 
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-  #name: geoserver-ingress
-  #namespace: urbi
-  #annotations:
-    #kubernetes.io/ingress.class: nginx
-    #nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-#spec:
-  #rules:
-  #- host: urbi-lifestyle-stg.momrah.gov.sa
-    #http:
-      #paths:
-      #- path: /geoserver
-        #pathType: Prefix
-        #backend:
-          #service:
-            #name: geoserver-service
-            #port:
-              #number: 80
-
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-  #name: geoserver-ingress
-  #namespace: urbi
-  #annotations:
-    #kubernetes.io/ingress.class: urbi
-    #nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    #nginx.ingress.kubernetes.io/rewrite-target: /$2
-#spec:
-  #rules:
-  #- host: urbi-lifestyle-stg.momrah.gov.sa
-    #http:
-      #paths:
-      #- path: /geoserver(/|$)(.*)
-        #pathType: Prefix
-        #backend:
-          #service:
-            #name: geoserver-service
-            #port:
-              #number: 80
-
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -50,8 +6,8 @@ metadata:
   namespace: urbi
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /geoserver/$2
 spec:
   ingressClassName: urbi
   rules:
@@ -65,4 +21,5 @@ spec:
             name: geoserver-service
             port:
               number: 80
+
 
