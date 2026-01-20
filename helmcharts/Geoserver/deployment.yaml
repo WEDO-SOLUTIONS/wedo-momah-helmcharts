@@ -1,0 +1,31 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geoserver
+  namespace: urbi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geoserver
+  template:
+    metadata:
+      labels:
+        app: geoserver
+    spec:
+      containers:
+      - name: geoserver
+        image: docker.osgeo.org/geoserver:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms1g -Xmx2g"
+        volumeMounts:
+        - name: geoserver-data
+          mountPath: /opt/geoserver/data_dir
+      volumes:
+      - name: geoserver-data
+        persistentVolumeClaim:
+          claimName: geoserver-pvc
