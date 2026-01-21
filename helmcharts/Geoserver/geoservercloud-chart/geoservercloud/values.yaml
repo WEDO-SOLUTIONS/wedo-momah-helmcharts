@@ -1,0 +1,129 @@
+
+global:
+  namespace: urbi
+
+profiles:
+  active:
+    - pgconfig
+
+# ===============================
+# INGRESS FOR GATEWAY ENTRYPOINT
+# ===============================
+ingress:
+  enabled: true
+  className: urbi
+  tls:
+    enabled: false
+  hosts:
+    - host: urbi-lifestyle-stg.momrah.gov.sa
+      paths:
+        - path: /geoserver
+          pathType: Prefix
+
+# Disable internal ingress inside microservices
+geoserver:
+  services:
+    gateway:
+      ingress:
+        enabled: false
+
+postgresql:
+  enabled: false
+
+pgconfig:
+  datasource:
+    url: "jdbc:postgresql://10.247.3.9:5432/airflow?sslmode=require"
+    username: "airflow_admin"
+    password: "VeryStrongPassword!123"
+    driverClassName: "org.postgresql.Driver"
+  flyway:
+    enabled: true
+
+rabbitmq:
+  enabled: true
+  auth:
+    username: geocloud
+    password: "Strong_RabbitMQ_Pass_123"
+  persistence:
+    enabled: true
+    size: 10Gi
+
+# ===============================
+# ENABLE ALL MICROSERVICES
+# ===============================
+gateway:
+  enabled: true
+  replicas: 1
+
+webui:
+  enabled: true
+  replicas: 1
+
+rest:
+  enabled: true
+  replicas: 1
+
+wms:
+  enabled: true
+  replicas: 1
+
+wfs:
+  enabled: true
+  replicas: 1
+
+wcs:
+  enabled: true
+  replicas: 1
+
+wps:
+  enabled: true
+  replicas: 1
+
+gwc:
+  enabled: true
+  replicas: 1
+
+config:
+  enabled: true
+  replicas: 1
+
+discovery:
+  enabled: true
+  replicas: 1
+
+# ===============================
+# SERVICE PORTS (DEFAULT MODE)
+# ===============================
+services:
+  gateway:
+    service:
+      type: ClusterIP
+      port: 8080
+  webui:
+    service:
+      type: ClusterIP
+      port: 8080
+  rest:
+    service:
+      type: ClusterIP
+      port: 8080
+  wms:
+    service:
+      type: ClusterIP
+      port: 8080
+  wfs:
+    service:
+      type: ClusterIP
+      port: 8080
+  wcs:
+    service:
+      type: ClusterIP
+      port: 8080
+  wps:
+    service:
+      type: ClusterIP
+      port: 8080
+  gwc:
+    service:
+      type: ClusterIP
+      port: 8080

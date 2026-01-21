@@ -1,0 +1,6 @@
+dependencies:
+- name: common
+  repository: https://camptocamp.github.io/helm-common
+  version: 2.1.2
+digest: sha256:c25ecdcce5cfa7ee324a2b0439d878f446ad9976ea612d9c99898be76de26963
+generated: "2025-10-31T08:59:51.995973832Z"
