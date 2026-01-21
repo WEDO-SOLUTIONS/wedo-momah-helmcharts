@@ -9,7 +9,7 @@ metadata:
     app: duplicates-middleware
     component: api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: duplicates-middleware
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v015
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v020
           command: ["python", "-u", "src/main.py"]
           ports:
             - containerPort: 8080
@@ -80,7 +80,7 @@ metadata:
     app: duplicates-middleware
     component: processor
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: duplicates-middleware
@@ -93,7 +93,7 @@ spec:
     spec:
       containers:
         - name: consumer
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v015
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v020
           command: ["python", "-u", "src/consumer_worker.py"]
           env:
             - name: CONFIG_PATH
