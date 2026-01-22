@@ -18,35 +18,47 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-origin: https://cityview-pro.momah.gov.sa
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 500m
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /middleware/api$1
+    nginx.ingress.kubernetes.io/server-snippet: |
+      # Block swagger/version/metrics
+      location ~* "^/swagger/" {
+          deny all;
+          return 403;
+      }
+      location ~* "^/version" {
+          deny all;
+          return 403;
+      }
+      location ~* "^/metrics" {
+          deny all;
+          return 403;
+      }
+      
+      # Intercept dashboards - route to middleware with rewrite
+      location ~ ^/v2/dashboards {
+          proxy_pass http://cityview-middleware.urbi.svc.cluster.local/middleware/api$request_uri;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
+      
+      # Intercept assets - route to middleware with rewrite
+      location ~ ^/assets {
+          proxy_pass http://cityview-middleware.urbi.svc.cluster.local/middleware/api$request_uri;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
 spec:
   ingressClassName: urbi
   rules:
   - host: cityview-pro-api.momah.gov.sa
     http:
       paths:
-      # Dashboard endpoints - route to middleware
-      - path: /(v2/dashboards.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: cityview-middleware
-            port:
-              number: 80
-      
-      # Assets endpoints - route to middleware
-      - path: /(assets.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: cityview-middleware
-            port:
-              number: 80
-      
-      # Default route - everything else goes to core API
-      - path: /(.*)
-        pathType: ImplementationSpecific
+      # Default route - server-snippet above handles routing to middleware for specific paths
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: snapshot-pro-api
