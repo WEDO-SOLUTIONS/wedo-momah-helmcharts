@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: maplocator-snapshot-api
-          image: registry.momrah.gov.sa/urbi-omar/maplocator-snapshot-api:v0.3
+          image: registry.momrah.gov.sa/urbi-omar/maplocator-snapshot-api:v0.4
           ports:
             - containerPort: 5000
               protocol: TCP
