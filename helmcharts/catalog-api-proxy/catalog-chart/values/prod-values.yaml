@@ -77,7 +77,7 @@ ingress:
     - path: /3\.0/items$
       backend: catalog-api-proxy
     - path: /3\.0/markers$
-      backend: catalog-api
+      backend: catalog-api-proxy
     - path: /3\.0/suggests$
       backend: catalog-api-proxy
     - path: /3\.0/items/byid$
