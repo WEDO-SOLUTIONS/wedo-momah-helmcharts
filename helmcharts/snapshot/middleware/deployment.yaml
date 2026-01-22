@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: middleware
-        image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.1
+        image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
