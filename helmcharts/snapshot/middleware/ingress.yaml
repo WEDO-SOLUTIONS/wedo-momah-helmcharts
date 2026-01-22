@@ -1,0 +1,58 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: snapshot-pro-api
+  namespace: urbi
+  labels:
+    app.kubernetes.io/instance: snapshot-pro-api
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: snapshot-pro-api
+    app.kubernetes.io/version: 2.13.0
+    helm.sh/chart: pro-api-1.38.0
+  annotations:
+    meta.helm.sh/release-name: snapshot-pro-api
+    meta.helm.sh/release-namespace: urbi
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,x-share-token
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, DELETE, OPTIONS, PATCH
+    nginx.ingress.kubernetes.io/cors-allow-origin: https://cityview-pro.momah.gov.sa
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /middleware/api$1
+spec:
+  ingressClassName: urbi
+  rules:
+  - host: cityview-pro-api.momah.gov.sa
+    http:
+      paths:
+      # Dashboard endpoints - route to middleware
+      - path: /(v2/dashboards.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: cityview-middleware
+            port:
+              number: 80
+      
+      # Assets endpoints - route to middleware
+      - path: /(assets.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: cityview-middleware
+            port:
+              number: 80
+      
+      # Default route - everything else goes to core API
+      - path: /(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: snapshot-pro-api
+            port:
+              number: 80
+  
+  tls:
+  - hosts:
+    - cityview-pro-api.momah.gov.sa
