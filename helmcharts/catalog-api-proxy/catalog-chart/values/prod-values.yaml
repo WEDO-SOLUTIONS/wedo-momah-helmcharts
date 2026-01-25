@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 6
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.52
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.54
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -33,6 +33,12 @@ env:
   REGION_ID_URL: http://catalog-api/2.0/region/search
   LOG_LEVEL: debug
   PORT: "3000"
+  BALADY_BASE_URL: https://apiservicesstg.balady.gov.sa
+  BALADY_OAUTH_API: /oauth/v1/token
+  BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
+  BALADY_GRANT_TYPE: client_credentials
+  BALADY_CLIENT_ID: 8dKFPZVsCtMmcSx1OcjNPTwKNHaOciV9
+  BALADY_CLIENT_SECRET: JbT9qKNriOhrynGA
   REDIS_CACHE: false
   KAFKA_BROKERS: RUHMPV-URBKDB01.momra.net:9092,RUHMPV-URBKDB02.momra.net:9092,RUHMPV-URBKDB03.momra.net:9092
   KAFKA_USERNAME: admin
