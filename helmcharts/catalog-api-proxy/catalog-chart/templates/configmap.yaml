@@ -17,6 +17,12 @@ data:
   REGION_ID_URL: {{ .Values.env.REGION_ID_URL }}
   LOG_LEVEL: {{ .Values.env.LOG_LEVEL }}
   PORT: "{{ .Values.env.PORT }}"
+  BALADY_BASE_URL: {{ .Values.env.BALADY_BASE_URL }}
+  BALADY_OAUTH_API: {{ .Values.env.BALADY_OAUTH_API }}
+  BALADY_SPL_API: {{ .Values.env.BALADY_SPL_API }}
+  BALADY_GRANT_TYPE: {{ .Values.env.BALADY_GRANT_TYPE }}
+  BALADY_CLIENT_ID: {{ .Values.env.BALADY_CLIENT_ID }}
+  BALADY_CLIENT_SECRET: {{ .Values.env.BALADY_CLIENT_SECRET }}
   REDIS_CACHE: "{{ .Values.env.REDIS_CACHE }}"
   REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME }}
   REDIS_PORT: "{{ .Values.env.REDIS_PORT }}"
