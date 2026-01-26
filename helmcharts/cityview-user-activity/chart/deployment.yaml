@@ -20,7 +20,7 @@ spec:
       serviceAccountName: user-activity-logger
       containers:
         - name: cityview-users-activity
-          image: registry.momrah.gov.sa/urbi-omar/pro-user-activity:v0.0007 # Make sure this is the latest tag with the corrected .env
+          image: registry.momrah.gov.sa/urbi-omar/cityview-user-activity:v0.0008
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
