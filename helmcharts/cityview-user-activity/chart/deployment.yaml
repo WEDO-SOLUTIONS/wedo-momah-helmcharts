@@ -20,7 +20,7 @@ spec:
       serviceAccountName: user-activity-logger
       containers:
         - name: cityview-users-activity
-          image: registry.momrah.gov.sa/urbi-omar/cityview-user-activity:v0.0008
+          image: registry.momrah.gov.sa/urbi-omar/cityview-user-activity:v0.0009
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
