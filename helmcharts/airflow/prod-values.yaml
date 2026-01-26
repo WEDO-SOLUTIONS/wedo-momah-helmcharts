@@ -235,11 +235,11 @@ workers:
   #  targetCPUUtilizationPercentage: 70
   resources:
     requests:
-      cpu:    "1000m"
-      memory: "2Gi"
+      cpu:    "2000m"
+      memory: "16Gi"
     limits:
-      cpu:    "4000m"
-      memory: "24Gi"
+      cpu:    "8000m"
+      memory: "32Gi"
   serviceAccount:
     create:                       true
     automountServiceAccountToken: true
@@ -247,7 +247,7 @@ workers:
 
 scheduler:
   enabled: true
-  replicas: 4
+  replicas: 8
   resources:
     requests:
       cpu: "1000m"
@@ -264,13 +264,13 @@ scheduler:
 # The API server handles all API requests and task execution coordination
 # Note: API server is automatically enabled for Airflow 3.x - no 'enabled' flag needed
 apiServer:
-  replicas: 4
+  replicas: 8
   resources:
     requests:
-      cpu: "2000m"
+      cpu: "4000m"
       memory: "16Gi"
     limits:
-      cpu: "4000m"
+      cpu: "8000m"
       memory: "32Gi"
 
 # -------------------------------
@@ -282,11 +282,11 @@ dagProcessor:
   replicas: 1
   resources:
     requests:
-      cpu: "500m"
+      cpu: "1000m"
       memory: "1Gi"
     limits:
       cpu: "2000m"
-      memory: "4Gi"
+      memory: "2Gi"
 
 # -------------------------------
 # Webserver (UI Only in Airflow 3.x)
@@ -295,13 +295,13 @@ dagProcessor:
 # All API calls go to the API server component
 webserver:
   enabled: true
-  replicas: 4
+  replicas: 8
   resources:
     requests:
-      cpu: "2000m"
+      cpu: "4000m"
       memory: "16Gi"
     limits:
-      cpu: "4000m"
+      cpu: "8000m"
       memory: "32Gi"
   defaultUser:
     enabled:   true
