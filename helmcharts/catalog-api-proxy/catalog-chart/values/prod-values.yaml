@@ -33,12 +33,18 @@ env:
   REGION_ID_URL: http://catalog-api/2.0/region/search
   LOG_LEVEL: debug
   PORT: "3000"
-  BALADY_BASE_URL: https://apiservicesstg.balady.gov.sa
+  BALADY_BASE_URL: https://apiservices.balady.gov.sa
   BALADY_OAUTH_API: /oauth/v1/token
   BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
   BALADY_GRANT_TYPE: client_credentials
-  BALADY_CLIENT_ID: 8dKFPZVsCtMmcSx1OcjNPTwKNHaOciV9
-  BALADY_CLIENT_SECRET: JbT9qKNriOhrynGA
+  BALADY_CLIENT_ID: 35E7bvBUf9U0dmbzbqD0rU0Bh4epXcOL
+  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
+  #BALADY_BASE_URL: https://apiservicesstg.balady.gov.sa
+  #BALADY_OAUTH_API: /oauth/v1/token
+  #BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
+  #BALADY_GRANT_TYPE: client_credentials
+  #BALADY_CLIENT_ID: 8dKFPZVsCtMmcSx1OcjNPTwKNHaOciV9
+  #BALADY_CLIENT_SECRET: JbT9qKNriOhrynGA
   REDIS_CACHE: false
   KAFKA_BROKERS: RUHMPV-URBKDB01.momra.net:9092,RUHMPV-URBKDB02.momra.net:9092,RUHMPV-URBKDB03.momra.net:9092
   KAFKA_USERNAME: admin
