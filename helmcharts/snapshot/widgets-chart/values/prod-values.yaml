@@ -35,5 +35,3 @@ ingress:
   paths:
     - path: /customWidgets
       backend: baladyeye-widgets-app
-
-CMD ["sh", "-c", "echo '86.51.13.118 apiservicesstg.balady.gov.sa' >> /etc/hosts & echo '86.51.13.117 apiservices.balady.gov.sa' >> /etc/hosts & node src/main-docker.js & nginx -g 'daemon off;'"]
