@@ -2,7 +2,7 @@ name: baladyeye-widgets-app
 namespace: urbi
 replicaCount: 5
 
-image: registry.momrah.gov.sa/urbi-omar/baladyeye-widgets-app-prod:v0.235
+image: registry.momrah.gov.sa/urbi-omar/baladyeye-widgets-app-prod:v0.236
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
