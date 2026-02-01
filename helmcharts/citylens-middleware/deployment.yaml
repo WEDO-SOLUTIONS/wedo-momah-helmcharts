@@ -93,7 +93,7 @@ spec:
     spec:
       containers:
         - name: consumer
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v020
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v022
           command: ["python", "-u", "src/consumer_worker.py"]
           env:
             - name: CONFIG_PATH
