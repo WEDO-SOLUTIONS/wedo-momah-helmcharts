@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v020
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v021
           command: ["python", "-u", "src/main.py"]
           ports:
             - containerPort: 8080
