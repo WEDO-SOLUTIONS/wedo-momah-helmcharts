@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v022
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v023
           command: ["python", "-u", "src/main.py"]
           ports:
             - containerPort: 8080
@@ -93,7 +93,7 @@ spec:
     spec:
       containers:
         - name: consumer
-          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v022
+          image: registry.momrah.gov.sa/urbi-omar/duplicates-middleware:v023
           command: ["python", "-u", "src/consumer_worker.py"]
           env:
             - name: CONFIG_PATH
