@@ -2,7 +2,7 @@ name: cityview-hrh-app
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-hrh-app-prod:v0.012
+image: registry.momrah.gov.sa/urbi-omar/cityview-hrh-app-prod:v0.013
 containerPort: 5173
 servicePort: 80
 serviceType: ClusterIP
