@@ -1,9 +1,9 @@
-name: cityview-ai-dev-es-ma
+name: cityview-ai-dev-es-ma-tr
 namespace: urbi
 replicaCount: 1
 appVersion: development
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-ai-dev-es-ma:v0.7.8
+image: registry.momrah.gov.sa/urbi-omar/cityview-ai-dev-es-ma-tr:v0.10.6
 imagePullPolicy: IfNotPresent
 containerPort: 8000
 servicePort: 80
@@ -19,13 +19,13 @@ resources:
 
 healthCheck:
   readiness:
-    path: /api-dev-es-ma/health
+    path: /api-dev-es-ma-tr/health
     initialDelaySeconds: 10
     periodSeconds: 10
     timeoutSeconds: 3
     failureThreshold: 6
   liveness:
-    path: /api-dev-es-ma/health
+    path: /api-dev-es-ma-tr/health
     initialDelaySeconds: 30
     periodSeconds: 20
     timeoutSeconds: 3
@@ -62,12 +62,9 @@ env:
   - name: AZURE_OPENAI_DEPLOYMENT_NAME
     value: "gpt-4o"
 
-  - name: GOOGLE_API_KEY
-    value: "AIzaSyD6FZ0XQZYWpB6Z1vco60QednleKlke-zk"
-
   # MongoDB (state/checkpointer + admin APIs)
   - name: MONGO_DB_URL
-    value: "mongodb://mongo-dev-es-ma:27017"
+    value: "mongodb://mongo-dev-es-ma-tr:27017"
   - name: MONGO_DB_NAME
     value: "checkpointing_db"
   - name: COLLECTION_NAME
@@ -101,12 +98,31 @@ env:
   - name: TZ
     value: "Asia/Riyadh"
 
+# MongoDB Configuration
+mongodb:
+  enabled: true
+  name: mongo-dev-es-ma-tr
+  image: mongo:7.0
+  initDatabase: CityViewGPT-DB
+  resources:
+    limits:
+      cpu: "8"
+      memory: "8096Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+  pvc:
+    create: true
+    name: mongodb-pvc-dev-es-ma-tr
+    size: "10Gi"
+    accessMode: ReadWriteOnce
+
 ingress:
-  name: be-cityview-ai-dev-es-ma
+  name: be-cityview-ai-dev-es-ma-tr
   host: cityview.momah.gov.sa
   className: urbi
   corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
   proxyReadTimeout: "300"
   paths:
-    - path: /api-dev-es-ma(/.*)
+    - path: /api-dev-es-ma-tr(/.*)
       pathType: ImplementationSpecific

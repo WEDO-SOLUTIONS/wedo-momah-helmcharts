@@ -3,7 +3,7 @@ namespace: urbi
 replicaCount: 1
 appVersion: development
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-ai-prod:v0.00003
+image: registry.momrah.gov.sa/urbi-omar/cityview-ai-prod:v0.10.6
 imagePullPolicy: IfNotPresent
 containerPort: 8000
 servicePort: 80
@@ -17,22 +17,52 @@ resources:
     cpu: "4"
     memory: "8Gi"
 
+healthCheck:
+  readiness:
+    path: /api/health
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 6
+  liveness:
+    path: /api/health
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    timeoutSeconds: 3
+    failureThreshold: 6
+
 env:
-  # Tavily
+  # Elasticsearch (primary datasource)
+  - name: ES_PROTOCOL
+    value: "http"
+  - name: ES_HOST
+    value: "haproxy"
+  - name: ES_PORT
+    value: "9200"
+  - name: ES_VERIFY_TLS
+    value: "false"
+  - name: ES_USERNAME
+    value: "elastic"
+  - name: ES_PASSWORD
+    value: "seNZz8ZNGxJHkCh"
+  - name: ES_DYNAMIC_INDEX
+    value: "snapprod_dynamicdata"
+
+  # Tavily (optional external context)
   - name: TAVILY_API_KEY
     value: "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"
 
   # Azure OpenAI
   - name: AZURE_OPENAI_ENDPOINT
-    value: "https://citygpt-resource.cognitiveservices.azure.com"
+    value: "https://swc-cityview-openai.openai.azure.com"
   - name: AZURE_OPENAI_API_KEY
     value: "REPLACE_WITH_SECRET_REF"
   - name: AZURE_OPENAI_API_VERSION
-    value: "2024-12-01-preview"
+    value: "2025-01-01-preview"
   - name: AZURE_OPENAI_DEPLOYMENT_NAME
-    value: "gpt-4.1"
+    value: "gpt-4o"
 
-  # MongoDB
+  # MongoDB (state/checkpointer + admin APIs)
   - name: MONGO_DB_URL
     value: "mongodb://mongo-prod:27017"
   - name: MONGO_DB_NAME
@@ -46,7 +76,11 @@ env:
   - name: MESSAGES_COLLECTION_NAME
     value: "messages"
 
-  # Langfuse
+  # Admin API token
+  - name: ADMIN_API_TOKEN
+    value: "hPMXxkqJscEo6lyyl0PSMIZlYoJ4pVEwL9HkQw74JY7paAkpp90TvOgr4awB5Upx"
+
+  # Langfuse (telemetry)
   - name: LANGFUSE_SECRET_KEY
     value: "disabled"
   - name: LANGFUSE_PUBLIC_KEY
@@ -54,31 +88,34 @@ env:
   - name: LANGFUSE_HOST
     value: "https://cloud.langfuse.com"
 
-  # Silence OTEL exporter 401 spam
+  # Misc/Platform
   - name: OTEL_SDK_DISABLED
     value: "true"
-
-  # SSO details
   - name: OIDC_ISSUER_URL
     value: "https://ssoapp.balady.gov.sa"
   - name: OIDC_AUDIENCE
     value: "https://ssoapp.balady.gov.sa/resources"
+  - name: TZ
+    value: "Asia/Riyadh"
 
-  - name: ADMIN_API_TOKEN
-    value: "hPMXxkqJscEo6lyyl0PSMIZlYoJ4pVEwL9HkQw74JY7paAkpp90TvOgr4awB5Upx"
-
-  # SQLite database path
-  - name: SQLITE_DB_PATH
-    value: "/data/local_data.db"
-
-volumeMounts:
-  - name: sqlite-data
-    mountPath: /data
-    readOnly: true
-
-volumes:
-  - name: sqlite-data
-    claimName: sqlite-pvc-prod
+# MongoDB Configuration
+mongodb:
+  enabled: true
+  name: mongo-prod
+  image: mongo:7.0
+  initDatabase: CityViewGPT-DB
+  resources:
+    limits:
+      cpu: "8"
+      memory: "8096Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+  pvc:
+    create: true
+    name: mongodb-pvc-prod
+    size: "10Gi"
+    accessMode: ReadWriteOnce
 
 ingress:
   name: be-cityview-ai-prod
@@ -87,5 +124,5 @@ ingress:
   corsAllowHeaders: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
   proxyReadTimeout: "300"
   paths:
-    - path: /api(/. *)
+    - path: /api(/.*)
       pathType: ImplementationSpecific

@@ -1,0 +1,22 @@
+{{- if .Values.mongodb }}
+{{- if .Values.mongodb.enabled }}
+{{- if .Values.mongodb.pvc }}
+{{- if .Values.mongodb.pvc.create }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.mongodb.pvc.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - {{ .Values.mongodb.pvc.accessMode | default "ReadWriteOnce" }}
+  resources:
+    requests:
+      storage: {{ .Values.mongodb.pvc.size | default "10Gi" }}
+  {{- if .Values.mongodb.pvc.storageClassName }}
+  storageClassName: {{ .Values.mongodb.pvc.storageClassName }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

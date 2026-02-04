@@ -1,0 +1,50 @@
+{{- if .Values.mongodb }}
+{{- if .Values.mongodb.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mongodb.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.mongodb.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.mongodb.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mongodb.name }}
+    spec:
+      containers:
+        - name: {{ .Values.mongodb.name }}
+          image: {{ .Values.mongodb.image | default "mongo:7.0" }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: {{ .Values.mongodb.initDatabase | default "CityViewGPT-DB" }}
+          resources:
+            limits:
+              cpu: {{ .Values.mongodb.resources.limits.cpu | default "8" }}
+              memory: {{ .Values.mongodb.resources.limits.memory | default "8096Mi" }}
+            requests:
+              cpu: {{ .Values.mongodb.resources.requests.cpu | default "250m" }}
+              memory: {{ .Values.mongodb.resources.requests.memory | default "256Mi" }}
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.mongodb.pvc.name }}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+{{- end }}
+{{- end }}

@@ -3,7 +3,7 @@ namespace: urbi
 replicaCount: 1
 appVersion: development
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-ai-dev-es-ma:v0.7.8
+image: registry.momrah.gov.sa/urbi-omar/cityview-ai-dev-es-ma:v0.10.6
 imagePullPolicy: IfNotPresent
 containerPort: 8000
 servicePort: 80
@@ -62,9 +62,6 @@ env:
   - name: AZURE_OPENAI_DEPLOYMENT_NAME
     value: "gpt-4o"
 
-  - name: GOOGLE_API_KEY
-    value: "AIzaSyD6FZ0XQZYWpB6Z1vco60QednleKlke-zk"
-
   # MongoDB (state/checkpointer + admin APIs)
   - name: MONGO_DB_URL
     value: "mongodb://mongo-dev-es-ma:27017"
@@ -100,6 +97,25 @@ env:
     value: "https://ssoapp.balady.gov.sa/resources"
   - name: TZ
     value: "Asia/Riyadh"
+
+# MongoDB Configuration
+mongodb:
+  enabled: true
+  name: mongo-dev-es-ma
+  image: mongo:7.0
+  initDatabase: CityViewGPT-DB
+  resources:
+    limits:
+      cpu: "8"
+      memory: "8096Mi"
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+  pvc:
+    create: false  # PVC already exists
+    name: mongodb-pvc-dev-es-ma
+    size: "10Gi"
+    accessMode: ReadWriteOnce
 
 ingress:
   name: be-cityview-ai-dev-es-ma
