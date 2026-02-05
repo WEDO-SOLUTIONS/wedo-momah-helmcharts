@@ -1,8 +1,8 @@
-name: baladyeye-widgets-app
+name: cityview-custom-widgets
 namespace: urbi
 replicaCount: 5
 
-image: registry.momrah.gov.sa/urbi-omar/baladyeye-widgets-app-prod:v0.254
+image: registry.momrah.gov.sa/urbi-omar/cityview-custom-widgets:v1.0.0
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -10,14 +10,14 @@ serviceType: ClusterIP
 resources:
   limits:
     cpu: "1"
-    memory: "1024Mi"
+    memory: "1Gi"
   requests:
     cpu: "100m"
     memory: "128Mi"
 
 # Ingress configuration for production
 ingress:
-  name: be-baladyeye-widgets-app
+  name: be-cityview-custom-widgets
   className: urbi
   host: cityview-pro.momah.gov.sa
 
@@ -34,4 +34,4 @@ ingress:
   # Path rules
   paths:
     - path: /customWidgets
-      backend: baladyeye-widgets-app
+      backend: cityview-custom-widgets

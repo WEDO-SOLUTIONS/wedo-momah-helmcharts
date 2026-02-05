@@ -1,6 +1,6 @@
 apiVersion: v2
-name: baladyeye-widgets-app
-description: Helm chart for Baladyeye CityView Widgets
+name: cityview-custom-widgets
+description: Helm chart for CityView Custom Widgets
 type: application
 version: 0.0.1
 appVersion: "v0.51"
