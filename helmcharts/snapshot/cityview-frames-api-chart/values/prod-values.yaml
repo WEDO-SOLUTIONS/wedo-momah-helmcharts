@@ -1,23 +1,25 @@
-name: cityview-hrh-app
+name: cityview-frames-api
 namespace: urbi
 replicaCount: 1
+appVersion: v1.0.0
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-hrh-app:v1.0.0
-containerPort: 5173
+image: registry.momrah.gov.sa/urbi-omar/cityview-frames-api:v1.0.0
+imagePullPolicy: IfNotPresent
+containerPort: 5000
 servicePort: 80
 serviceType: ClusterIP
 
 resources:
   limits:
     cpu: "1"
-    memory: "1Gi"
+    memory: "512Mi"
   requests:
     cpu: "100m"
-    memory: "128Mi"
+    memory: "256Mi"
 
 # Ingress configuration for production
 ingress:
-  name: be-cityview-hrh-app
+  name: be-cityview-frames-api
   className: urbi
   host: cityview.momah.gov.sa
 
@@ -25,14 +27,11 @@ ingress:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
-    nginx.ingress.kubernetes.io/proxy-buffering: "on"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header X-Original-URI $request_uri;
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
 
   # Path rules
   paths:
-    - path: /
-      backend: cityview-hrh-app
-
+    - path: /frames-api(/.*)
+      pathType: ImplementationSpecific
