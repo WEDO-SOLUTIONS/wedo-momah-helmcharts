@@ -1,7 +1,7 @@
 name: dqp-closures-api
 namespace: urbi
 replicaCount: 1
-image: registry.momrah.gov.sa/urbi-omar/dqp-closures-api-prod:v0.28
+image: registry.momrah.gov.sa/urbi-omar/dqp-closures-api-prod:v0.29
 containerPort: 8000
 servicePort: 80
 serviceType: ClusterIP
