@@ -2,7 +2,7 @@ name: cityview-hrh-insights
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/hrh-insights:v1.4.4
+image: registry.momrah.gov.sa/urbi-omar/hrh-insights:v1.4.5
 containerPort: 8001
 servicePort: 80
 serviceType: ClusterIP
