@@ -20,7 +20,7 @@ resources:
 ingress:
   name: be-cityview-custom-permissions-api
   className: urbi
-  host: cityview-pro.momah.gov.sa
+  host: cityview-pro-api-permissions.momah.gov.sa
 
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
