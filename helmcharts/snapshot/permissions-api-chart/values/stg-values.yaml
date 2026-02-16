@@ -1,0 +1,36 @@
+name: cityview-custom-permissions-api
+namespace: urbi
+replicaCount: 1
+
+# TODO: adjust image/tag to the actual registry path
+image: registry.momrah.gov.sa/urbi-omar/cityview-custom-permissions-api:v1.0.0
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Ingress configuration for staging
+ingress:
+  name: be-cityview-custom-permissions-api
+  className: urbi
+  host: baladyeye-stg.momah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+
+  # Path rules
+  paths:
+    - path: /permissions
+      backend: cityview-custom-permissions-api
+
