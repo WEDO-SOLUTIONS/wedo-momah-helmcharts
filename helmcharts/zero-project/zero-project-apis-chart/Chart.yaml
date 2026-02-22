@@ -1,0 +1,6 @@
+apiVersion: v2
+name: zero-project-apis
+description: Helm chart for Zero Project APIs
+type: application
+version: 0.0.1
+appVersion: "v0.1"
