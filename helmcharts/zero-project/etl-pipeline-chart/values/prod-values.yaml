@@ -1,7 +1,7 @@
 name: zero-project-etl-pipeline
 namespace: urbi
 
-image: registry.momrah.gov.sa/urbi-omar/zero-project-etl-pipeline:v0.0.2
+image: registry.momrah.gov.sa/urbi-omar/zero-project-etl-pipeline:v0.0.3
 
 cronjob:
   schedule: "0 2 * * *"
