@@ -11,13 +11,15 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - backend:
+{{- range .Values.ingress.paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType | default "ImplementationSpecific" }}
+            backend:
               service:
-                name: {{ .Values.name }}
+                name: {{ .backend | default $.Values.name }}
                 port:
-                  number: {{ .Values.servicePort }}
-            path: {{ .Values.ingress.path }}
-            pathType: {{ .Values.ingress.pathType | default "ImplementationSpecific" }}
+                  number: {{ $.Values.servicePort }}
+{{- end }}
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
