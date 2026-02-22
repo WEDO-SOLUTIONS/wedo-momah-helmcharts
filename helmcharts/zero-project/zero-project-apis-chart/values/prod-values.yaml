@@ -33,5 +33,3 @@ ingress:
   paths:
     - path: /zp/api/v1
       pathType: ImplementationSpecific
-    - path: /zp/api/admin/v1
-      pathType: ImplementationSpecific
