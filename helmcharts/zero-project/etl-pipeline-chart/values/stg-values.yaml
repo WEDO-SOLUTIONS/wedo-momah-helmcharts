@@ -1,0 +1,16 @@
+name: zero-project-etl-pipeline-stg
+namespace: urbi
+
+image: registry.momrah.gov.sa/urbi-omar/zero-project-etl-pipeline:stg
+
+cronjob:
+  schedule: "0 3 * * *"   # enable later if needed
+  suspend: true           # true = manual only
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "50m"
+    memory: "128Mi"

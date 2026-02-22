@@ -1,0 +1,6 @@
+apiVersion: v2
+name: etl-pipeline
+description: Helm chart for Zero Project ETL Pipeline (CronJob only)
+type: application
+version: 0.0.1
+appVersion: "v0.1"

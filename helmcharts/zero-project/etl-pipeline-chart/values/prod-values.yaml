@@ -1,0 +1,16 @@
+name: zero-project-etl-pipeline
+namespace: urbi
+
+image: registry.momrah.gov.sa/urbi-omar/zero-project-etl-pipeline:latest
+
+cronjob:
+  schedule: "0 2 * * *"   # enable later: e.g. 02:00 daily
+  suspend: true           # true = manual only; set false when you add a schedule
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
