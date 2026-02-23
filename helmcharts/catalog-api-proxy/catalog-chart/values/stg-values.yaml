@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 1
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.93
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.97
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -130,5 +130,7 @@ ingress:
     - path: /3\.0/items/byid$
       backend: catalog-api-proxy
     - path: /health
+      backend: catalog-api-proxy
+    - path: /routing/*
       backend: catalog-api-proxy
 
