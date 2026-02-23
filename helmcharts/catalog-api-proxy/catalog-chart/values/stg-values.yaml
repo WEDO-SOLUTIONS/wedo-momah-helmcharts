@@ -129,8 +129,6 @@ ingress:
       backend: catalog-api-proxy
     - path: /3\.0/items/byid$
       backend: catalog-api-proxy
-    - path: /routing(/|$).*
-      backend: catalog-api-proxy
     - path: /health
       backend: catalog-api-proxy
     
