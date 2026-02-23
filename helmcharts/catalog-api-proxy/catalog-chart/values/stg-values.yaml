@@ -131,6 +131,6 @@ ingress:
       backend: catalog-api-proxy
     - path: /health
       backend: catalog-api-proxy
-    - path: /3\.0/routing$
+    - path: ^/routing(/|$).*
       backend: catalog-api-proxy
 
