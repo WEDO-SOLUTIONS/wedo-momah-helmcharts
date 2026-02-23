@@ -2,7 +2,7 @@ name: cityview-custom-widgets
 namespace: urbi
 replicaCount: 5
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-custom-widgets:v1.1.1
+image: registry.momrah.gov.sa/urbi-omar/cityview-custom-widgets:v1.1.2
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
