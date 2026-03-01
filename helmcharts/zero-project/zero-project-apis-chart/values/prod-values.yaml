@@ -1,6 +1,6 @@
 name: zero-project-apis
 namespace: urbi
-replicaCount: 1
+replicaCount: 4
 
 image: registry.momrah.gov.sa/urbi-omar/zero-project-apis:v0.3.1
 containerPort: 8000
