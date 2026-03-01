@@ -2,7 +2,7 @@ name: zero-project-apis
 namespace: urbi
 replicaCount: 4
 
-image: registry.momrah.gov.sa/urbi-omar/zero-project-apis:v0.3.6
+image: registry.momrah.gov.sa/urbi-omar/zero-project-apis:v0.3.7
 containerPort: 8000
 servicePort: 80
 serviceType: ClusterIP
@@ -15,7 +15,7 @@ healthPath: /zp/api/v1/health
 resources:
   limits:
     cpu: "1"
-    memory: "2Gi"
+    memory: "3Gi"
   requests:
     cpu: "100m"
     memory: "256Mi"
