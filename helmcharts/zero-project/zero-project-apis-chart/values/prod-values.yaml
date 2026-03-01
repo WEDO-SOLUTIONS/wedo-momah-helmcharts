@@ -2,7 +2,7 @@ name: zero-project-apis
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/zero-project-apis:v0.2.2
+image: registry.momrah.gov.sa/urbi-omar/zero-project-apis:v0.2.3
 containerPort: 8000
 servicePort: 80
 serviceType: ClusterIP
