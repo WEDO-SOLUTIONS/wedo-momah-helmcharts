@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: middleware
-        image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.0.1
+        image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -34,7 +34,7 @@ spec:
             cpu: "250m"
           limits:
             memory: "4096Mi"
-            cpu: "2000m"
+            cpu: "4000m"
         livenessProbe:
           httpGet:
             path: /middleware/api/health
