@@ -1,8 +1,8 @@
-name: cityview-custom-widgets
+name: cityview-ump-ui
 namespace: urbi
-replicaCount: 5
+replicaCount: 2
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-custom-widgets:v1.2.0
+image: registry.momrah.gov.sa/urbi-omar/cityview-ump-ui:latest
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -12,14 +12,14 @@ resources:
     cpu: "1"
     memory: "1Gi"
   requests:
-    cpu: "100m"
-    memory: "128Mi"
+    cpu: "200m"
+    memory: "256Mi"
 
 # Ingress configuration for production
 ingress:
-  name: be-cityview-custom-widgets
+  name: be-cityview-ump-ui
   className: urbi
-  host: cityview-pro.momah.gov.sa
+  host: cityview-pro-ump.momah.gov.sa
 
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -27,11 +27,9 @@ ingress:
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
-    nginx.ingress.kubernetes.io/proxy-buffering: "on"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header X-Original-URI $request_uri;
 
   # Path rules
   paths:
-    - path: /customWidgets
-      backend: cityview-custom-widgets
+    - path: /ump(/|$)(.*)
+      backend: cityview-ump-ui
+

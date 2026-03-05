@@ -1,0 +1,7 @@
+apiVersion: v2
+name: ump-ui-chart
+description: Helm chart for User Management Portal UI
+type: application
+version: 0.1.0
+appVersion: "v1.0.0"
+
