@@ -4,4 +4,12 @@ metadata:
   name: {{ .Values.name }}-config
   namespace: {{ .Values.namespace }}
 data:
-  VITE_API_BASE_URL: {{ .Values.env.VITE_API_BASE_URL }}  
+  VITE_API_BASE_URL: {{ .Values.env.VITE_API_BASE_URL }}
+  VITE_AUTH_API_BASE_URL: {{ .Values.env.VITE_AUTH_API_BASE_URL }}
+  VITE_APP_NAME: {{ .Values.env.VITE_APP_NAME }}
+  VITE_APP_VERSION: {{ .Values.env.VITE_APP_VERSION }}
+  VITE_SOCKET_URL: {{ .Values.env.VITE_SOCKET_URL }}
+  VITE_SOCKET_PATH: {{ .Values.env.VITE_SOCKET_PATH }}
+  VITE_REDIRECT_URL: {{ .Values.env.VITE_REDIRECT_URL }}
+  VITE_WS_URL: {{ .Values.env.VITE_WS_URL }}
+  

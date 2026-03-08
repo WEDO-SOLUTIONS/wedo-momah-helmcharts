@@ -2,7 +2,7 @@ name: cityview-ump-ui
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-ump-ui:v0.1.5
+image: registry.momrah.gov.sa/urbi-omar/cityview-ump-ui:v0.1.6
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -15,8 +15,17 @@ resources:
     cpu: "200m"
     memory: "256Mi"
 env:
-  VITE_API_BASE_URL: http://cityview-pro-ump.momah.gov.sa/ump-api/
+  #VITE_API_BASE_URL: http://cityview-pro-ump.momah.gov.sa/ump-api/
+  #VITE_AUTH_API_BASE_URL: https://cityview.wedo.solutions:3000/api
+  VITE_APP_NAME: User Management System
+  VITE_APP_VERSION: 1.0.0
+  VITE_API_BASE_URL: https://cityview-pro-ump.momah.gov.sa/ump-api
   VITE_AUTH_API_BASE_URL: https://cityview.wedo.solutions:3000/api
+  VITE_SOCKET_URL: https://cityview.wedo.solutions:3000
+  VITE_SOCKET_PATH: /ws
+  VITE_REDIRECT_URL: /permissions
+  VITE_WS_URL: https://cityview.wedo.solutions:3000
+
 
 # Ingress configuration for production
 ingress:
