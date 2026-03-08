@@ -31,6 +31,6 @@ ingress:
 
   # Path rules
   paths:
-    - path: /ump/api/permissions
+    - path: /ump/api/
       backend: cityview-custom-permissions-api
 
