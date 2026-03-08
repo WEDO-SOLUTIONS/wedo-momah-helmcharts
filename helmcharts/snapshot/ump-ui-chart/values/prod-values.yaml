@@ -16,6 +16,7 @@ resources:
     memory: "256Mi"
 env:
   VITE_API_BASE_URL: http://cityview-pro-ump.momah.gov.sa/ump-api/
+  VITE_AUTH_API_BASE_URL: https://cityview.wedo.solutions:3000/api
 
 # Ingress configuration for production
 ingress:
