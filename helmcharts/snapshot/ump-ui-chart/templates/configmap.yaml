@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  VITE_API_BASE_URL: {{ .Values.env.VITE_API_BASE_URL }}  
