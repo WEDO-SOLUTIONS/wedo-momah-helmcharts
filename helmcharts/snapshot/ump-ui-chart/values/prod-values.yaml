@@ -1,6 +1,6 @@
 name: cityview-ump-ui
 namespace: urbi
-replicaCount: 2
+replicaCount: 1
 
 image: registry.momrah.gov.sa/urbi-omar/cityview-ump-ui:v0.0.1
 containerPort: 80
