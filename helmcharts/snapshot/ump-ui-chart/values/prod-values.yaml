@@ -2,7 +2,7 @@ name: cityview-ump-ui
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-ump-ui:v0.0.1
+image: registry.momrah.gov.sa/urbi-omar/cityview-ump-ui:v0.1.4
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -14,6 +14,8 @@ resources:
   requests:
     cpu: "200m"
     memory: "256Mi"
+env:
+  VITE_API_BASE_URL: http://cityview-pro-ump.momah.gov.sa/ump-api/
 
 # Ingress configuration for production
 ingress:
