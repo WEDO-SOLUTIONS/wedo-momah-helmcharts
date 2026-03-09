@@ -108,7 +108,7 @@ ingress:
   className: urbi
   host: urbi-lifestyle-stg.momrah.gov.sa
 
-  # All annotations moved here
+  # All annotations
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
