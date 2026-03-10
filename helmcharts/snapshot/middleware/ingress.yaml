@@ -33,6 +33,34 @@ metadata:
           return 403;
       }
       
+      # Intercept dashboards - route to middleware with rewrite
+      location ~ ^/v2/dashboards {
+          proxy_pass http://cityview-middleware.urbi.svc.cluster.local/middleware/api$request_uri;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
+      
+      # Intercept /assets and /assets?ids=... metadata requests
+      location ~ ^/assets {
+          proxy_pass http://cityview-middleware.urbi.svc.cluster.local/middleware/api$request_uri;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
+      
+      # Intercept asset data endpoints: /{assetId}/items/..., /{assetId}/tags, /{assetId}/filters
+      # All asset IDs are user-owned: user_<id> or user_dyn_<id>
+      # These paths are NOT under /assets/ — they use the assetId as the root segment.
+      location ~ ^/user_[^/]+/(items|tags|filters) {
+          proxy_pass http://cityview-middleware.urbi.svc.cluster.local/middleware/api$request_uri;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
 spec:
   ingressClassName: urbi
   rules:
