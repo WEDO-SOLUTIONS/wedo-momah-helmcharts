@@ -6,7 +6,7 @@ metadata:
   labels:
     app: cityview-middleware
 spec:
-  replicas: 1
+  replicas: 20
   strategy:
     type: RollingUpdate
     rollingUpdate:
