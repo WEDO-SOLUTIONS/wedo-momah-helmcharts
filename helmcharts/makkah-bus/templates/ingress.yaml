@@ -11,17 +11,17 @@ spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
     - host: {{ .Values.ingress.host }}
-      http: 
+      http:
         paths:
 {{- range .Values.ingress.paths }}
           - path: {{ .path }}
             pathType: Prefix
             backend:
               service:
-                name: {{ .Values.name }}
+                name: {{ $.Values.name }}
                 port:
-                  number: {{ .Values.service.port }}
-{{- end }}    
+                  number: {{ $.Values.servicePort }}
+{{- end }}
   tls:
     - hosts:
-        - {{ .Values.ingress.host }} 
+        - {{ .Values.ingress.host }}
