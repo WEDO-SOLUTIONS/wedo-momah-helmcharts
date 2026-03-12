@@ -5,26 +5,26 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   # Database configuration
-  DB_NAME: {{ .Values.env.DB_NAME }}
-  DB_USER: {{ .Values.env.DB_USER }}
-  DB_PASSWORD: {{ .Values.env.DB_PASSWORD }}
-  DB_HOST: {{ .Values.env.DB_HOST }}
-  DP_SCHEMA: {{ .Values.env.DP_SCHEMA }}
-  # redis configuration
-  REDIS_HOST: {{ .Values.env.REDIS_HOST }}
-  REDIS_PORT: {{ .Values.env.REDIS_PORT }}
-  REDIS_PASSWORD: {{ .Values.env.REDIS_PASSWORD }}
-  REDIS_USERNAME: {{ .Values.env.REDIS_USERNAME }}
+  DB_NAME: {{ .Values.env.DB_NAME | quote }}
+  DB_USER: {{ .Values.env.DB_USER | quote }}
+  DB_PASSWORD: {{ .Values.env.DB_PASSWORD | quote }}
+  DB_HOST: {{ .Values.env.DB_HOST | quote }}
+  DP_SCHEMA: {{ .Values.env.DP_SCHEMA | quote }}
+  # Redis configuration
+  REDIS_HOST: {{ .Values.env.REDIS_HOST | quote }}
+  REDIS_PORT: {{ .Values.env.REDIS_PORT | quote }}
+  REDIS_PASSWORD: {{ .Values.env.REDIS_PASSWORD | quote }}
+  REDIS_USERNAME: {{ .Values.env.REDIS_USERNAME | quote }}
   # SSO / Authentication
-  CLIENT_ID: {{ .Values.env.CLIENT_ID }}
-  CLIENT_SECRET: {{ .Values.env.CLIENT_SECRET }} 
-  REDIRECT_URL: {{ .Values.env.REDIRECT_URL }}
-  UI_URL: {{ .Values.env.UI_URL }}
-  VERFIT_TOKEN_URL: {{ .Values.env.VERFIT_TOKEN_URL }}
-  VERFIT_ISSUER: {{ .Values.env.VERFIT_ISSUER }}
+  CLIENT_ID: {{ .Values.env.CLIENT_ID | quote }}
+  CLIENT_SECRET: {{ .Values.env.CLIENT_SECRET | quote }}
+  REDIRECT_URL: {{ .Values.env.REDIRECT_URL | quote }}
+  UI_URL: {{ .Values.env.UI_URL | quote }}
+  VERFIT_TOKEN_URL: {{ .Values.env.VERFIT_TOKEN_URL | quote }}
+  VERFIT_ISSUER: {{ .Values.env.VERFIT_ISSUER | quote }}
   # External APIs & Integration
-  BASE_URL: {{ .Values.env.BASE_URL }}
-  CITYVIEW_BASE_URL: {{ .Values.env.CITYVIEW_BASE_URL }}
-  CITYVIEW_AUTH_TOKEN: {{ .Values.env.CITYVIEW_AUTH_TOKEN }}
+  BASE_URL: {{ .Values.env.BASE_URL | quote }}
+  CITYVIEW_BASE_URL: {{ .Values.env.CITYVIEW_BASE_URL | quote }}
+  CITYVIEW_AUTH_TOKEN: {{ .Values.env.CITYVIEW_AUTH_TOKEN | quote }}
   # Application Settings
-  PORT: {{ .Values.env.PORT }}
+  PORT: {{ .Values.env.PORT | quote }}
