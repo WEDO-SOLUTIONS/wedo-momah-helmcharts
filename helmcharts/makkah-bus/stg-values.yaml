@@ -22,7 +22,7 @@ ingress:
   host: urbi-lifestyle-stg.momrah.gov.sa
 
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    #nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
@@ -31,6 +31,6 @@ ingress:
 
   # Path rules
   paths:
-    - path: /api/v1/mb(/|$)(.*)
+    - path: /api/v1/mb
       pathType: Prefix
       backend: makkah-bus
