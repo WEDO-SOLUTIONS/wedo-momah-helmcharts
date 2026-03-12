@@ -1,0 +1,58 @@
+# Release metadata
+name: maplocator-snapshot-api
+namespace: urbi
+replicaCount: 1
+
+# Docker image configuration
+image: registry.momrah.gov.sa/urbi-omar/maplocator-snapshot-api:v0.4
+containerPort: 5000
+servicePort: 5000
+serviceType: ClusterIP
+
+# Resource requests & limits
+resources:
+  limits:
+    cpu: "1"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
+# PVC configuration
+pvc:
+  enabled: true
+  name: maplocator-snapshot-api-pvc
+  storageClassName: oci-block-volume
+  accessModes:
+    - ReadWriteOnce
+  storage: 3Gi
+
+# Environment variables
+env:
+  UPLOAD_FOLDER: "/uploads"
+  LOG_DIR: "/logs"
+
+# Ingress configuration
+ingress:
+  name: be-maplocator-snapshot-api
+  className: urbi
+  host: urbi-lifestyle.momrah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+  paths:
+    - path: /upload-snap
+      backend: maplocator-snapshot-api-service
+    - path: /get-snap
+      backend: maplocator-snapshot-api-service
+    - path: /generate_map
+      backend: maplocator-snapshot-api-service
+

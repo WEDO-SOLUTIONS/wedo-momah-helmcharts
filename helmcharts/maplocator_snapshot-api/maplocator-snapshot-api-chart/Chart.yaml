@@ -1,0 +1,7 @@
+apiVersion: v2
+name: maplocator-snapshot-api
+description: Helm chart for Maplocator Snapshot API
+type: application
+version: 0.1.0
+appVersion: "v0.4"
+

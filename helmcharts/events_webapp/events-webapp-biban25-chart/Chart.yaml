@@ -1,0 +1,7 @@
+apiVersion: v2
+name: events-webapp-biban25
+description: Helm chart for Events Webapp Biban25
+type: application
+version: 0.1.0
+appVersion: "staging"
+
