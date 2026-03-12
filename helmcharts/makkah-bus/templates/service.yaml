@@ -1,15 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "makkah-bus.fullname" . }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    {{- include "makkah-bus.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.name }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.serviceType }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.servicePort }}
+      targetPort: {{ .Values.containerPort }}
       protocol: TCP
       name: http
   selector:
-    {{- include "makkah-bus.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ .Values.name }}
