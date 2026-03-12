@@ -1,0 +1,35 @@
+name: makkah-bus
+namespace: urbi
+replicaCount: 1
+
+image: registry.momrah.gov.sa/urbi-omar/makkah-bus:v0.0.1
+containerPort: 3000
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+
+# Ingress configuration for production
+ingress:
+  name: makkah-bus
+  className: urbi
+  host: urbi-lifestyle-stg.momrah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+
+  # Path rules
+  paths:
+    - path: /api/v1/mb(/|$)(.*)
+      backend: makkah-bus
