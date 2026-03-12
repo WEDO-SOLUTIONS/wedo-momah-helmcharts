@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  # Database configuration
+  DB_NAME: {{ .Values.env.DB_NAME }}
+  DB_USER: {{ .Values.env.DB_USER }}
+  DB_PASSWORD: {{ .Values.env.DB_PASSWORD }}
+  DB_HOST: {{ .Values.env.DB_HOST }}
+  DP_SCHEMA: {{ .Values.env.DP_SCHEMA }}
+  # redis configuration
+  REDIS_HOST: {{ .Values.env.REDIS_HOST }}
+  REDIS_PORT: {{ .Values.env.REDIS_PORT }}
+  REDIS_PASSWORD: {{ .Values.env.REDIS_PASSWORD }}
+  REDIS_USERNAME: {{ .Values.env.REDIS_USERNAME }}
+  # SSO / Authentication
+  CLIENT_ID: {{ .Values.env.CLIENT_ID }}
+  CLIENT_SECRET: {{ .Values.env.CLIENT_SECRET }} 
+  REDIRECT_URL: {{ .Values.env.REDIRECT_URL }}
+  UI_URL: {{ .Values.env.UI_URL }}
+  VERFIT_TOKEN_URL: {{ .Values.env.VERFIT_TOKEN_URL }}
+  VERFIT_ISSUER: {{ .Values.env.VERFIT_ISSUER }}
+  # External APIs & Integration
+  BASE_URL: {{ .Values.env.BASE_URL }}
+  CITYVIEW_BASE_URL: {{ .Values.env.CITYVIEW_BASE_URL }}
+  CITYVIEW_AUTH_TOKEN: {{ .Values.env.CITYVIEW_AUTH_TOKEN }}
+  # Application Settings
+  PORT: {{ .Values.env.PORT }}
