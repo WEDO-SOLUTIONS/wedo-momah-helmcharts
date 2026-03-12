@@ -6,7 +6,7 @@ metadata:
   labels:
     app: cityview-middleware
 spec:
-  replicas: 1
+  replicas: 20
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: middleware
-        image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.1.6
+        image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.1.8
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

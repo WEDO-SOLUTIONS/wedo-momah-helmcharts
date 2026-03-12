@@ -1,0 +1,60 @@
+# Release metadata
+name: moi-proxy
+namespace: urbi
+replicaCount: 1
+
+# Docker image configuration
+image: registry.momrah.gov.sa/urbi-omar/moi-proxy:v0.0.1
+containerPort: 8080
+servicePort: 80
+serviceType: ClusterIP
+
+# Resource requests & limits
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Ingress configuration (staging)
+ingress:
+  name: be-moi-proxy
+  className: urbi
+  host: moi-proxy-stg.momah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS, PUT, DELETE, PATCH"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+  paths:
+    # Original paths
+    - path: /routing(/|$)(.*)
+      backend: moi-proxy
+    - path: /catalog(/|$)(.*)
+      backend: moi-proxy
+    - path: /vector(/|$)(.*)
+      backend: moi-proxy
+    - path: /map(/|$)(.*)
+      backend: moi-proxy
+    - path: /map-styles(/|$)(.*)
+      backend: moi-proxy
+
+    # New map API paths
+    - path: /api/js(/|$)(.*)
+      backend: moi-proxy
+    - path: /api.js(/|$)(.*)
+      backend: moi-proxy
+
+    # New vector tile paths
+    - path: /vt(/|$)(.*)
+      backend: moi-proxy
+    - path: /v2/ald(/|$)(.*)
+      backend: moi-proxy
+
