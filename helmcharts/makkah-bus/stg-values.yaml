@@ -32,4 +32,5 @@ ingress:
   # Path rules
   paths:
     - path: /api/v1/mb(/|$)(.*)
+      pathType: ImplementationSpecific
       backend: makkah-bus
