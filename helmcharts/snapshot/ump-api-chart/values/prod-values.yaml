@@ -14,34 +14,26 @@ resources:
   requests:
     cpu: "200m"
     memory: "256Mi"
+    
 env:
-  # Database Configuration
   DB_NAME: snapshot-pro
   DB_USER: snapshot_pro
   DB_PASSWORD: QE79ujmp3fw2eYV363GcDLh0zuVOFpaZ
   DB_HOST: 10.246.3.65
-  SCHEMA: public
-
-# Redis Configuration
-  REDIS_HOSTNAME: redis-redis-cluster
+  DP_SCHEMA: public
+  REDIS_HOST: redis-redis-cluster
   REDIS_PORT: 6379
   REDIS_PASSWORD: Ycp0v7atlsIc
   REDIS_USERNAME: default
-
-# SSO / Authentication
   CLIENT_ID: Outbalady.balady.eye.pro
   CLIENT_SECRET: c2bf5ab3afa84766ada157e862b4b5f6
   REDIRECT_URL: https://cityview-pro-ump.momah.gov.sa/ump-api/auth/callback
   UI_URL: https://cityview-pro-ump.momah.gov.sa/ump
   VERFIT_TOKEN_URL: https://ssoapp.balady.gov.sa/.well-known/openid-configuration/jwks
   VERFIT_ISSUER: https://ssoapp.balady.gov.sa
-
-# External APIs & Integration
   BASE_URL: https://cityview-pro-api-permissions.momah.gov.sa
   CITYVIEW_BASE_URL: https://cityview-pro-api-permissions.momah.gov.sa
   CITYVIEW_AUTH_TOKEN: 28ed92f1-de4b-4060-b159-2dc19e9b8bf5
-
-# Application Settings
   PORT: 3000
 
 # Ingress configuration for production
