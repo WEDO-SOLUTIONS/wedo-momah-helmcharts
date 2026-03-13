@@ -20,7 +20,8 @@ env:
   DB_USER: snapshot_pro
   DB_PASSWORD: QE79ujmp3fw2eYV363GcDLh0zuVOFpaZ
   DB_HOST: 10.246.3.65
-  DP_SCHEMA: public
+  DB_SCHEMA: public
+  DB_SCHEMA: public
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: 6379
   REDIS_PASSWORD: Ycp0v7atlsIc

@@ -9,7 +9,8 @@ data:
   DB_USER: {{ .Values.env.DB_USER | quote }}
   DB_PASSWORD: {{ .Values.env.DB_PASSWORD | quote }}
   DB_HOST: {{ .Values.env.DB_HOST | quote }}
-  DP_SCHEMA: {{ .Values.env.DP_SCHEMA | quote }}
+  DB_SCHEMA: {{ .Values.env.DB_SCHEMA | quote }}
+  SCHEMA: {{ .Values.env.SCHEMA | quote }}
   # Redis configuration
   REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME | quote }}
   REDIS_PORT: {{ .Values.env.REDIS_PORT | quote }}
