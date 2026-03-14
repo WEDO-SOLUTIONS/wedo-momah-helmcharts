@@ -2,7 +2,6 @@ name: cityview-custom-permissions-api
 namespace: urbi
 replicaCount: 1
 
-# TODO: adjust image/tag to the actual registry path
 image: registry.momrah.gov.sa/urbi-omar/cityview-custom-permissions-api:v1.1.3
 containerPort: 8000
 servicePort: 80
