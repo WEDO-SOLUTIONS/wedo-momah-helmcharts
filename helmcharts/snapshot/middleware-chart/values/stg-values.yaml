@@ -1,0 +1,82 @@
+name: cityview-middleware
+namespace: urbi
+replicaCount: 2
+
+image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.1.9
+containerPort: 8080
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "2Gi"
+    cpu: "2000m"
+
+healthPath: /middleware/api/health
+
+ingress:
+  name: snapshot-stg-api
+  className: urbi
+  host: cityview-stg-api.momah.gov.sa
+  defaultBackendService: snapshot-stg-api
+  defaultBackendPort: 80
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,x-share-token
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST, PUT, DELETE, OPTIONS, PATCH
+    nginx.ingress.kubernetes.io/cors-allow-origin: https://cityview-stg.momah.gov.sa
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 500m
+  serverSnippet: |
+          # Block swagger/version/metrics
+          location ~* "^/swagger/" {
+              deny all;
+              return 403;
+          }
+          location ~* "^/version" {
+              deny all;
+              return 403;
+          }
+          location ~* "^/metrics" {
+              deny all;
+              return 403;
+          }
+          
+          # Intercept dashboards - route to middleware with rewrite
+          location ~ ^/v2/dashboards {
+              client_max_body_size 500m;
+              proxy_request_buffering off;
+              proxy_read_timeout 300s;
+              proxy_pass http://__MIDDLEWARE_HOST__/middleware/api$request_uri;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+          }
+          
+          # Intercept /assets and /assets?ids=... metadata requests
+          location ~ ^/assets {
+              client_max_body_size 500m;
+              proxy_request_buffering off;
+              proxy_read_timeout 300s;
+              proxy_pass http://__MIDDLEWARE_HOST__/middleware/api$request_uri;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+          }
+          
+          # Intercept asset data endpoints
+          location ~ ^/user_[^/]+/(items|tags|filters) {
+              client_max_body_size 500m;
+              proxy_request_buffering off;
+              proxy_read_timeout 300s;
+              proxy_pass http://__MIDDLEWARE_HOST__/middleware/api$request_uri;
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+          }

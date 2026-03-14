@@ -1,0 +1,6 @@
+apiVersion: v2
+name: middleware-chart
+description: Helm chart for CityView Middleware
+type: application
+version: 0.1.0
+appVersion: "v0.1.9"
