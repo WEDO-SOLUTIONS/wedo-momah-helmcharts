@@ -43,10 +43,10 @@ ingress:
               deny all;
               return 403;
           }
-          # location ~* "^/metrics" {
-          #     deny all;
-          #     return 403;
-          # }
+          location ~* "^/metrics" {
+              deny all;
+              return 403;
+          }
           
           # Intercept dashboards - route to middleware with rewrite
           location ~ ^/v2/dashboards {
