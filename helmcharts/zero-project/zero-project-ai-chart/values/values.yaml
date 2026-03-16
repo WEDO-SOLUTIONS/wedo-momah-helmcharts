@@ -25,7 +25,7 @@ healthCheck:
 
 env:
   - name: MONGO_DB_URL
-    value: "mongodb://localhost:27017"
+    value: "mongodb://mongo-zero-project-ai:27017"
   - name: MONGO_DB_NAME
     value: "mcif-mongodb"
 
@@ -46,7 +46,7 @@ ingress:
       pathType: ImplementationSpecific
 
 mongodb:
-  enabled: false
+  enabled: true
   name: mongo-zero-project-ai
   image: mongo:7.0
   initDatabase: mcif-mongodb
@@ -58,7 +58,7 @@ mongodb:
       cpu: "250m"
       memory: "256Mi"
   pvc:
-    create: false
+    create: true
     name: mongodb-pvc-zero-project-ai
     size: "10Gi"
     accessMode: ReadWriteOnce
