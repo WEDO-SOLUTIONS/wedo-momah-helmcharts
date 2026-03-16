@@ -2,7 +2,7 @@ name: cityview-middleware
 namespace: urbi
 replicaCount: 20
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.2.9
+image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.3.0
 containerPort: 8080
 servicePort: 80
 serviceType: ClusterIP
