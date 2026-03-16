@@ -43,7 +43,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
   paths:
     - path: /
-      pathType: ImplementationSpecific
+      pathType: Prefix
 
 mongodb:
   enabled: true
