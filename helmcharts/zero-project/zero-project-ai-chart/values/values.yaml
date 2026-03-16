@@ -19,9 +19,9 @@ resources:
 
 healthCheck:
   readiness:
-    path: /health
+    path: /api/health
   liveness:
-    path: /health
+    path: /api/health
 
 env:
   - name: MONGO_DB_URL
