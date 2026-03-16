@@ -3,7 +3,7 @@ namespace: urbi
 replicaCount: 1
 appVersion: development
 
-image: registry.momrah.gov.sa/urbi-omar/zero-project-ai:v0.0.3
+image: registry.momrah.gov.sa/urbi-omar/zero-project-ai:v0.0.4
 imagePullPolicy: IfNotPresent
 containerPort: 8000
 servicePort: 80
