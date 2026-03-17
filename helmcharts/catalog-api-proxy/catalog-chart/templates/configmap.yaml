@@ -3,39 +3,9 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.name }}-config
   namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.name }}
 data:
-  BY_ID_URL: {{ .Values.env.BY_ID_URL }}
-  AI_URL: {{ .Values.env.AI_URL }}
-  AI_MARKERS_URL: {{ .Values.env.AI_MARKERS_URL }}
-  AI_SUGGEST_URL: {{ .Values.env.AI_SUGGEST_URL }}
-  DEFAULT_PLACES_FORWARD_URL: {{ .Values.env.DEFAULT_PLACES_FORWARD_URL }}
-  DEFAULT_MARKERS_FORWARD_URL: {{ .Values.env.DEFAULT_MARKERS_FORWARD_URL }}
-  DEFAULT_PLACES_FORWARD_URL_BYID: {{ .Values.env.DEFAULT_PLACES_FORWARD_URL_BYID }}
-  DEFAULT_SUGGESTS_FORWARD_URL: {{ .Values.env.DEFAULT_SUGGESTS_FORWARD_URL }}
-  RCMC_AREA_URL: {{ .Values.env.RCMC_AREA_URL }}
-  BY_CATEGORY_URL: {{ .Values.env.BY_CATEGORY_URL }}
-  REGION_ID_URL: {{ .Values.env.REGION_ID_URL }}
-  LOG_LEVEL: {{ .Values.env.LOG_LEVEL }}
-  PORT: "{{ .Values.env.PORT }}"
-  BALADY_BASE_URL: {{ .Values.env.BALADY_BASE_URL }}
-  BALADY_OAUTH_API: {{ .Values.env.BALADY_OAUTH_API }}
-  BALADY_SPL_API: {{ .Values.env.BALADY_SPL_API }}
-  BALADY_GRANT_TYPE: {{ .Values.env.BALADY_GRANT_TYPE }}
-  BALADY_CLIENT_ID: {{ .Values.env.BALADY_CLIENT_ID }}
-  REDIS_CACHE: "{{ .Values.env.REDIS_CACHE }}"
-  REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME }}
-  REDIS_PORT: "{{ .Values.env.REDIS_PORT }}"
-  REDIS_USERNAME: {{ .Values.env.REDIS_USERNAME }}
-  KAFKA_BROKERS: {{ .Values.env.KAFKA_BROKERS }}
-  KAFKA_USERNAME: {{ .Values.env.KAFKA_USERNAME }}
-  KAFKA_TOPIC: {{ .Values.env.KAFKA_TOPIC }}
-  DISCREPANCY_API: {{ .Values.env.DISCREPANCY_API }}
-  AI_URL_01: {{ .Values.env.AI_URL_01 }}
-  AI_MARKERS_URL_01: {{ .Values.env.AI_MARKERS_URL_01 }}
-  AI_SUGGEST_URL_01: {{ .Values.env.AI_SUGGEST_URL_01 }}
-  AI_URL_02: {{ .Values.env.AI_URL_02 }}
-  AI_MARKERS_URL_02: {{ .Values.env.AI_MARKERS_URL_02 }}
-  AI_SUGGEST_URL_02: {{ .Values.env.AI_SUGGEST_URL_02 }}
-  WEIGHT_01: "{{ .Values.env.WEIGHT_01 }}"
-  WEIGHT_02: "{{ .Values.env.WEIGHT_02 }}"
-
+{{- range $key, $val := .Values.env }}
+  {{ $key }}: "{{ $val }}"
+{{- end }}
