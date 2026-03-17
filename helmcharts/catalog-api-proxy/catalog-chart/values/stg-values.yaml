@@ -18,33 +18,6 @@ resources:
     cpu: "100m"
     memory: "128Mi"
 
-# Non-sensitive environment variables (ConfigMap)
-#env:
-#  BY_ID_URL: http://catalog-api/3.0/items/byid
-#  AI_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
-#  AI_MARKERS_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/marker
-#  DEFAULT_PLACES_FORWARD_URL: http://catalog-api/3.0/items
-#  DEFAULT_MARKERS_FORWARD_URL: http://catalog-api/3.0/markers
-#  DEFAULT_PLACES_FORWARD_URL_BYID: http://catalog-api/3.0/items/byid
-#  DEFAULT_SUGGESTS_FORWARD_URL: http://catalog-api/3.0/suggests
-#  AI_SUGGEST_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/suggest
-#  AI_PLACES_GOOGLE_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
-#  AI_MARKERS_GOOGLE_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
-#  AI_GOOGLE_URL_BYID: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/id
-#  RCMC_AREA_URL: http://rcmc-markers-api/1.0/rcmc-area
-#  BY_CATEGORY_URL: http://catalog-api/2.0/catalog/rubric/get
-#  REGION_ID_URL: http://catalog-api/2.0/region/search
-#  LOG_LEVEL: debug
-#  PORT: "3000"
-#  REDIS_CACHE: false
-#  REDIS_HOSTNAME: redis-redis-cluster
-#  REDIS_PORT: "6379"
-#  REDIS_PASSWORD: CVb7saZB4Rtu
-#  REDIS_USERNAME : default
-#  KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
-#  KAFKA_USERNAME : admin
-#  KAFKA_TOPIC : dsvc.staging.catalog-api-proxy.google-pois.discrepancy
-#  DISCREPANCY_API : https://urbi-lifestyle-stg.momrah.gov.sa/api/2.0/discrepancy
 env:
   BY_ID_URL: http://catalog-api/3.0/items/byid
   AI_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
@@ -70,17 +43,9 @@ env:
   BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
   BALADY_GRANT_TYPE: client_credentials
   BALADY_CLIENT_ID: 35E7bvBUf9U0dmbzbqD0rU0Bh4epXcOL
-  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
-  #BALADY_BASE_URL: https://apiservicesstg.balady.gov.sa
-  #BALADY_OAUTH_API: /oauth/v1/token
-  #BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
-  #BALADY_GRANT_TYPE: client_credentials
-  #BALADY_CLIENT_ID: 8dKFPZVsCtMmcSx1OcjNPTwKNHaOciV9
-  #BALADY_CLIENT_SECRET: JbT9qKNriOhrynGA
   REDIS_CACHE: false
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: "6379"
-  REDIS_PASSWORD: CVb7saZB4Rtu
   REDIS_USERNAME : default
   KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
   KAFKA_USERNAME : admin
@@ -92,10 +57,10 @@ env:
   WEIGHT_01: "100"
   WEIGHT_02: "0"
 
-
 # Sensitive environment variables (Secret)
 secret:
-  REDIS_PASSWORD: "P@ssw0rd"
+  REDIS_PASSWORD: "CVb7saZB4Rtu"
+  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
   AI_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
   AI_URL_TOKEN_01: "f9d37a8c1-b52e-def-71a4-2a9275146d9f"
   AI_URL_TOKEN_02: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
