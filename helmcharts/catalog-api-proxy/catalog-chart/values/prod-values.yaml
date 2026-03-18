@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 6
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v0.3.9
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v4.00
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -38,11 +38,13 @@ env:
   BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
   BALADY_GRANT_TYPE: client_credentials
   BALADY_CLIENT_ID: 35E7bvBUf9U0dmbzbqD0rU0Bh4epXcOL
+  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
   #BALADY_BASE_URL: https://apiservicesstg.balady.gov.sa
   #BALADY_OAUTH_API: /oauth/v1/token
   #BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
   #BALADY_GRANT_TYPE: client_credentials
   #BALADY_CLIENT_ID: 8dKFPZVsCtMmcSx1OcjNPTwKNHaOciV9
+  #BALADY_CLIENT_SECRET: JbT9qKNriOhrynGA
   REDIS_CACHE: false
   KAFKA_BROKERS: RUHMPV-URBKDB01.momra.net:9092,RUHMPV-URBKDB02.momra.net:9092,RUHMPV-URBKDB03.momra.net:9092
   KAFKA_USERNAME: admin
@@ -54,14 +56,15 @@ env:
   AI_MARKERS_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/marker
   AI_SUGGEST_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/suggest
   AI_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/place
+  ADMIN_API_KEY: 28ed92f1-de4b-4060-b159-2dc19e9b8bf5
+  BLACKLIST_URL: https://axownvq9lhmx.objectstorage.me-jeddah-1.oci.customer-oci.com/p/ykBWL3zo7MRNak-LnF9W-8rZF2d-_kKyONU0mgfTtCCyrOlf_Y8JJVmfFPXzthM6/n/axownvq9lhmx/b/prod-makkah-ptv/o/blacklist/data.json
+  PLACES_DATA_API_URL: https://axownvq9lhmx.objectstorage.me-jeddah-1.oci.customer-oci.com/p/ykBWL3zo7MRNak-LnF9W-8rZF2d-_kKyONU0mgfTtCCyrOlf_Y8JJVmfFPXzthM6/n/axownvq9lhmx/b/prod-makkah-ptv/o/places_with_kw.json
   WEIGHT_01: "100"
   WEIGHT_02: "0"
 
 # Sensitive environment variables (Secret)
 secret:
-  REDIS_PASSWORD: "P@ssw0rd"
-  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
-  #BALADY_CLIENT_SECRET: JbT9qKNriOhrynGA
+  REDIS_PASSWORD: "Ycp0v7atlsIc"
   AI_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
   KAFKA_PASSWORD: "BZrGhOGfNylaZcXMSRgz4Y"
   AI_URL_TOKEN_01: "6ea6edb2-c09d-41af-83e7-653786572aaa"
@@ -96,5 +99,8 @@ ingress:
       backend: catalog-api-proxy
     - path: /health
       backend: catalog-api-proxy
+    - path: /1\.0/functions/[^/]+/cache$
+      backend: catalog-api-proxy
+
 
 
