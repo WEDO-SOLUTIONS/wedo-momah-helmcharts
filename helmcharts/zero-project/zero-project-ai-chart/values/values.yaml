@@ -42,7 +42,7 @@ ingress:
     #nginx.ingress.kubernetes.io/rewrite-target: "/$2"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
   paths:
-    - path: /api/chat
+    - path: /
       pathType: ImplementationSpecific
 
 mongodb:
