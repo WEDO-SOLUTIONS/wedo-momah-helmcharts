@@ -31,7 +31,7 @@ env:
 
 ingress:
   name: be-zero-project-ai
-  host: zero-project-ai.momah.gov.sa
+  host: cityview.momah.gov.sa
   className: urbi
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -42,7 +42,7 @@ ingress:
     #nginx.ingress.kubernetes.io/rewrite-target: "/$2"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
   paths:
-    - path: /
+    - path: /api/chat
       pathType: ImplementationSpecific
 
 mongodb:
