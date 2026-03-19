@@ -31,7 +31,7 @@ env:
 
 ingress:
   name: be-zero-project-ai
-  host: cityview.momah.gov.sa
+  host: zero-project-ai.momah.gov.sa
   className: urbi
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
