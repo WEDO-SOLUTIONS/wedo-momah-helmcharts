@@ -4,16 +4,16 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app.kubernetes.io/name: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app.kubernetes.io/name: {{ .Values.name }}
     spec:
       containers:
         - name: {{ .Values.name }}
@@ -21,4 +21,10 @@ spec:
           ports:
             - containerPort: {{ .Values.containerPort }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+
