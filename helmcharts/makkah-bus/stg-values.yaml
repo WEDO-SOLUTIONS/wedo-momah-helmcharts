@@ -15,6 +15,12 @@ resources:
     cpu: "200m"
     memory: "256Mi"
 
+env:
+  REDIS_HOSTNAME: redis-redis-cluster
+  REDIS_PORT: 6379
+  REDIS_PASSWORD: CVb7saZB4Rtu
+  REDIS_USERNAME: default
+
 # Ingress configuration for production
 ingress:
   name: makkah-bus
