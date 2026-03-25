@@ -1,0 +1,39 @@
+# Release metadata
+name: cityview-user-form
+namespace: urbi
+replicaCount: 1
+
+# Docker image (staging tag)
+image: registry.momrah.gov.sa/urbi-omar/cityview-user-form:v1.0.3
+containerPort: 80
+servicePort: 80
+serviceType: ClusterIP
+
+# Resource requests & limits
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Ingress configuration for staging
+ingress:
+  enabled: true
+  name: be-cityview-user-form
+  className: urbi
+  host: cityview-pro-api.momah.gov.sa
+  #path: 
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS, PUT, DELETE"
+    nginx.ingress.kubernetes.io/cors-allow-headers: >-
+      DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  # Path rules
+  paths:
+    - path: /api/cityview-user-form(/|$)(.*)
+      backend: cityview-user-form
