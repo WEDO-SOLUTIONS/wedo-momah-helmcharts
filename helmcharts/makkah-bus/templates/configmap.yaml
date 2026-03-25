@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME }}
+  REDIS_PORT: {{ .Values.env.REDIS_PORT }}
+  REDIS_PASSWORD: {{ .Values.env.REDIS_PASSWORD }}
+  REDIS_USERNAME: {{ .Values.env.REDIS_USERNAME }}
