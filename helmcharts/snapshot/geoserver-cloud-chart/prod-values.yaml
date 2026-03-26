@@ -67,6 +67,8 @@ geoserver-webui:
       env:
         SPRING_PROFILES_ACTIVE:
           value: standalone,datadir,kube
+        GEOSERVER_CLOUD_EVENTBUS_ENABLED:
+          value: "false"
         GEOSERVER_BASE_PATH:
           value: /geoserver
         SERVER_USE_FORWARD_HEADERS:
