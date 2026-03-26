@@ -44,6 +44,8 @@ ingress:
   paths:
     - path: /api/chat
       pathType: ImplementationSpecific
+    - path: /api/admin
+      pathType: ImplementationSpecific
 
 mongodb:
   enabled: true
