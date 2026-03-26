@@ -373,5 +373,5 @@ ingress:
   # Path rules
   paths:
     - path: /geoserver(/|$)(.*)
-      pathType: Prefix
+      #pathType: Prefix
       backend: geoserver-gateway
