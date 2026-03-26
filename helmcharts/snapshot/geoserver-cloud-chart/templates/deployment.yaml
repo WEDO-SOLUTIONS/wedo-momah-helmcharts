@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.<service>.name }}
+  namespace: {{ .Values.<service>.namespace }}
+  labels:
+    app: {{ .Values.<service>.name }}
+spec:
+  replicas: {{ .Values.<service>.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.<service>.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.<service>.name }}
+    spec:
+      containers:
+        - name: {{ .Values.<service>.name }}
+          image: {{ .Values.<service>.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ .Values.<service>.containerPort }}
+          env:
+            {{- range $key, $val := .Values.<service>.containers.spring.env }}
+            - name: {{ $key }}
+              value: "{{ $val.value }}"
+            {{- end }}
+          resources:
+            limits:
+              cpu: {{ .Values.<service>.resources.limits.cpu }}
+              memory: {{ .Values.<service>.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.<service>.resources.requests.cpu }}
+              memory: {{ .Values.<service>.resources.requests.memory }}
+          {{- if .Values.<service>.containers.spring.volumeMounts }}
+          volumeMounts:
+            {{- range .Values.<service>.containers.spring.volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+          {{- end }}
+
+      {{- if .Values.volumes }}
+      volumes:
+        {{- range $key, $val := .Values.volumes }}
+        - name: {{ $key }}
+          persistentVolumeClaim:
+            claimName: {{ $val.persistentVolumeClaim.claimName }}
+        {{- end }}
+      {{- end }}

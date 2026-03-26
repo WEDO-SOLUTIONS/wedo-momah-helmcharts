@@ -1,0 +1,377 @@
+#geoserver-gateway  resource configuration
+geoserver-gateway:
+  name: geoserver-gateway
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud-gateway:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        SERVER_TOMCAT_REMOTEIP_PROTOCOL_HEADER:
+          value: x-forwarded-proto
+        SERVER_TOMCAT_REMOTEIP_REMOTE_IP_HEADER:
+          value: x-forwarded-for
+        SERVER_TOMCAT_REMOTEIP_PORT_HEADER:
+          value: x-forwarded-port
+        SERVER_TOMCAT_REMOTEIP_HOST_HEADER:
+          value: x-forwarded-host
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        WEBUI_PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver/web
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+
+#geoserver-webui  resource configuration 
+geoserver-webui:
+  name: geoserver-webui
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud-webui:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        SERVER_TOMCAT_REMOTEIP_PROTOCOL_HEADER:
+          value: x-forwarded-proto
+        SERVER_TOMCAT_REMOTEIP_REMOTE_IP_HEADER:
+          value: x-forwarded-for
+        SERVER_TOMCAT_REMOTEIP_PORT_HEADER:
+          value: x-forwarded-port
+        SERVER_TOMCAT_REMOTEIP_HOST_HEADER:
+          value: x-forwarded-host
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        WEBUI_PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver/web
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - mountPath: /opt/app/data_directory
+          name: geoserver-data
+
+#geoserver-rest  resource configuration
+geoserver-rest:
+  name: geoserver-rest
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud-rest:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - mountPath: /opt/app/data_directory
+          name: geoserver-data
+
+#geoserver-wms  resource configuration
+geoserver-wms:
+  name: geoserver-wms
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud-wms:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - mountPath: /opt/app/data_directory
+          name: geoserver-data
+
+#geoserver-wfs  resource configuration
+geoserver-wfs:
+  name: geoserver-wfs
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud-wfs:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - mountPath: /opt/app/data_directory
+          name: geoserver-data
+
+#geoserver-wcs  resource configuration
+geoserver-wcs:
+  name: geoserver-wcs
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud-wcs:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - mountPath: /opt/app/data_directory
+          name: geoserver-data
+
+#geoserver-gwc  resource configuration
+geoserver-gwc:
+  name: geoserver-gwc
+  namespace: urbi
+  replicaCount: 1    
+  image: geoserver-cloud-gwc:2.28.2.3
+  containerPort: 8080
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    spring:
+      env:
+        SPRING_PROFILES_ACTIVE:
+          value: standalone,datadir,kube
+        GEOSERVER_BASE_PATH:
+          value: /geoserver
+        SERVER_USE_FORWARD_HEADERS:
+          value: "true"
+        SERVER_FORWARD_HEADERS_STRATEGY:
+          value: framework
+        PROXY_BASE_URL:
+          value: https://cityview.momah.gov.sa/geoserver
+        SPRING_RABBITMQ_HOST:
+          value: rabbitmq
+        SPRING_RABBITMQ_PORT:
+          value: "5672"
+        SPRING_RABBITMQ_USERNAME:
+          value: user
+        SPRING_RABBITMQ_PASSWORD:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - mountPath: /opt/app/data_directory
+          name: geoserver-data
+
+#rabbitmq  resource configuration
+rabbitmq:
+  name: rabbitmq
+  namespace: urbi
+  replicaCount: 1
+  image: rabbitmq:3-management
+  containerPorts:
+    - name: amqp
+      port: 5672
+    - name: management
+      port: 15672
+  servicePort: 5672
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "1"
+      memory: "1024Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  containers:
+    rabbitmq:
+      env:
+        RABBITMQ_DEFAULT_USER:
+          value: user
+        RABBITMQ_DEFAULT_PASS:
+          value: QjecigobQuzUpIGc
+      volumeMounts:
+        - name: rabbitmq-data
+          mountPath: /var/lib/rabbitmq
+  volumes:
+    - name: rabbitmq-data
+      persistentVolumeClaim:
+        claimName: geoserver-cloud-pvc
+
+
+# Persistent Volume Claim configuration
+pvc:
+  enabled: true
+  name: geoserver-cloud-pvc
+  storageClassName: oci-block-volume
+  accessModes:
+    - ReadWriteOnce
+  storage: 500Gi
+
+# Shared volume for all services
+volumes:
+  geoserver-data:
+    persistentVolumeClaim:
+      claimName: geoserver-cloud-pvc
+
+
+#ingress configuration
+ingress:
+  name: geoserver-cloud
+  className: urbi
+  host: cityview.momah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
+
+  # Path rules
+  paths:
+    - path: /geoserver(/|$)(.*)
+      pathType: Prefix
+      backend: geoserver-gateway
