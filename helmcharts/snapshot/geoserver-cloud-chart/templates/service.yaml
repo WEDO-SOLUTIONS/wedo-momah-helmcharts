@@ -1,15 +1,30 @@
+{{- $services := list "geoserver-gateway" "geoserver-webui" "geoserver-rest" "geoserver-wms" "geoserver-wfs" "geoserver-wcs" "geoserver-gwc" "rabbitmq" -}}
+{{- range $serviceName := $services }}
+{{- $svc := index $.Values $serviceName }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.<service>.name }}
-  namespace: {{ .Values.<service>.namespace }}
+  name: {{ $svc.name }}
+  namespace: {{ $svc.namespace }}
   labels:
-    app: {{ .Values.<service>.name }}
+    app: {{ $svc.name }}
 spec:
-  type: {{ .Values.<service>.serviceType }}
-  ports:
-    - name: http
-      port: {{ .Values.<service>.servicePort }}
-      targetPort: {{ .Values.<service>.containerPort }}
+  type: {{ $svc.serviceType }}
   selector:
-    app: {{ .Values.<service>.name }}
+    app: {{ $svc.name }}
+  ports:
+  {{- if $svc.containerPorts }}
+    {{- range $svc.containerPorts }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .port }}
+      protocol: TCP
+    {{- end }}
+  {{- else }}
+    - name: http
+      port: {{ $svc.servicePort }}
+      targetPort: {{ $svc.containerPort }}
+      protocol: TCP
+  {{- end }}
+{{- end }}

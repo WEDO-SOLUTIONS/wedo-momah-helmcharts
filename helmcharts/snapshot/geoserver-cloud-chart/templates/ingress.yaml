@@ -1,24 +1,45 @@
+{{- if .Values.ingress }}
+{{- $ing := .Values.ingress }}
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.ingress.name }}
+  name: {{ $ing.name }}
+  namespace: {{ (index $.Values "geoserver-gateway").namespace }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.className }}
-    {{- range $key, $val := .Values.ingress.annotations }}
-    {{ $key }}: "{{ $val }}"
+    {{- range $key, $value := $ing.annotations }}
+    {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: {{ $ing.className }}
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ $ing.host }}
       http:
         paths:
-          {{- range .Values.ingress.paths }}
+          {{- range $ing.paths }}
           - path: {{ .path }}
-            pathType: {{ .pathType }}
+            pathType: Prefix
             backend:
               service:
                 name: {{ .backend }}
                 port:
-                  number: {{ $.Values.geoserver-gateway.servicePort }}
+                  number: {{ (index $.Values .backend).servicePort }}
           {{- end }}
+{{- end }}
+---
+{{- if .Values.pvc.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.pvc.name }}
+  namespace: {{ (index $.Values "geoserver-gateway").namespace }}
+spec:
+  storageClassName: {{ .Values.pvc.storageClassName }}
+  accessModes:
+    {{- range .Values.pvc.accessModes }}
+    - {{ . }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.pvc.storage }}
+{{- end }}
