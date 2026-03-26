@@ -3,7 +3,7 @@ geoserver-gateway:
   name: geoserver-gateway
   namespace: urbi
   replicaCount: 1
-  image: registry.momah.gov.sa/geoserver/geoserver-cloud-gateway:2.28.2.3
+  image: geoservercloud/geoserver-cloud-gateway:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
@@ -51,7 +51,7 @@ geoserver-webui:
   name: geoserver-webui
   namespace: urbi
   replicaCount: 1
-  image: geoserver-cloud-webui:2.28.2.3
+  image: geoservercloud/geoserver-cloud-webui:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
@@ -102,7 +102,7 @@ geoserver-rest:
   name: geoserver-rest
   namespace: urbi
   replicaCount: 1
-  image: geoserver-cloud-rest:2.28.2.3
+  image: geoservercloud/geoserver-cloud-rest:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
@@ -143,7 +143,7 @@ geoserver-wms:
   name: geoserver-wms
   namespace: urbi
   replicaCount: 1
-  image: geoserver-cloud-wms:2.28.2.3
+  image: geoservercloud/geoserver-cloud-wms:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
@@ -184,7 +184,7 @@ geoserver-wfs:
   name: geoserver-wfs
   namespace: urbi
   replicaCount: 1
-  image: geoserver-cloud-wfs:2.28.2.3
+  image: geoservercloud/geoserver-cloud-wfs:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
@@ -225,7 +225,7 @@ geoserver-wcs:
   name: geoserver-wcs
   namespace: urbi
   replicaCount: 1
-  image: geoserver-cloud-wcs:2.28.2.3
+  image: geoservercloud/geoserver-cloud-wcs:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
@@ -266,7 +266,7 @@ geoserver-gwc:
   name: geoserver-gwc
   namespace: urbi
   replicaCount: 1    
-  image: geoserver-cloud-gwc:2.28.2.3
+  image: geoservercloud/geoserver-cloud-gwc:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
