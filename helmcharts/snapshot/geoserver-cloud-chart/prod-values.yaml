@@ -3,7 +3,7 @@ geoserver-gateway:
   name: geoserver-gateway
   namespace: urbi
   replicaCount: 1
-  image: geoserver-cloud-gateway:2.28.2.3
+  image: registry.momah.gov.sa/geoserver/geoserver-cloud-gateway:2.28.2.3
   containerPort: 8080
   servicePort: 80
   serviceType: ClusterIP
