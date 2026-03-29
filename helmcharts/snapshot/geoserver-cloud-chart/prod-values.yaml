@@ -363,10 +363,13 @@ ingress:
   host: cityview.momah.gov.sa
 
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    #nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
     nginx.ingress.kubernetes.io/proxy-buffering: "on"
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -376,4 +379,5 @@ ingress:
   paths:
     - path: /geoserver(/|$)(.*)
       #pathType: Prefix
+      pathType: ImplementationSpecific
       backend: geoserver-gateway
