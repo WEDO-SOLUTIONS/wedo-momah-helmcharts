@@ -391,4 +391,4 @@ ingress:
     - path: /geoserver(/|$)(.*)
       #pathType: Prefix
       pathType: ImplementationSpecific
-      backend: geoserver-gateway
+      backend: gateway
