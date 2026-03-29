@@ -11,6 +11,8 @@ metadata:
     app: {{ $svc.name }}
 spec:
   replicas: {{ $svc.replicaCount }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: {{ $svc.name }}
@@ -53,8 +55,7 @@ spec:
           {{- range $container.volumeMounts }}
             {{- $volName := .name }}
             {{- if hasKey $.Values.volumes $volName }}
-              {{- $volData := index $.Values.volumes $volName }}
-              {{- $_ := set $allVolumes $volName $volData }}
+              {{- $_ := set $allVolumes $volName (index $.Values.volumes $volName) }}
             {{- end }}
           {{- end }}
         {{- end }}

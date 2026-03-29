@@ -18,28 +18,11 @@ spec:
         paths:
           {{- range $ing.paths }}
           - path: {{ .path }}
-            pathType: ImplementationSpecific
+            pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ .backend }}
+                name: {{ (index $.Values .backend).name }}
                 port:
                   number: {{ (index $.Values .backend).servicePort }}
           {{- end }}
-{{- end }}
----
-{{- if .Values.pvc.enabled }}
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ .Values.pvc.name }}
-  namespace: {{ (index $.Values "geoserver-gateway").namespace }}
-spec:
-  storageClassName: {{ .Values.pvc.storageClassName }}
-  accessModes:
-    {{- range .Values.pvc.accessModes }}
-    - {{ . }}
-    {{- end }}
-  resources:
-    requests:
-      storage: {{ .Values.pvc.storage }}
 {{- end }}

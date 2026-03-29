@@ -1,6 +1,5 @@
-#geoserver-gateway  resource configuration
 geoserver-gateway:
-  name: gateway
+  name: geoserver-gateway
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-gateway:2.28.2.3
@@ -45,22 +44,21 @@ geoserver-gateway:
           value: user
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
-        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WEBUI_URL:
-        #  value: http://geoserver-webui:80
-        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WMS_URL:
-        #  value: http://geoserver-wms:80
-        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WFS_URL:
-        #  value: http://geoserver-wfs:80
-        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WCS_URL:
-        #  value: http://geoserver-wcs:80
-        #GEOSERVER_CLOUD_GATEWAY_SERVICES_REST_URL:
-        #  value: http://geoserver-rest:80
-        #GEOSERVER_CLOUD_GATEWAY_SERVICES_GWC_URL:
-        #  value: http://geoserver-gwc:80
+        GEOSERVER_CLOUD_GATEWAY_SERVICES_WEBUI_URL:
+          value: http://geoserver-webui:80
+        GEOSERVER_CLOUD_GATEWAY_SERVICES_WMS_URL:
+          value: http://geoserver-wms:80
+        GEOSERVER_CLOUD_GATEWAY_SERVICES_WFS_URL:
+          value: http://geoserver-wfs:80
+        GEOSERVER_CLOUD_GATEWAY_SERVICES_WCS_URL:
+          value: http://geoserver-wcs:80
+        GEOSERVER_CLOUD_GATEWAY_SERVICES_REST_URL:
+          value: http://geoserver-rest:80
+        GEOSERVER_CLOUD_GATEWAY_SERVICES_GWC_URL:
+          value: http://geoserver-gwc:80
 
-#geoserver-webui  resource configuration 
 geoserver-webui:
-  name: webui
+  name: geoserver-webui
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-webui:2.28.2.3
@@ -111,9 +109,8 @@ geoserver-webui:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
 
-#geoserver-rest  resource configuration
 geoserver-rest:
-  name: rest
+  name: geoserver-rest
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-rest:2.28.2.3
@@ -152,9 +149,8 @@ geoserver-rest:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
 
-#geoserver-wms  resource configuration
 geoserver-wms:
-  name: wms
+  name: geoserver-wms
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-wms:2.28.2.3
@@ -193,9 +189,8 @@ geoserver-wms:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
 
-#geoserver-wfs  resource configuration
 geoserver-wfs:
-  name: wfs
+  name: geoserver-wfs
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-wfs:2.28.2.3
@@ -234,9 +229,8 @@ geoserver-wfs:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
 
-#geoserver-wcs  resource configuration
 geoserver-wcs:
-  name: wcs
+  name: geoserver-wcs
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-wcs:2.28.2.3
@@ -275,11 +269,10 @@ geoserver-wcs:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
 
-#geoserver-gwc  resource configuration
 geoserver-gwc:
-  name: gwc
+  name: geoserver-gwc
   namespace: urbi
-  replicaCount: 1    
+  replicaCount: 1
   image: geoservercloud/geoserver-cloud-gwc:2.28.2.3
   containerPort: 8080
   servicePort: 80
@@ -316,7 +309,6 @@ geoserver-gwc:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
 
-#rabbitmq  resource configuration
 rabbitmq:
   name: rabbitmq
   namespace: urbi
@@ -349,10 +341,8 @@ rabbitmq:
   volumes:
     - name: rabbitmq-data
       persistentVolumeClaim:
-        claimName: geoserver-cloud-pvc
+        claimName: rabbitmq-pvc
 
-
-# Persistent Volume Claim configuration
 pvc:
   enabled: true
   name: geoserver-cloud-pvc
@@ -361,35 +351,34 @@ pvc:
     - ReadWriteOnce
   storage: 500Gi
 
-# Shared volume for all services
+rabbitmq-pvc:
+  enabled: true
+  name: rabbitmq-pvc
+  storageClassName: oci-block-volume
+  accessModes:
+    - ReadWriteOnce
+  storage: 20Gi
+
 volumes:
   geoserver-data:
     persistentVolumeClaim:
       claimName: geoserver-cloud-pvc
 
-
-#ingress configuration
 ingress:
   name: geoserver-cloud
   className: urbi
   host: cityview.momah.gov.sa
-
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /geoserver/$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    #nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
     nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, OPTIONS"
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
     nginx.ingress.kubernetes.io/proxy-buffering: "on"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header X-Original-URI $request_uri;
-
-  # Path rules
   paths:
     - path: /geoserver(/|$)(.*)
-      #pathType: Prefix
       pathType: ImplementationSpecific
       backend: geoserver-gateway
-      port: 80
