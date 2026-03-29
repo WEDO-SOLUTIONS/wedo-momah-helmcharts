@@ -44,18 +44,32 @@ geoserver-gateway:
           value: user
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
-        GEOSERVER_CLOUD_GATEWAY_SERVICES_WEBUI_URL:
-          value: http://geoserver-webui:80
-        GEOSERVER_CLOUD_GATEWAY_SERVICES_WMS_URL:
-          value: http://geoserver-wms:80
-        GEOSERVER_CLOUD_GATEWAY_SERVICES_WFS_URL:
-          value: http://geoserver-wfs:80
-        GEOSERVER_CLOUD_GATEWAY_SERVICES_WCS_URL:
-          value: http://geoserver-wcs:80
-        GEOSERVER_CLOUD_GATEWAY_SERVICES_REST_URL:
-          value: http://geoserver-rest:80
-        GEOSERVER_CLOUD_GATEWAY_SERVICES_GWC_URL:
-          value: http://geoserver-gwc:80
+        TARGETS_WEBUI:
+          value: http://geoserver-webui:8080
+        TARGETS_WMS:
+          value: http://geoserver-wms:8080
+        TARGETS_WFS:
+          value: http://geoserver-wfs:8080
+        TARGETS_WCS:
+          value: http://geoserver-wcs:8080
+        TARGETS_REST:
+          value: http://geoserver-rest:8080
+        TARGETS_GWC:
+          value: http://geoserver-gwc:8080
+        TARGETS_WPS:
+          value: http://geoserver-wps:8080
+        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WEBUI_URL:
+          #value: http://geoserver-webui:80
+        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WMS_URL:
+          #value: http://geoserver-wms:80
+        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WFS_URL:
+          #value: http://geoserver-wfs:80
+        #GEOSERVER_CLOUD_GATEWAY_SERVICES_WCS_URL:
+          #value: http://geoserver-wcs:80
+        #GEOSERVER_CLOUD_GATEWAY_SERVICES_REST_URL:
+          #value: http://geoserver-rest:80
+        #GEOSERVER_CLOUD_GATEWAY_SERVICES_GWC_URL:
+          #value: http://geoserver-gwc:80
 
 geoserver-webui:
   name: geoserver-webui
