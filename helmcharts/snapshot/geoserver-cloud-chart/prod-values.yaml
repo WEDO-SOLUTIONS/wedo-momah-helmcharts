@@ -363,8 +363,7 @@ ingress:
   host: cityview.momah.gov.sa
 
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-
+    nginx.ingress.kubernetes.io/rewrite-target: /geoserver/$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
