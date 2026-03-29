@@ -1,6 +1,6 @@
 #geoserver-gateway  resource configuration
 geoserver-gateway:
-  name: geoserver-gateway
+  name: gateway
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-gateway:2.28.2.3
@@ -60,7 +60,7 @@ geoserver-gateway:
 
 #geoserver-webui  resource configuration 
 geoserver-webui:
-  name: geoserver-webui
+  name: webui
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-webui:2.28.2.3
@@ -113,7 +113,7 @@ geoserver-webui:
 
 #geoserver-rest  resource configuration
 geoserver-rest:
-  name: geoserver-rest
+  name: rest
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-rest:2.28.2.3
@@ -154,7 +154,7 @@ geoserver-rest:
 
 #geoserver-wms  resource configuration
 geoserver-wms:
-  name: geoserver-wms
+  name: wms
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-wms:2.28.2.3
@@ -195,7 +195,7 @@ geoserver-wms:
 
 #geoserver-wfs  resource configuration
 geoserver-wfs:
-  name: geoserver-wfs
+  name: wfs
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-wfs:2.28.2.3
@@ -236,7 +236,7 @@ geoserver-wfs:
 
 #geoserver-wcs  resource configuration
 geoserver-wcs:
-  name: geoserver-wcs
+  name: wcs
   namespace: urbi
   replicaCount: 1
   image: geoservercloud/geoserver-cloud-wcs:2.28.2.3
@@ -277,7 +277,7 @@ geoserver-wcs:
 
 #geoserver-gwc  resource configuration
 geoserver-gwc:
-  name: geoserver-gwc
+  name: gwc
   namespace: urbi
   replicaCount: 1    
   image: geoservercloud/geoserver-cloud-gwc:2.28.2.3
