@@ -17,7 +17,7 @@ geoserver-gateway:
     spring:
       env:
         SPRING_PROFILES_ACTIVE:
-          value: standalone,datadir,kube
+          value: standalone,datadir
         GEOSERVER_BASE_PATH:
           value: /geoserver
         SERVER_USE_FORWARD_HEADERS:
@@ -357,7 +357,7 @@ rabbitmq-pvc:
   storageClassName: oci-block-volume
   accessModes:
     - ReadWriteOnce
-  storage: 20Gi
+  storage: 50Gi
 
 volumes:
   geoserver-data:
