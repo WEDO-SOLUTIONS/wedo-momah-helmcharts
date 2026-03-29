@@ -45,19 +45,19 @@ geoserver-gateway:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
         TARGETS_WEBUI:
-          value: http://geoserver-webui:8080
+          value: http://geoserver-webui:80
         TARGETS_WMS:
-          value: http://geoserver-wms:8080
+          value: http://geoserver-wms:80
         TARGETS_WFS:
-          value: http://geoserver-wfs:8080
+          value: http://geoserver-wfs:80
         TARGETS_WCS:
-          value: http://geoserver-wcs:8080
+          value: http://geoserver-wcs:80
         TARGETS_REST:
-          value: http://geoserver-rest:8080
+          value: http://geoserver-rest:80
         TARGETS_GWC:
-          value: http://geoserver-gwc:8080
+          value: http://geoserver-gwc:80
         TARGETS_WPS:
-          value: http://geoserver-wps:8080
+          value: http://geoserver-wps:80
         #GEOSERVER_CLOUD_GATEWAY_SERVICES_WEBUI_URL:
           #value: http://geoserver-webui:80
         #GEOSERVER_CLOUD_GATEWAY_SERVICES_WMS_URL:
