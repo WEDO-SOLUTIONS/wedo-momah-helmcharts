@@ -42,8 +42,6 @@ ingress:
     nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS, PUT, DELETE"
     nginx.ingress.kubernetes.io/cors-allow-headers: >-
       DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
-  # Path rules
-  paths:
-    - path: /api/cityview-user-form(/|$)(.*)
-      backend: cityview-user-form
+  path: /api/cityview-user-form(/|$)(.*)
+  pathType: ImplementationSpecific
     
