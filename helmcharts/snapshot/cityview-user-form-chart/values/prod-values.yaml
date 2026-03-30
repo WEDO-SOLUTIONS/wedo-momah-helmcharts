@@ -5,7 +5,7 @@ replicaCount: 1
 
 # Docker image (staging tag)
 image: registry.momrah.gov.sa/urbi-omar/cityview-user-form:v1.0.5
-containerPort: 80
+containerPort: 3000
 servicePort: 80
 serviceType: ClusterIP
 
