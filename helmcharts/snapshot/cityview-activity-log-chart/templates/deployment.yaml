@@ -1,38 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cityview-activity-log
-  namespace: urbi
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app.kubernetes.io/instance: cityview-activity-log
-    app.kubernetes.io/name: cityview-activity-log
+    app.kubernetes.io/instance: {{ .Values.name }}
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/version: {{ .Values.appVersion | default "v1.0.0" }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/instance: cityview-activity-log
+      app.kubernetes.io/instance: {{ .Values.name }}
+      app.kubernetes.io/name: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/instance: cityview-activity-log
-        app.kubernetes.io/name: cityview-activity-log
+        app.kubernetes.io/instance: {{ .Values.name }}
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: {{ .Values.name }}
+        app.kubernetes.io/version: {{ .Values.appVersion | default "v1.0.0" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     spec:
-      serviceAccountName: activity-log
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end }}
       containers:
-        - name: cityview-activity-log
-          image: registry.momrah.gov.sa/urbi-omar/cityview-activity-log:v0.0009
-          imagePullPolicy: IfNotPresent
+        - name: {{ .Values.name }}
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}
           ports:
             - name: http
-              containerPort: 8000
+              containerPort: {{ .Values.containerPort }}
               protocol: TCP
           resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
             limits:
-              cpu: "2000m"
-              memory: "2048Mi"
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
           readinessProbe:
             httpGet:
               path: /health
@@ -52,3 +61,6 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
