@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-config
+  namespace: {{ .Values.namespace }}
+data:
+  PORT: {{ .Values.env.PORT }}
+  DB_NAME: {{ .Values.env.DB_NAME }}
+  DB_USER: {{ .Values.env.DB_USER }}
+  DB_PASSWORD: {{ .Values.env.DB_PASSWORD }}
+  DB_HOST: {{ .Values.env.DB_HOST }}
+  SCHEMA: {{ .Values.env.SCHEMA }}
+  AUTH_URL: {{ .Values.env.AUTH_URL }}

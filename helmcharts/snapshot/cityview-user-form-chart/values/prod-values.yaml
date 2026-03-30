@@ -18,6 +18,16 @@ resources:
     cpu: "100m"
     memory: "128Mi"
 
+env:
+  # Non-sensitive environment variables (ConfigMap)
+  PORT: 3000
+  DB_NAME: snapshot-pro
+  DB_USER: snapshot_pro
+  DB_PASSWORD: QE79ujmp3fw2eYV363GcDLh0zuVOFpaZ
+  DB_HOST: 10.246.3.65
+  SCHEMA: public
+  AUTH_URL: https://ssoapp.balady.gov.sa/.well-known/openid-configuration/jwks
+
 # Ingress configuration for staging
 ingress:
   enabled: true
