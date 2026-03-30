@@ -2,7 +2,7 @@ name: cityview-activity-log
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-activity-log:v0.0.1
+image: registry.momrah.gov.sa/urbi-omar/cityview-activity-log:v0.0.2
 containerPort: 8000
 servicePort: 80
 serviceType: ClusterIP
