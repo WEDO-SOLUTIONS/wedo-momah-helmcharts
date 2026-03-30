@@ -20,13 +20,13 @@ resources:
 
 env:
   # Non-sensitive environment variables (ConfigMap)
-  PORT: 3000
-  DB_NAME: snapshot-pro
-  DB_USER: snapshot_pro
-  DB_PASSWORD: QE79ujmp3fw2eYV363GcDLh0zuVOFpaZ
-  DB_HOST: 10.246.3.65
-  SCHEMA: public
-  AUTH_URL: https://ssoapp.balady.gov.sa/.well-known/openid-configuration/jwks
+  PORT: "3000"
+  DB_NAME: "snapshot-pro"
+  DB_USER: "snapshot_pro"
+  DB_PASSWORD: "QE79ujmp3fw2eYV363GcDLh0zuVOFpaZ"
+  DB_HOST: "10.246.3.65"
+  SCHEMA: "public"
+  AUTH_URL: "https://ssoapp.balady.gov.sa/.well-known/openid-configuration/jwks"
 
 # Ingress configuration for staging
 ingress:
@@ -34,7 +34,6 @@ ingress:
   name: be-cityview-user-form
   className: urbi
   host: cityview-pro-api.momah.gov.sa
-  #path: 
 
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
