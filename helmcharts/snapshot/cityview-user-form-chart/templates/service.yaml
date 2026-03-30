@@ -6,7 +6,7 @@ metadata:
 spec:
   type: {{ .Values.serviceType }}
   selector:
-    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}  # ← changed from app to app.kubernetes.io/name
   ports:
     - port: {{ .Values.servicePort }}
       targetPort: {{ .Values.containerPort }}
