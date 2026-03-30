@@ -4,10 +4,10 @@ metadata:
   name: {{ .Values.name }}-config
   namespace: {{ .Values.namespace }}
 data:
-  PORT: {{ .Values.env.PORT }}
-  DB_NAME: {{ .Values.env.DB_NAME }}
-  DB_USER: {{ .Values.env.DB_USER }}
-  DB_PASSWORD: {{ .Values.env.DB_PASSWORD }}
-  DB_HOST: {{ .Values.env.DB_HOST }}
-  SCHEMA: {{ .Values.env.SCHEMA }}
-  AUTH_URL: {{ .Values.env.AUTH_URL }}
+  PORT: {{ .Values.env.PORT | quote }}
+  DB_NAME: {{ .Values.env.DB_NAME | quote }}
+  DB_USER: {{ .Values.env.DB_USER | quote }}
+  DB_PASSWORD: {{ .Values.env.DB_PASSWORD | quote }}
+  DB_HOST: {{ .Values.env.DB_HOST | quote }}
+  SCHEMA: {{ .Values.env.SCHEMA | quote }}
+  AUTH_URL: {{ .Values.env.AUTH_URL | quote }}
