@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cityview-activity-log
+  namespace: urbi
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: cityview-activity-log
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8000

@@ -1,0 +1,31 @@
+name: cityview-activity-log
+namespace: urbi
+replicaCount: 1
+
+image: registry.momrah.gov.sa/urbi-omar/cityview-activity-log:v0.0.1
+containerPort: 8000
+servicePort: 80
+serviceType: ClusterIP
+
+appVersion: production
+
+resources:
+  limits:
+    cpu: "2000m"
+    memory: "2048Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+ingress:
+  name: be-cityview-activity-log
+  className: urbi
+  host: cityview-pro-api.momah.gov.sa
+  path: /activity-log(/|$)(.*)
+  pathType: ImplementationSpecific
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
