@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 1
 
 # Docker image (staging tag)
-image: registry.momrah.gov.sa/urbi-omar/cityview-user-form:v1.0.5
+image: registry.momrah.gov.sa/urbi-omar/cityview-user-form:v1.0.6
 containerPort: 3000
 servicePort: 80
 serviceType: ClusterIP
@@ -43,5 +43,7 @@ ingress:
     nginx.ingress.kubernetes.io/cors-allow-headers: >-
       DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
   path: /api/cityview-user-form(/|$)(.*)
+  pathType: ImplementationSpecific
+  path: /api/user(/|$)(.*)
   pathType: ImplementationSpecific
     
