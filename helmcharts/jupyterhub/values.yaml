@@ -1,0 +1,83 @@
+# Release metadata
+name: jupyterhub
+namespace: jupyterhub
+replicaCount: 1
+
+# Hub Docker image
+image: jupyterhub/k8s-hub:3.3.7
+containerPort: 8081
+servicePort: 80
+serviceType: ClusterIP
+
+# Resource requests & limits (hub pod)
+resources:
+  limits:
+    cpu: "1"
+    memory: "1024Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
+env:
+  JUPYTERHUB_CRYPT_KEY: ""        # generate: openssl rand -hex 32
+  PROXY_SECRET_TOKEN: ""          # generate: openssl rand -hex 32
+
+# Proxy pod configuration
+proxy:
+  image: jupyterhub/configurable-http-proxy:4.5.6
+  containerPort: 8000
+  servicePort: 80
+  serviceType: ClusterIP
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+
+singleuser:
+  image: jupyter/base-notebook:python-3.11.7
+  storage:
+    type: static
+    pvcName: "jupyterhub-pvc"     # replace with your actual PVC name
+    subPath: "{username}"
+    homeMountPath: /home/jovyan
+  resources:
+    limits:
+      cpu: "1"
+      memory: "2048Mi"
+    requests:
+      cpu: "500m"
+      memory: "1024Mi"
+
+cull:
+  enabled: true
+  timeout: 3600
+  every: 600
+
+pvc:
+  enabled: true
+  name: jupyterhub-pvc
+  storageClassName: oci-block-volume
+  accessModes:
+    - ReadWriteOnce
+  storage: 50Gi
+
+# Ingress configuration
+ingress:
+  enabled: true
+  name: jupyterhub-ingress
+  className: urbi
+  host: stg-wedo-apigw.momah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS, PUT, DELETE"
+    nginx.ingress.kubernetes.io/cors-allow-headers: >-
+      DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
+  paths:
+    - path: /jupyterhub(/|$)(.*)
+      pathType: ImplementationSpecific
