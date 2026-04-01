@@ -5,6 +5,7 @@ metadata:
   name: {{ .Values.name }}-config
   namespace: {{ .Values.namespace }}
 data:
+  REDIS_CLUSTER_ENABLED: {{ .Values.env.REDIS_CLUSTER_ENABLED | quote }}
   REDIS_HOSTNAME: {{ .Values.env.REDIS_HOSTNAME | quote }}
   REDIS_PORT: {{ .Values.env.REDIS_PORT | quote }}
   REDIS_PASSWORD: {{ .Values.env.REDIS_PASSWORD | quote }}

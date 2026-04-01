@@ -16,6 +16,7 @@ resources:
     memory: "256Mi"
 
 env:
+  REDIS_CLUSTER_ENABLED: "true"
   REDIS_HOSTNAME: "redis-redis-cluster"
   REDIS_PORT: "6379"
   REDIS_PASSWORD: "CVb7saZB4Rtu"
