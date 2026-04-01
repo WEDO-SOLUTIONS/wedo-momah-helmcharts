@@ -37,7 +37,7 @@ proxy:
       memory: "128Mi"
 
 singleuser:
-  image: jupyter/base-notebook:python-3.11.7
+  image: jupyter/base-notebook:python-3.11
   storage:
     type: static
     pvcName: "jupyterhub-pvc"     # replace with your actual PVC name
@@ -73,6 +73,7 @@ ingress:
 
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS, PUT, DELETE"
