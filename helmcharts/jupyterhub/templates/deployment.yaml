@@ -1,78 +1,60 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "jupyterhub.fullname" . }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    {{- include "jupyterhub.labels" . | nindent 4 }}
+    app: {{ .Values.name }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
-      {{- include "jupyterhub.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.name }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "jupyterhub.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: {{ .Values.name }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "jupyterhub.serviceAccountName" . }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        # ── Hub container ──────────────────────────────────────────
+        - name: hub
+          image: {{ .Values.image }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.resources }}
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            - name: JUPYTERHUB_CRYPT_KEY
+              value: {{ .Values.env.JUPYTERHUB_CRYPT_KEY | quote }}
+            - name: PROXY_SECRET_TOKEN
+              value: {{ .Values.env.PROXY_SECRET_TOKEN | quote }}
           resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.volumeMounts }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu | quote }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            - name: jupyterhub-storage
+              mountPath: {{ .Values.singleuser.storage.homeMountPath }}
+              subPath: hub
+
+        # ── Proxy (CHP) container ──────────────────────────────────
+        - name: proxy
+          image: {{ .Values.proxy.image }}
+          ports:
+            - containerPort: {{ .Values.proxy.containerPort }}
+          env:
+            - name: CONFIGPROXY_AUTH_TOKEN
+              value: {{ .Values.env.PROXY_SECRET_TOKEN | quote }}
+          resources:
+            limits:
+              cpu: {{ .Values.proxy.resources.limits.cpu }}
+              memory: {{ .Values.proxy.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.proxy.resources.requests.cpu }}
+              memory: {{ .Values.proxy.resources.requests.memory }}
+
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - name: jupyterhub-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
