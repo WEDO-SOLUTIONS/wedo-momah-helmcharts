@@ -11,7 +11,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: citylens-reporting
-            image: registry.momrah.gov.sa/urbi-omar/citylens-daily-report:v0.3
+            image: registry.momrah.gov.sa/urbi-omar/citylens-daily-report:v0.4
             env:
             - name: ENV_FILE_PATH
               value: "/app/.env"
