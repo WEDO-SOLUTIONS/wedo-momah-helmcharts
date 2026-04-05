@@ -38,6 +38,6 @@ ingress:
 
   # Path rules
   paths:
-    - path: /api/v1/mb
+    - path: /api/v1/transit
       pathType: Prefix
       backend: makkah-bus
