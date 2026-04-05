@@ -20,9 +20,18 @@ hub:
   config:
     JupyterHub:
       admin_access: true
+      authenticator_class: nativeauthenticator.NativeAuthenticator
+    NativeAuthenticator:
+      open_signup: false          # users must be approved by admin before login
+      minimum_password_length: 10
+      check_common_password: true
     Authenticator:
       admin_users:
-        - admin            # replace with actual admin username(s)
+        - admin                   # replace with actual admin username(s)
+  extraConfig:
+    nativeauthenticator: |
+      import nativeauthenticator
+      c.JupyterHub.template_paths = [f"{nativeauthenticator.__path__[0]}/templates/"]
 
   resources:
     requests:
