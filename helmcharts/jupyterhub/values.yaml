@@ -79,6 +79,11 @@ singleuser:
       storageAccessModes:
         - ReadWriteOnce
 
+  # OKE nodes don't allow iptables manipulation inside pods (NET_ADMIN
+  # is restricted), so disable the cloud-metadata blocking init container.
+  cloudMetadata:
+    blockWithIptables: false
+
   # Allow users to install packages without sudo issues
   extraEnv:
     GRANT_SUDO: "yes"
