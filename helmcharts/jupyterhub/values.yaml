@@ -25,6 +25,7 @@ hub:
       open_signup: false          # users must be approved by admin before login
       minimum_password_length: 10
       check_common_password: true
+      create_system_users: true   # auto-create DB entries for users defined in admin_users/allowed_users
     Authenticator:
       admin_users:
         - admin                   # replace with actual admin username(s)
