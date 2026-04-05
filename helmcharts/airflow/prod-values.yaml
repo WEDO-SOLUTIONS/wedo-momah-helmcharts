@@ -1,11 +1,13 @@
-airflowVersion: "3.1.5"
+airflowVersion: "3.1.8"
 executor: KubernetesExecutor
+
+fernetKey: "b1RPYzdTOFpRMXZ6cFJFakxLZ3pqbFNSRzk3V2tRbFo="
 
 postgresql:
   enabled: false
 
 pgbouncer:
-  enabled: false
+  enabled: true
 
 data:
   metadataConnection:
@@ -79,7 +81,7 @@ extraEnv: |
   - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_PATH
     value: 's3://prod-airflow-logging-xcom/xcom'
   - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_THRESHOLD
-    value: '0'
+    value: '1048576'
   - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_COMPRESSION
     value: 'zip'
 
@@ -131,8 +133,8 @@ airflowLocalSettings: |-
 images:
   airflow:
     repository: registry.momrah.gov.sa/urbi-omar/momah-airflow
-    tag:        "3.1.5-python3.12-02"
-    pullPolicy: Always
+    tag:        "3.1.8-python3.12-01"
+    pullPolicy: IfNotPresent
   useDefaultImageForMigration: false
   statsd:
     repository: quay.io/prometheus/statsd-exporter
@@ -159,27 +161,21 @@ ingress:
       enabled:        false
 
 workers:
-  replicas: 3
-  #autoscaling:
-  #  enabled: true
-  #  minReplicas: 3
-  #  maxReplicas: 50
-  #  targetCPUUtilizationPercentage: 70
+  # KubernetesExecutor: this block defines the resource template for task pods
   resources:
     requests:
-      cpu:    "2000m"
-      memory: "16Gi"
+      cpu:    "500m"
+      memory: "1Gi"
     limits:
-      cpu:    "8000m"
-      memory: "32Gi"
+      cpu:    "4000m"
+      memory: "4Gi"
   serviceAccount:
     create:                       true
     automountServiceAccountToken: true
 
-
 scheduler:
   enabled: true
-  replicas: 8
+  replicas: 3
   resources:
     requests:
       cpu: "1000m"
@@ -191,38 +187,34 @@ scheduler:
     enabled: true
 
 apiServer:
-  replicas: 8
+  replicas: 3
   resources:
     requests:
-      cpu: "4000m"
-      memory: "16Gi"
+      cpu: "500m"
+      memory: "2Gi"
     limits:
-      cpu: "8000m"
-      memory: "32Gi"
+      cpu: "2000m"
+      memory: "4Gi"
 
 dagProcessor:
   enabled: true
-  replicas: 1
+  replicas: 2
   resources:
     requests:
-      cpu: "1000m"
+      cpu: "2000m"
       memory: "1Gi"
     limits:
-      cpu: "2000m"
-      memory: "2Gi"
-
-webserver:
-  enabled: true
-  replicas: 8
-  resources:
-    requests:
       cpu: "4000m"
-      memory: "16Gi"
-    limits:
-      cpu: "8000m"
-      memory: "32Gi"
+      memory: "2Gi"
+  livenessProbe:
+    initialDelaySeconds: 60
+    timeoutSeconds: 30
+    failureThreshold: 10
+    periodSeconds: 60
+
+createUserJob:
+  enabled: true
   defaultUser:
-    enabled:   true
     role:      Admin
     username:  af_admin
     email:     app.services@wedosolutions.sa
@@ -244,13 +236,13 @@ dags:
     branch:  main
     rev:     HEAD
     subPath: dags
-    period:  5s
+    period:  30s
   persistence:
     enabled: false
 
 cleanup:
   enabled:  true
-  schedule: '*/5 * * * *'
+  schedule: '*/15 * * * *'
   command:  null
   args:
     - bash

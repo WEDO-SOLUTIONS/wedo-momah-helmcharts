@@ -1,84 +1,117 @@
-# Release metadata
-name: jupyterhub
-namespace: jupyterhub
-replicaCount: 1
+# ============================================================
+# JupyterHub — Official Zero to JupyterHub Helm chart values
+# https://hub.jupyter.org/helm-chart/
+#
+# Deploy:
+#   helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
+#   helm repo update
+#   helm upgrade --install jupyterhub jupyterhub/jupyterhub \
+#     --namespace jupyterhub --create-namespace \
+#     --version 3.3.7 \
+#     --values values.yaml \
+#     --timeout 15m
+# ============================================================
 
-# Hub Docker image
-image: jupyterhub/k8s-hub:3.3.7
-containerPort: 8081
-servicePort: 80
-serviceType: ClusterIP
 
-# Resource requests & limits (hub pod)
-resources:
-  limits:
-    cpu: "1"
-    memory: "1024Mi"
-  requests:
-    cpu: "100m"
-    memory: "256Mi"
+# ── Hub ──────────────────────────────────────────────────────
+hub:
+  baseUrl: /jupyterhub    # serves under /jupyterhub path, matching your ingress
 
-env:
-  JUPYTERHUB_CRYPT_KEY: ""        # generate: openssl rand -hex 32
-  PROXY_SECRET_TOKEN: ""          # generate: openssl rand -hex 32
+  config:
+    JupyterHub:
+      admin_access: true
+    Authenticator:
+      admin_users:
+        - admin            # replace with actual admin username(s)
 
-# Proxy pod configuration
-proxy:
-  image: jupyterhub/configurable-http-proxy:4.5.6
-  containerPort: 8000
-  servicePort: 80
-  serviceType: ClusterIP
   resources:
-    limits:
-      cpu: "500m"
-      memory: "512Mi"
     requests:
-      cpu: "100m"
-      memory: "128Mi"
-
-singleuser:
-  image: jupyter/base-notebook:python-3.11
-  storage:
-    type: static
-    pvcName: "jupyterhub-pvc"     # replace with your actual PVC name
-    subPath: "{username}"
-    homeMountPath: /home/jovyan
-  resources:
-    limits:
       cpu: "1"
-      memory: "2048Mi"
-    requests:
-      cpu: "500m"
-      memory: "1024Mi"
+      memory: "2Gi"
+    limits:
+      cpu: "4"
+      memory: "8Gi"
 
+
+# ── Proxy ────────────────────────────────────────────────────
+proxy:
+  secretToken: "3e82ee0d9507bec01a26145cf84381124b6822757571534c33ffd7ecb4389cd1"
+  chp:
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "2"
+        memory: "2Gi"
+
+
+# ── Single-User Notebook Servers ─────────────────────────────
+# Each user gets their own isolated pod with dedicated resources.
+# datascience-notebook ships with: numpy, pandas, scipy,
+# scikit-learn, matplotlib, seaborn, statsmodels, and more.
+singleuser:
+  defaultUrl: "/lab"       # open JupyterLab instead of classic Notebook
+
+  image:
+    name: jupyter/datascience-notebook
+    tag: python-3.11
+    pullPolicy: IfNotPresent
+
+  cpu:
+    limit: 16
+    guarantee: 2           # guaranteed cores on spawn; can burst to 16
+
+  memory:
+    limit: 32G
+    guarantee: 4G          # guaranteed RAM on spawn; can burst to 32G
+
+  # Dynamic PVC per user — each user gets their own OCI Block Volume.
+  # Avoids the ReadWriteOnce sharing problem of a single shared PVC.
+  storage:
+    type: dynamic
+    capacity: 50Gi
+    homeMountPath: /home/jovyan
+    dynamic:
+      storageClass: oci-bv           # OCI Block Volume storage class
+      pvcNameTemplate: "claim-{username}{servername}"
+      volumeNameTemplate: "volume-{username}{servername}"
+      storageAccessModes:
+        - ReadWriteOnce
+
+  # Allow users to install packages without sudo issues
+  extraEnv:
+    GRANT_SUDO: "yes"
+
+
+# ── Idle Culling ─────────────────────────────────────────────
+# Shuts down idle servers to free up OKE node resources.
+# 4-hour timeout suits heavy processing workloads.
 cull:
   enabled: true
-  timeout: 3600
-  every: 600
+  timeout: 14400           # seconds idle before shutdown (4 hours)
+  every: 600               # check interval in seconds
+  maxAge: 0                # 0 = no max lifetime limit
 
-pvc:
-  enabled: true
-  name: jupyterhub-pvc
-  storageClassName: oci-block-volume
-  accessModes:
-    - ReadWriteOnce
-  storage: 50Gi
 
-# Ingress configuration
+# ── Ingress ──────────────────────────────────────────────────
+# Uses your existing urbi ingress class, matching the pattern
+# used across other services in the cluster.
 ingress:
   enabled: true
-  name: jupyterhub-ingress
-  className: urbi
-  host: stg-wedo-apigw.momah.gov.sa
-
+  ingressClassName: urbi
+  hosts:
+    - cityview-jupyterhub.momah.gov.sa
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/cors-allow-methods: "POST, GET, OPTIONS, PUT, DELETE"
     nginx.ingress.kubernetes.io/cors-allow-headers: >-
-      DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token
-  paths:
-    - path: /jupyterhub(/|$)(.*)
-      pathType: ImplementationSpecific
+      DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,
+      Cache-Control,Content-Type,Range,Authorization,x-share-token
+    # Long timeouts for notebook operations and large data transfers
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+  pathSuffix: ""
+  pathType: Prefix
