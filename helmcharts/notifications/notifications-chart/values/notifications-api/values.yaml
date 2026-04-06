@@ -3,7 +3,7 @@ namespace: urbi
 replicaCount: 1
 appVersion: staging
 
-image: registry.momrah.gov.sa/urbi-omar/rbac-notifications-api-stg:v1.2.5
+image: registry.momrah.gov.sa/urbi-omar/rbac-notifications-api-stg:v1.2.7
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -19,12 +19,6 @@ resources:
 env:
   - name: SYSTEMTOKEN
     value: "TOPSECRET"
-  - name: REGULATORY_API_URL
-    value: "https://cityview.momah.gov.sa/frames-api/frames-mps"
-  - name: REGULATORY_API_KEY
-    value: "FT4wV@nafbpM$$z5y4tYpB$6owxj+vPNfB9CbfyiDtQ="
-  - name: DAILY_SCHEDULE_TIME
-    value: "14:00"
 
 livenessProbe:
   path: /health
