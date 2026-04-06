@@ -19,6 +19,12 @@ resources:
 env:
   - name: SYSTEMTOKEN
     value: "TOPSECRET"
+  - name: REGULATORY_API_URL
+    value: "https://cityview.momah.gov.sa/frames-api/frames-mps"
+  - name: REGULATORY_API_KEY
+    value: "FT4wV@nafbpM$$z5y4tYpB$6owxj+vPNfB9CbfyiDtQ="
+  - name: DAILY_SCHEDULE_TIME
+    value: "14:00"
 
 livenessProbe:
   path: /health
