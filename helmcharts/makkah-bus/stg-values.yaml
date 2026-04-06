@@ -2,7 +2,7 @@ name: makkah-bus
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/makkah-bus:v0.1.2
+image: registry.momrah.gov.sa/urbi-omar/makkah-bus:v0.1.3
 containerPort: 3000
 servicePort: 80
 serviceType: ClusterIP
