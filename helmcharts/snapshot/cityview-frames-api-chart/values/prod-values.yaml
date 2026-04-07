@@ -3,7 +3,7 @@ namespace: urbi
 replicaCount: 1
 appVersion: v1.0.0
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-frames-api:v1.1.1
+image: registry.momrah.gov.sa/urbi-omar/cityview-frames-api:v1.1.2
 imagePullPolicy: IfNotPresent
 containerPort: 5000
 servicePort: 80
