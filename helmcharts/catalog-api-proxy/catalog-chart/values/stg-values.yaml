@@ -4,7 +4,7 @@ namespace: urbi
 replicaCount: 1
 
 # Docker image configuration
-image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.98
+image: registry.momrah.gov.sa/urbi-omar/catalog-api-proxy:v3.97
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -20,16 +20,13 @@ resources:
 
 env:
   BY_ID_URL: http://catalog-api/3.0/items/byid
-  AI_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
-  AI_MARKERS_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/marker
-  AI_MARKERS_URL_01: https://oci-r-004c5etql0w7.escloud.bytepluses.com/v1/search/marker
-  AI_SUGGEST_URL_01: https://oci-r-004c5etql0w7.escloud.bytepluses.com/v1/search/suggest
-  AI_URL_01: https://oci-r-004c5etql0w7.escloud.bytepluses.com/v1/search/place
+  AI_MARKERS_URL: https://oci-r-004c5etql0w7.escloud.bytepluses.com/v1/search/marker
+  AI_SUGGEST_URL: https://oci-r-004c5etql0w7.escloud.bytepluses.com/v1/search/suggest
+  AI_URL: https://oci-r-004c5etql0w7.escloud.bytepluses.com/v1/search/place
   DEFAULT_PLACES_FORWARD_URL: http://catalog-api/3.0/items
   DEFAULT_MARKERS_FORWARD_URL: http://catalog-api/3.0/markers
   DEFAULT_PLACES_FORWARD_URL_BYID: http://catalog-api/3.0/items/byid
   DEFAULT_SUGGESTS_FORWARD_URL: http://catalog-api/3.0/suggests
-  AI_SUGGEST_URL_02: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/suggest
   AI_PLACES_GOOGLE_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
   AI_MARKERS_GOOGLE_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/place
   AI_GOOGLE_URL_BYID: https://r-004l6n67gokd.escloud.bytepluses.com/d-1937443115925401601/v1/search/id
@@ -43,27 +40,24 @@ env:
   BALADY_SPL_API: v1/gis-national-address-services/short-addresses/:addressId/geocode
   BALADY_GRANT_TYPE: client_credentials
   BALADY_CLIENT_ID: 35E7bvBUf9U0dmbzbqD0rU0Bh4epXcOL
+  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
   REDIS_CACHE: false
   REDIS_HOSTNAME: redis-redis-cluster
   REDIS_PORT: "6379"
+  REDIS_PASSWORD: CVb7saZB4Rtu
   REDIS_USERNAME : default
   KAFKA_BROKERS : 10.247.3.59:9092,10.247.2.159:9092,10.247.0.14:9092
   KAFKA_USERNAME : admin
   KAFKA_TOPIC : dsvc.staging.catalog-api-proxy.google-pois.discrepancy
   DISCREPANCY_API : https://urbi-lifestyle-stg.momrah.gov.sa/api/2.0/discrepancy
-  AI_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/place
-  AI_MARKERS_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/marker
-  AI_SUGGEST_URL: https://r-004l6n67gokd.escloud.bytepluses.com/d-1917555365742071810/v1/search/suggest
   WEIGHT_01: "100"
   WEIGHT_02: "0"
 
+
 # Sensitive environment variables (Secret)
 secret:
-  REDIS_PASSWORD: "CVb7saZB4Rtu"
-  BALADY_CLIENT_SECRET: z4tNosT0AWQSCdXS
-  AI_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
-  AI_URL_TOKEN_01: "f9d37a8c1-b52e-def-71a4-2a9275146d9f"
-  AI_URL_TOKEN_02: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
+  REDIS_PASSWORD: "P@ssw0rd"
+  AI_URL_TOKEN: "f9d37a8c1-b52e-def-71a4-2a9275146d9f"
   AI_GOOGLE_URL_TOKEN: "3b1431b1-99a9-4704-b8dd-ccd185ffeaa6"
   KAFKA_PASSWORD : "AbsI9dyM8VsXM9MjiQtiWy"
 
@@ -73,7 +67,7 @@ ingress:
   className: urbi
   host: urbi-lifestyle-stg.momrah.gov.sa
 
-  # All annotations
+  # All annotations moved here
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -97,4 +91,3 @@ ingress:
     - path: /health
       backend: catalog-api-proxy
     
-
