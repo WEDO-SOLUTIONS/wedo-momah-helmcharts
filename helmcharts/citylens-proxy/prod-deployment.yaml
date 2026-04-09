@@ -1,0 +1,114 @@
+---
+# CityLens Proxy — API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: citylens-proxy-api
+  namespace: urbi
+  labels:
+    app: citylens-proxy
+    component: api
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: citylens-proxy
+      component: api
+  template:
+    metadata:
+      labels:
+        app: citylens-proxy
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: registry.momrah.gov.sa/urbi-omar/citylens-proxy-prod:v0.0.0
+          command: ["python", "-u", "src/main.py"]
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: CONFIG_PATH
+              value: "/app/config/config.json"
+          resources:
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+          # startupProbe gives the pod up to 10 minutes to finish loading
+          # Oracle data (especially heavy WKT spatial queries) before liveness
+          # and readiness probes kick in.  Once startup succeeds, those probes
+          # take over with their normal short intervals.
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 120  # 120 × 10s = 20 minutes max startup time
+            periodSeconds: 10
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 0  # startupProbe already handled the wait
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            failureThreshold: 3
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+
+---
+# CityLens Proxy — Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: citylens-proxy-api
+  namespace: urbi
+spec:
+  selector:
+    app: citylens-proxy
+    component: api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
+
+---
+# CityLens Proxy — Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: citylens-proxy-api
+  namespace: urbi
+  labels:
+    app: citylens-proxy
+    component: api
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+spec:
+  ingressClassName: urbi
+  rules:
+    - host: citylens-proxy-urbi.momrah.gov.sa
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: citylens-proxy-api
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - citylens-proxy-urbi.momrah.gov.sa
