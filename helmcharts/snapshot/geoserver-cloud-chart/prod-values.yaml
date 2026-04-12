@@ -124,7 +124,7 @@ geoserver-webui:
         # - mountPath: /opt/app/data_directory
         #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc
+          name: oci-goeserver-nfs
 
 geoserver-rest:
   name: geoserver-rest
@@ -166,7 +166,7 @@ geoserver-rest:
         # - mountPath: /opt/app/data_directory
         #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc
+          name: oci-goeserver-nfs
 
 geoserver-wms:
   name: geoserver-wms
@@ -208,7 +208,7 @@ geoserver-wms:
         # - mountPath: /opt/app/data_directory
         #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc
+          name: oci-goeserver-nfs
 
         
 geoserver-wfs:
@@ -251,7 +251,7 @@ geoserver-wfs:
         # - mountPath: /opt/app/data_directory
         #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc
+          name: oci-goeserver-nfs
 
 geoserver-wcs:
   name: geoserver-wcs
@@ -293,7 +293,7 @@ geoserver-wcs:
         # - mountPath: /opt/app/data_directory
         #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc
+          name: oci-goeserver-nfs
 
 geoserver-gwc:
   name: geoserver-gwc
@@ -335,7 +335,7 @@ geoserver-gwc:
         # - mountPath: /opt/app/data_directory
         #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc
+          name: oci-goeserver-nfs
       
 
 rabbitmq:
@@ -384,7 +384,7 @@ rabbitmq:
 pvc:
   enabled: true
   name: geoserver-nfs-pvc
-  storageClassName: oci-geoserver-nfs
+  storageClassName: oci-goeserver-nfs
   accessModes:
     - ReadWriteOnce
   storage: 1024Gi
@@ -405,7 +405,7 @@ rabbitmq-pvc:
 volumes:
   geoserver-data:
     persistentVolumeClaim:
-      claimName: geoserver-nfs-pvc
+      claimName: oci-goeserver-nfs
 
 
 ingress:
