@@ -1,0 +1,19 @@
+{{- $pvcKeys := list "geoserver-cloud-pvc" "geoserver-nfs-pvc" "rabbitmq-pvc" }}
+{{- range $pvcKey := $pvcKeys }}
+{{- $pvc := index $.Values $pvcKey }}
+{{- if and $pvc $pvc.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $pvc.name }}
+  namespace: urbi
+spec:
+  storageClassName: {{ $pvc.storageClassName }}
+  accessModes:
+    {{- toYaml $pvc.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ $pvc.storage }}
+{{- end }}
+{{- end }}

@@ -385,7 +385,7 @@ volumes:
   geoserver-data:
     persistentVolumeClaim:
       claimName: geoserver-cloud-pvc
-  geoserver-nfs-pvc:                         # ✅ required so template can resolve volumeMounts
+  geoserver-nfs-pvc:                        
     persistentVolumeClaim:
       claimName: geoserver-nfs-pvc
 
