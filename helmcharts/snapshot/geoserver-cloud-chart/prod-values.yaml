@@ -397,10 +397,16 @@ rabbitmq-pvc:
     - ReadWriteOnce
   storage: 50Gi
 
+# volumes:
+#   geoserver-data:
+#     persistentVolumeClaim:
+#       claimName: geoserver-cloud-pvc
+
 volumes:
   geoserver-data:
     persistentVolumeClaim:
-      claimName: geoserver-cloud-pvc
+      claimName: geoserver-nfs-pvc
+
 
 ingress:
   name: geoserver-cloud
