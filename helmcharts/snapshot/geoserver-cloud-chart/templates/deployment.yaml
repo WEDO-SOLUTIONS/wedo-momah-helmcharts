@@ -54,7 +54,7 @@ spec:
         {{- if $container.volumeMounts }}
           {{- range $container.volumeMounts }}
             {{- $volName := .name }}
-            {{- if hasKey $.Values.volumes $volName }}
+            {{- if and (kindIs "map" $.Values.volumes) (hasKey $.Values.volumes $volName) }}
               {{- $_ := set $allVolumes $volName (index $.Values.volumes $volName) }}
             {{- end }}
           {{- end }}
