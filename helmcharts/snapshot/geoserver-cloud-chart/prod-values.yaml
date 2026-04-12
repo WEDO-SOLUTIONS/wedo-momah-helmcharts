@@ -368,7 +368,7 @@ geoserver-cloud-pvc:
 geoserver-nfs-pvc:
   enabled: true
   name: geoserver-nfs-pvc
-  storageClassName: oci-geoserver-nfs
+  storageClassName: oci-goeserver-nfs        # ✅ confirmed correct name (goe not geo)
   accessModes:
     - ReadWriteOnce
   storage: 1024Gi
@@ -385,7 +385,7 @@ volumes:
   geoserver-data:
     persistentVolumeClaim:
       claimName: geoserver-cloud-pvc
-  geoserver-nfs-pvc:
+  geoserver-nfs-pvc:                         # ✅ required so template can resolve volumeMounts
     persistentVolumeClaim:
       claimName: geoserver-nfs-pvc
 
@@ -407,7 +407,6 @@ ingress:
     - path: /geoserver(/|$)(.*)
       pathType: ImplementationSpecific
       backend: geoserver-gateway
-
 
 
 
