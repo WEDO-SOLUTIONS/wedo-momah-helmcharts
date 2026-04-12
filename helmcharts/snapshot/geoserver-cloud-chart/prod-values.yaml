@@ -122,6 +122,9 @@ geoserver-webui:
       volumeMounts:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
+      volumeMounts:
+        - mountPath: /opt/geoserver/data_dir
+          name: geoserver-nfs-pvc
 
 geoserver-rest:
   name: geoserver-rest
@@ -162,6 +165,9 @@ geoserver-rest:
       volumeMounts:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
+      volumeMounts:
+        - mountPath: /opt/geoserver/data_dir
+          name: geoserver-nfs-pvc
 
 geoserver-wms:
   name: geoserver-wms
@@ -202,7 +208,9 @@ geoserver-wms:
       volumeMounts:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
-
+      volumeMounts:
+        - mountPath: /opt/geoserver/data_dir
+          name: geoserver-nfs-pvc
 geoserver-wfs:
   name: geoserver-wfs
   namespace: urbi
@@ -242,6 +250,9 @@ geoserver-wfs:
       volumeMounts:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
+      volumeMounts:
+        - mountPath: /opt/geoserver/data_dir
+          name: geoserver-nfs-pvc
 
 geoserver-wcs:
   name: geoserver-wcs
@@ -282,6 +293,9 @@ geoserver-wcs:
       volumeMounts:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
+      volumeMounts:
+        - mountPath: /opt/geoserver/data_dir
+          name: geoserver-nfs-pvc
 
 geoserver-gwc:
   name: geoserver-gwc
@@ -322,6 +336,10 @@ geoserver-gwc:
       volumeMounts:
         - mountPath: /opt/app/data_directory
           name: geoserver-data
+      volumeMounts:
+        - mountPath: /opt/geoserver/data_dir
+          name: geoserver-nfs-pvc
+      
 
 rabbitmq:
   name: rabbitmq
@@ -357,6 +375,7 @@ rabbitmq:
       persistentVolumeClaim:
         claimName: rabbitmq-pvc
 
+
 pvc:
   enabled: true
   name: geoserver-cloud-pvc
@@ -364,6 +383,14 @@ pvc:
   accessModes:
     - ReadWriteOnce
   storage: 500Gi
+
+pvc:
+  enabled: true
+  name: geoserver-nfs-pvc
+  storageClassName: oci-geoserver-nfs
+  accessModes:
+    - ReadWriteOnce
+  storage: 1024Gi
 
 rabbitmq-pvc:
   enabled: true
