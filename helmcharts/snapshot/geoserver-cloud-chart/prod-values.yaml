@@ -368,7 +368,7 @@ geoserver-cloud-pvc:
 geoserver-nfs-pvc:
   enabled: true
   name: geoserver-nfs-pvc
-  storageClassName: oci-goeserver-nfs
+  storageClassName: oci-geoserver-nfs
   accessModes:
     - ReadWriteOnce
   storage: 1024Gi
