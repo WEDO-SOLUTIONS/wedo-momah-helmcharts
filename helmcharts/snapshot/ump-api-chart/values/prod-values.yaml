@@ -2,7 +2,7 @@ name: cityview-ump-api
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-ump-api:v0.1.42
+image: registry.momrah.gov.sa/urbi-omar/cityview-ump-api:v1.4.3
 containerPort: 3000
 servicePort: 80
 serviceType: ClusterIP
