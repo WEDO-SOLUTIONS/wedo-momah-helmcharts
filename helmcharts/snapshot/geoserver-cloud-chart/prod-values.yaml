@@ -108,8 +108,8 @@ geoserver-webui:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/app/data_directory
-          name: geoserver-data
+        # - mountPath: /opt/app/data_directory
+        #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
           name: geoserver-nfs-pvc
 
@@ -150,8 +150,8 @@ geoserver-rest:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/app/data_directory
-          name: geoserver-data
+      # - mountPath: /opt/app/data_directory
+        #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
           name: geoserver-nfs-pvc
 
@@ -192,8 +192,8 @@ geoserver-wms:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/app/data_directory
-          name: geoserver-data
+        # - mountPath: /opt/app/data_directory
+        #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
           name: geoserver-nfs-pvc
 
@@ -234,8 +234,8 @@ geoserver-wfs:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/app/data_directory
-          name: geoserver-data
+        # - mountPath: /opt/app/data_directory
+        #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
           name: geoserver-nfs-pvc
 
@@ -276,8 +276,8 @@ geoserver-wcs:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/app/data_directory
-          name: geoserver-data
+        # - mountPath: /opt/app/data_directory
+        #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
           name: geoserver-nfs-pvc
 
@@ -318,8 +318,8 @@ geoserver-gwc:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/app/data_directory
-          name: geoserver-data
+        # - mountPath: /opt/app/data_directory
+        #   name: geoserver-data
         - mountPath: /opt/geoserver/data_dir
           name: geoserver-nfs-pvc
 
@@ -357,13 +357,13 @@ rabbitmq:
       persistentVolumeClaim:
         claimName: rabbitmq-pvc
 
-geoserver-cloud-pvc:
-  enabled: true
-  name: geoserver-cloud-pvc
-  storageClassName: oci-block-volume
-  accessModes:
-    - ReadWriteOnce
-  storage: 500Gi
+# geoserver-cloud-pvc:
+#   enabled: true
+#   name: geoserver-cloud-pvc
+#   storageClassName: oci-block-volume
+#   accessModes:
+#     - ReadWriteOnce
+#   storage: 500Gi
 
 geoserver-nfs-pvc:
   enabled: true
@@ -381,13 +381,13 @@ rabbitmq-pvc:
     - ReadWriteOnce
   storage: 50Gi
 
-volumes:
-  geoserver-data:
-    persistentVolumeClaim:
-      claimName: geoserver-cloud-pvc
-  geoserver-nfs-pvc:                        
-    persistentVolumeClaim:
-      claimName: geoserver-nfs-pvc
+# #volumes:
+#   geoserver-data:
+#     persistentVolumeClaim:
+#       claimName: geoserver-cloud-pvc
+#   geoserver-nfs-pvc:                        
+#     persistentVolumeClaim:
+#       claimName: geoserver-nfs-pvc
 
 ingress:
   name: geoserver-cloud
