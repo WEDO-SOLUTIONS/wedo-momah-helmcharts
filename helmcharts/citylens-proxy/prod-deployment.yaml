@@ -9,7 +9,7 @@ metadata:
     app: citylens-proxy
     component: api
 spec:
-  replicas: 10
+  replicas: 8
   selector:
     matchLabels:
       app: citylens-proxy
