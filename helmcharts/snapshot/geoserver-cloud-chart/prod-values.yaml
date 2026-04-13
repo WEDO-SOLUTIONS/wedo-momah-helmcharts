@@ -350,7 +350,7 @@ geoserver-nfs-pvc:
   name: geoserver-nfs-pvc
   storageClassName: oci-goeserver-nfs    
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storage: 1024Gi
 
 rabbitmq-pvc:
@@ -358,7 +358,7 @@ rabbitmq-pvc:
   name: rabbitmq-pvc
   storageClassName: oci-block-volume
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storage: 50Gi
 
 volumes:
