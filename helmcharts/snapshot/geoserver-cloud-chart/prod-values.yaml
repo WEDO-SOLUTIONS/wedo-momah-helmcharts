@@ -348,23 +348,23 @@ rabbitmq:
 geoserver-nfs-pvc:
   enabled: true
   name: geoserver-nfs-pvc
-  storageClassName: oci-goeserver-nfs    
+  storageClassName: oci-geoserver-nfs    # ✅ correct spelling
   accessModes:
-    - ReadWriteMany
+    - ReadWriteMany                       # ✅ 6 pods share same PVC - NFS supports RWX
   storage: 1024Gi
 
 rabbitmq-pvc:
   enabled: true
-  name: rabbitmq-pvc-1
+  name: rabbitmq-pvc                     # ✅ matches claimName in rabbitmq volumes
   storageClassName: oci-block-volume
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce                       # ✅ block volume only supports RWO
   storage: 50Gi
 
 volumes:
-  geoserver-nfs-pvc:                     
+  geoserver-nfs-pvc:
     persistentVolumeClaim:
-      claimName: geoserver-nfs-pvc       
+      claimName: geoserver-nfs-pvc       # ✅ matches PVC name above     
 
 ingress:
   name: geoserver-cloud
