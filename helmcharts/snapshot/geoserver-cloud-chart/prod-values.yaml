@@ -358,7 +358,7 @@ rabbitmq-pvc:
   name: rabbitmq-pvc
   storageClassName: oci-block-volume
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storage: 50Gi
 
 volumes:
