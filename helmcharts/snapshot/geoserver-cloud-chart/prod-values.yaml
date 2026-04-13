@@ -355,7 +355,7 @@ geoserver-nfs-pvc:
 
 rabbitmq-pvc:
   enabled: true
-  name: rabbitmq-pvc
+  name: rabbitmq-pvc-1
   storageClassName: oci-block-volume
   accessModes:
     - ReadWriteMany
