@@ -269,7 +269,7 @@ geoserver-wcs:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        # ✅
+          name: geoserver-nfs-pvc        
 
 geoserver-gwc:
   name: geoserver-gwc
@@ -309,7 +309,7 @@ geoserver-gwc:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        # ✅
+          name: geoserver-nfs-pvc        
 
 rabbitmq:
   name: rabbitmq
@@ -348,7 +348,7 @@ rabbitmq:
 geoserver-nfs-pvc:
   enabled: true
   name: geoserver-nfs-pvc
-  storageClassName: oci-goeserver-nfs    # ✅ correct storageClass name
+  storageClassName: oci-goeserver-nfs    
   accessModes:
     - ReadWriteOnce
   storage: 1024Gi
@@ -358,13 +358,13 @@ rabbitmq-pvc:
   name: rabbitmq-pvc
   storageClassName: oci-block-volume
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storage: 50Gi
 
 volumes:
-  geoserver-nfs-pvc:                     # ✅ key matches volumeMounts.name
+  geoserver-nfs-pvc:                     
     persistentVolumeClaim:
-      claimName: geoserver-nfs-pvc       # ✅ claimName is the PVC name not storageClass
+      claimName: geoserver-nfs-pvc       
 
 ingress:
   name: geoserver-cloud
