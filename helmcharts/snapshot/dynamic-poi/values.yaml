@@ -40,5 +40,5 @@ ingress:
   # Path rules
   paths:
     - path: /1.0/dynamic-markers
-      pathType: Prefix
+      pathType: ImplementationSpecific
       backend: dynamic-poi
