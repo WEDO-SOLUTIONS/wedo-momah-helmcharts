@@ -43,20 +43,18 @@ config:
     auth_backends: "airflow.providers.fab.auth_manager.api.auth.backend.fab_auth"
     client_request_timeout: 60
 
-  webserver:
-    auth_manager: "airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager"
-    # auth_manager: "airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager"
-
   api_auth:
     jwt_secret: "16f143ec4690e48710cbe27914d2a115dcb16c92e1441206815d09bc93bf5c60"
     jwt_algorithm: "HS256"
+
+  kubernetes_executor:
+    delete_worker_pods:     'False'
 
   logging:
     remote_logging:         'True'
     logging_level:          INFO
     remote_base_log_folder: 's3://prod-airflow-logging-xcom/logs'
     remote_log_conn_id:     oci_s3_conn
-    delete_worker_pods:     'False'
     encrypt_s3_logs:        'False'
 
   aws:
@@ -76,13 +74,13 @@ extraEnv: |
     value: 'path'
   - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
     value: 'oci_s3_conn'
-  - name: AIRFLOW_CORE_XCOM_BACKEND
+  - name: AIRFLOW__CORE__XCOM_BACKEND
     value: 'airflow.providers.common.io.xcom.backend.XComObjectStorageBackend'
-  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_PATH
+  - name: AIRFLOW__COMMON_IO__XCOM_OBJECTSTORAGE_PATH
     value: 's3://prod-airflow-logging-xcom/xcom'
-  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_THRESHOLD
+  - name: AIRFLOW__COMMON_IO__XCOM_OBJECTSTORAGE_THRESHOLD
     value: '1048576'
-  - name: AIRFLOW_COMMON_IO_XCOM_OBJECTSTORAGE_COMPRESSION
+  - name: AIRFLOW__COMMON_IO__XCOM_OBJECTSTORAGE_COMPRESSION
     value: 'zip'
 
 airflowLocalSettings: |-
