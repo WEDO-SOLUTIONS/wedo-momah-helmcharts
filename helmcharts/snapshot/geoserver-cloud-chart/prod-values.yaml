@@ -108,7 +108,7 @@ geoserver-webui:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/geoserver/data_dir
+        - mountPath: /opt/app/data_directory
           name: geoserver-nfs-pvc
 
 geoserver-rest:
@@ -148,7 +148,7 @@ geoserver-rest:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/geoserver/data_dir
+        - mountPath: /opt/app/data_directory
           name: geoserver-nfs-pvc
 
 geoserver-wms:
@@ -188,7 +188,7 @@ geoserver-wms:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/geoserver/data_dir
+        - mountPath: /opt/app/data_directory
           name: geoserver-nfs-pvc
 
 geoserver-wfs:
@@ -228,7 +228,7 @@ geoserver-wfs:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/geoserver/data_dir
+        - mountPath: /opt/app/data_directory
           name: geoserver-nfs-pvc
 
 geoserver-wcs:
@@ -268,7 +268,7 @@ geoserver-wcs:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/geoserver/data_dir
+        - mountPath: /opt/app/data_directory
           name: geoserver-nfs-pvc
 
 geoserver-gwc:
@@ -308,7 +308,7 @@ geoserver-gwc:
         SPRING_RABBITMQ_PASSWORD:
           value: QjecigobQuzUpIGc
       volumeMounts:
-        - mountPath: /opt/geoserver/data_dir
+        - mountPath: /opt/app/data_directory
           name: geoserver-nfs-pvc
 
 rabbitmq:
