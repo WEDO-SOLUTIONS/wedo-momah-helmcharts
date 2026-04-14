@@ -2,7 +2,7 @@ name: dynamic-poi
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/dynamic-poi:v0.0.1
+image: registry.momrah.gov.sa/urbi-omar/dynamic-poi:v0.0.2
 containerPort: 3000
 servicePort: 80
 serviceType: ClusterIP
