@@ -70,9 +70,16 @@ spec:
       volumes:
         {{- range $volName, $vol := $allVolumes }}
         - name: {{ $volName }}
-          {{- if $vol.persistentVolumeClaim }}
+          {{- if $vol.nfs }}
+          nfs:
+            server: {{ $vol.nfs.server }}
+            path: {{ $vol.nfs.path }}
+            readOnly: {{ $vol.nfs.readOnly | default false }}
+          {{- else if $vol.persistentVolumeClaim }}
           persistentVolumeClaim:
             claimName: {{ $vol.persistentVolumeClaim.claimName }}
+          {{- else if $vol.emptyDir }}
+          emptyDir: {}
           {{- end }}
         {{- end }}
       {{- end }}
