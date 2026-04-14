@@ -1,0 +1,44 @@
+name: dynamic-poi
+namespace: urbi
+replicaCount: 1
+
+image: registry.momrah.gov.sa/urbi-omar/dynamic-poi:v0.0.1
+containerPort: 3000
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+
+env:
+  API_KEY: "7945b9d8-1e95-4c1b-8886-d6a4c6c69e73"
+  REDIS_CLUSTER_ENABLED: "true"
+  REDIS_HOSTNAME: "redis-redis-cluster"
+  REDIS_PORT: "6379"
+  REDIS_PASSWORD: "CVb7saZB4Rtu"
+  REDIS_USERNAME: "default"
+
+# Ingress configuration for production
+ingress:
+  name: dynamic-poi
+  className: urbi
+  host: urbi-lifestyle-stg.momrah.gov.sa
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+    #nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+
+  # Path rules
+  paths:
+    - path: /1.0/dynamic-markers
+      pathType: Prefix
+      backend: dynamic-poi

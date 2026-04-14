@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dynamic-poi
+description: Helm chart for Dynamic POI Service
+type: application
+version: 0.1.0
+appVersion: "v0.4"

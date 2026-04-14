@@ -109,7 +109,7 @@ geoserver-webui:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        # ✅ volume name not storageClassName
+          name: geoserver-nfs-pvc
 
 geoserver-rest:
   name: geoserver-rest
@@ -149,7 +149,7 @@ geoserver-rest:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        # ✅
+          name: geoserver-nfs-pvc
 
 geoserver-wms:
   name: geoserver-wms
@@ -189,7 +189,7 @@ geoserver-wms:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        # ✅
+          name: geoserver-nfs-pvc
 
 geoserver-wfs:
   name: geoserver-wfs
@@ -229,7 +229,7 @@ geoserver-wfs:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        # ✅
+          name: geoserver-nfs-pvc
 
 geoserver-wcs:
   name: geoserver-wcs
@@ -269,7 +269,7 @@ geoserver-wcs:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        
+          name: geoserver-nfs-pvc
 
 geoserver-gwc:
   name: geoserver-gwc
@@ -309,7 +309,7 @@ geoserver-gwc:
           value: QjecigobQuzUpIGc
       volumeMounts:
         - mountPath: /opt/geoserver/data_dir
-          name: geoserver-nfs-pvc        
+          name: geoserver-nfs-pvc
 
 rabbitmq:
   name: rabbitmq
@@ -345,37 +345,20 @@ rabbitmq:
       persistentVolumeClaim:
         claimName: rabbitmq-pvc
 
-geoserver-nfs-pvc:
-  enabled: true
-  name: geoserver-nfs-pvc
-  storageClassName: oci-geoserver-nfs    # ✅ correct spelling
-  accessModes:
-    - ReadWriteMany                       # ✅ 6 pods share same PVC - NFS supports RWX
-  storage: 1024Gi
-
 rabbitmq-pvc:
   enabled: true
-  name: rabbitmq-pvc                     # ✅ matches claimName in rabbitmq volumes
+  name: rabbitmq-pvc
   storageClassName: oci-block-volume
   accessModes:
-    - ReadWriteOnce                       # ✅ block volume only supports RWO
+    - ReadWriteOnce
   storage: 50Gi
 
 volumes:
   geoserver-nfs-pvc:
-    persistentVolumeClaim:
-      claimName: geoserver-nfs-pvc
-# volumes:
-#   geoserver-nfs-pvc:
-#     persistentVolumeClaim:
-#       claimName: geoserver-nfs-pvc       # ✅ matches PVC name above     
-# ✅ Replace volumes section with this
-# volumes:
-#   geoserver-nfs-pvc:
-#     nfs:
-#       server: 10.246.35.54        # OCI FSS mount target IP
-#       path: /mount-geotiff        # FSS export path
-
+    nfs:
+      server: 10.246.35.54
+      path: /mount-geotiff
+      readOnly: false
 
 ingress:
   name: geoserver-cloud
