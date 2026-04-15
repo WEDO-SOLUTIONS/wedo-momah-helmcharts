@@ -1,4 +1,4 @@
-name: dynamic-poi
+name: short-link
 namespace: urbi
 replicaCount: 1
 
@@ -35,11 +35,11 @@ env:
 # Target Domain (safelist)
   TARGET_DOMAIN: "https://plus.balady.sa"
 # Rate Limiting
-  RATE_LIMIT_CREATE: 100
-  RATE_LIMIT_READ: 1000
-  RATE_LIMIT_WINDOW_MS: 60000
+  RATE_LIMIT_CREATE: "100"
+  RATE_LIMIT_READ: "1000"
+  RATE_LIMIT_WINDOW_MS: "60000"
 # Cache TTL (seconds)
-  CACHE_TTL: 43200
+  CACHE_TTL: "43200"
 
 # Ingress configuration for production
 ingress:
