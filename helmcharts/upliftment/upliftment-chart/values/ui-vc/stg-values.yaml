@@ -3,8 +3,8 @@ namespace: urbi
 replicaCount: 1
 
 image: registry.momrah.gov.sa/urbi-omar/upliftment-vc-ui-stg:v0.011
-containerPort: 80
-servicePort: 80
+containerPort: 8080
+servicePort: 8080
 serviceType: ClusterIP
 
 resources:
