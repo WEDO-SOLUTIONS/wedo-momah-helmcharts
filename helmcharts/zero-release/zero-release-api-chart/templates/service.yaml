@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/component: api
+spec:
+  type: {{ .Values.api.service.type }}
+  ports:
+    - port: {{ .Values.api.service.port }}
+      targetPort: {{ .Values.api.service.targetPort }}
+      name: http
+      {{- if and (eq .Values.api.service.type "NodePort") .Values.api.service.nodePort }}
+      nodePort: {{ .Values.api.service.nodePort }}
+      {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/component: api

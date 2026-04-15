@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/component: api
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.name }}
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        app.kubernetes.io/name: {{ .Values.name }}
+        app.kubernetes.io/component: api
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Values.name }}
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http-api
+              containerPort: 8080
+              protocol: TCP
+          env:
+            # --- OIDC ---
+            - name: Oidc__Authority
+              value: {{ required "oidc.authority is required" .Values.oidc.authority | quote }}
+            {{- if .Values.oidc.audience }}
+            - name: Oidc__Audience
+              value: {{ .Values.oidc.audience | quote }}
+            {{- end }}
+            - name: Oidc__RequireHttpsMetadata
+              value: {{ .Values.oidc.requireHttpsMetadata | quote }}
+            {{- if .Values.oidc.clockSkew }}
+            - name: Oidc__ClockSkew
+              value: {{ .Values.oidc.clockSkew | quote }}
+            {{- end }}
+            {{- if .Values.oidc.scopes }}
+            - name: Oidc__Scopes
+              value: {{ .Values.oidc.scopes | quote }}
+            {{- end }}
+            # --- CORS ---
+            {{- range $i, $origin := .Values.api.cors.allowedOrigins }}
+            - name: Cors__AllowedOrigins__{{ $i }}
+              value: {{ $origin | quote }}
+            {{- end }}
+            # --- S3 ---
+            - name: S3__Host
+              value: {{ required "s3.host is required" .Values.s3.host | quote }}
+            - name: S3__Secured
+              value: {{ .Values.s3.secured | quote }}
+            # --- PostgreSQL ---
+            - name: Postgres__Host
+              value: {{ required "postgres.api.host is required" .Values.postgres.api.host | quote }}
+            - name: Postgres__Port
+              value: {{ .Values.postgres.api.port | quote }}
+            - name: Postgres__Database
+              value: {{ required "postgres.api.database is required" .Values.postgres.api.database | quote }}
+            - name: Postgres__Username
+              value: {{ required "postgres.api.username is required" .Values.postgres.api.username | quote }}
+            - name: Postgres__MinPoolSize
+              value: {{ .Values.postgres.api.minPoolSize | quote }}
+            - name: Postgres__MaxPoolSize
+              value: {{ .Values.postgres.api.maxPoolSize | quote }}
+            # --- DataSources ---
+            - name: DataSources__Encryption__CurrentVersion
+              value: {{ .Values.dataSources.encryption.currentVersion | quote }}
+            # --- Ontology API ---
+            {{- if .Values.ontologyApi.url }}
+            - name: OntologyApi__Url
+              value: {{ .Values.ontologyApi.url | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.api.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.name }}-secret
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          resources:
+            {{- toYaml .Values.api.resources | nindent 12 }}
+          {{- with .Values.api.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.extraVolumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.api.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.extraVolumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

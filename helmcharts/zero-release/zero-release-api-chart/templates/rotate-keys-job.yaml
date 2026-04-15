@@ -1,0 +1,61 @@
+{{- if .Values.api.rotateKeys.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.name }}-rotate-keys
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/component: rotate-keys
+    app.kubernetes.io/managed-by: Helm
+spec:
+  backoffLimit: {{ .Values.api.rotateKeys.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.api.rotateKeys.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: {{ .Values.api.rotateKeys.ttlSecondsAfterFinished | default 86400 }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.name }}
+        app.kubernetes.io/component: rotate-keys
+    spec:
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+      containers:
+        - name: rotate-keys
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy | default "IfNotPresent" }}
+          args: ["--rotate-keys"]
+          env:
+            - name: Postgres__Host
+              value: {{ required "postgres.api.host is required" .Values.postgres.api.host | quote }}
+            - name: Postgres__Port
+              value: {{ .Values.postgres.api.port | quote }}
+            - name: Postgres__Database
+              value: {{ required "postgres.api.database is required" .Values.postgres.api.database | quote }}
+            - name: Postgres__Username
+              value: {{ required "postgres.api.username is required" .Values.postgres.api.username | quote }}
+            - name: Postgres__Password
+              value: {{ required "postgres.api.password is required" .Values.postgres.api.password | quote }}
+            - name: Postgres__MinPoolSize
+              value: "1"
+            - name: Postgres__MaxPoolSize
+              value: "2"
+            - name: DataSources__Encryption__CurrentVersion
+              value: {{ .Values.dataSources.encryption.currentVersion | quote }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.name }}-secret
+          resources:
+            {{- toYaml .Values.api.rotateKeys.resources | nindent 12 }}
+      {{- with .Values.api.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.api.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

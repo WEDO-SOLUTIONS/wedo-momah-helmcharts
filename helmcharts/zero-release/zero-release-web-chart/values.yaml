@@ -1,0 +1,81 @@
+# Default values for zero-release-web
+# Override with environment-specific files (values/prod-values.yaml, values/stg-values.yaml)
+
+name: zero-release-web
+namespace: axion-gen
+
+global:
+  imagePullSecrets: []
+  # - name: registry-creds
+
+web:
+  replicaCount: 1
+
+  image:
+    repository: registry.momrah.gov.sa/urbi-omar/zero-release-web
+    tag: ""  # defaults to Chart.appVersion
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+    nodePort: null
+
+  ingress:
+    enabled: false
+    className: urbi
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    hosts: []
+    tls: []
+
+  certificate:
+    enabled: false
+    issuerRef:
+      name: ""
+      kind: ClusterIssuer
+    dnsNames: []
+
+  # Runtime environment variables (non-sensitive)
+  env: {}
+  #   OIDC_REDIRECT_URI: "https://app.example.com/api/auth/callback/oidc"
+  #   URBI_API: "https://mapgl.urbi.ae/api"
+  #   URBI_KEY: "your-urbi-key"
+  #   BACKEND_URL: "http://zero-release-api:80"
+  #   LLM_PROVIDER: "openai_compatible"
+  #   LLM_BASE_URL: ""
+  #   LLM_MODEL: "gpt-4o-mini"
+  #   AGENT_MODE: "ask_only"
+  #   AGENT_MAX_CONTEXT_MESSAGES: "40"
+
+  # Sensitive values (stored in Kubernetes Secret)
+  secrets: {}
+  #   LLM_API_KEY: ""
+  #   LANGFUSE_SECRET_KEY: ""
+  #   LANGFUSE_PUBLIC_KEY: ""
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+  # Extra /etc/hosts entries (for domains without public DNS)
+  hostAliases: []
+  #   - ip: "10.246.x.x"
+  #     hostnames:
+  #       - "zero-release-api.momah.gov.sa"
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  podSecurityContext: {}
+  securityContext: {}

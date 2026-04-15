@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
@@ -14,11 +14,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app.kubernetes.io/name: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app.kubernetes.io/name: {{ .Values.name }}
     spec:
       containers:
         - name: middleware

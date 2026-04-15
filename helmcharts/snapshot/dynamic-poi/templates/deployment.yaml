@@ -4,23 +4,25 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app.kubernetes.io/name: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app.kubernetes.io/name: {{ .Values.name }}
     spec:
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
           imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
           resources:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
@@ -33,3 +35,28 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
+          {{- if .Values.healthPath }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.healthPath }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.healthPath }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          {{- end }}

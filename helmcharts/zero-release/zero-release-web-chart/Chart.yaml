@@ -1,0 +1,6 @@
+apiVersion: v2
+name: zero-release-web
+description: Axion Gen Web Frontend (Next.js) chart for Zero Release
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

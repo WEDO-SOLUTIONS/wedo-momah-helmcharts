@@ -1,0 +1,139 @@
+# Default values for zero-release-api
+# Override with environment-specific files (values/prod-values.yaml, values/stg-values.yaml)
+
+name: zero-release-api
+namespace: axion-gen
+
+global:
+  imagePullSecrets: []
+  # - name: registry-creds
+
+api:
+  replicaCount: 1
+
+  image:
+    repository: registry.momrah.gov.sa/urbi-omar/zero-release-api
+    tag: ""  # defaults to Chart.appVersion
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+    nodePort: null
+
+  ingress:
+    enabled: false
+    className: urbi
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    hosts: []
+    tls: []
+
+  certificate:
+    enabled: false
+    issuerRef:
+      name: ""
+      kind: ClusterIssuer
+    dnsNames: []
+
+  cors:
+    allowedOrigins: []
+
+  # Extra environment variables
+  env: {}
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+  apiKeys: []
+  # - key: "my-secret-api-key"
+  #   serviceName: "ml-service"
+  #   userEmail: "admin@example.com"  # optional
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  podSecurityContext: {}
+  securityContext: {}
+
+  extraVolumeMounts: []
+  extraVolumes: []
+
+  migration:
+    enabled: true
+    backoffLimit: 3
+    activeDeadlineSeconds: 120
+    ttlSecondsAfterFinished: 86400
+    env: {}
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "250m"
+
+  rotateKeys:
+    enabled: false
+    backoffLimit: 0
+    activeDeadlineSeconds: 300
+    ttlSecondsAfterFinished: 86400
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
+      limits:
+        memory: "256Mi"
+        cpu: "250m"
+
+# OIDC
+oidc:
+  authority: ""
+  clientId: ""
+  clientSecret: ""
+  audience: ""
+  requireHttpsMetadata: true
+  clockSkew: "00:05:00"
+  scopes: "openid profile email"
+
+# Ontology API (CityView KPI sync)
+ontologyApi:
+  url: ""
+  authToken: ""
+
+# S3-compatible object storage
+s3:
+  host: ""
+  secured: true
+  accessKey: ""
+  secretKey: ""
+
+# DataSources encryption
+dataSources:
+  encryption:
+    keys: {}
+    # 1: "base64-encoded-32-byte-aes-key"
+    currentVersion: 1
+
+# PostgreSQL
+postgres:
+  api:
+    host: ""
+    port: 5432
+    database: "axion_gen"
+    username: ""
+    password: ""
+    minPoolSize: 1
+    maxPoolSize: 20

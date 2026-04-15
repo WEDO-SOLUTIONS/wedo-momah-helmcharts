@@ -1,0 +1,42 @@
+# Default values for REGA_RBAC_Notifications_BE
+replicaCount: 1
+
+image:
+  repository: registry.momrah.gov.sa/urbi-omar/rega-rbac-notifications-be
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+
+resources: {}
+autoscaling:
+  enabled: false
+
+livenessProbe: {}
+readinessProbe: {}
+
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}

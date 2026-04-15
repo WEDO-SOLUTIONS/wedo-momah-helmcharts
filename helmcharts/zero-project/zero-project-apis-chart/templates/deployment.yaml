@@ -27,9 +27,10 @@ spec:
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - name: http
+              containerPort: {{ .Values.containerPort }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -58,3 +59,10 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL

@@ -1,0 +1,17 @@
+{{ .Values.name }} has been deployed to namespace {{ .Values.namespace }}.
+
+To check the status:
+  kubectl get pods -n {{ .Values.namespace }} -l app.kubernetes.io/name={{ .Values.name }}
+  kubectl get svc -n {{ .Values.namespace }} {{ .Values.name }}
+
+To verify health:
+  kubectl port-forward svc/{{ .Values.name }} 8080:{{ .Values.web.service.port }} -n {{ .Values.namespace }}
+  curl http://localhost:8080/api/health
+
+{{- if .Values.web.ingress.enabled }}
+
+Ingress is enabled. Access the app at:
+  {{- range .Values.web.ingress.hosts }}
+  https://{{ .host }}
+  {{- end }}
+{{- end }}

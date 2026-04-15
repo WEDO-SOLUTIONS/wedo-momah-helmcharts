@@ -1,0 +1,65 @@
+# Production environment values for zero-release-web
+name: zero-release-web
+namespace: axion-gen
+
+global:
+  imagePullSecrets: []
+
+web:
+  replicaCount: 2
+
+  image:
+    repository: registry.momrah.gov.sa/urbi-omar/zero-release-web
+    tag: "1.0.0"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+
+  ingress:
+    enabled: true
+    className: urbi
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    hosts:
+      - host: axion-gen.momah.gov.sa
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - axion-gen.momah.gov.sa
+
+  certificate:
+    enabled: false
+
+  env:
+    OIDC_REDIRECT_URI: "https://axion-gen.momah.gov.sa/api/auth/callback/oidc"
+    URBI_API: ""
+    URBI_KEY: ""
+    BACKEND_URL: "http://zero-release-api.axion-gen.svc.cluster.local:80"
+    LLM_PROVIDER: "openai_compatible"
+    LLM_BASE_URL: ""
+    LLM_MODEL: "gpt-4o-mini"
+    AGENT_MODE: "ask_only"
+    AGENT_MAX_CONTEXT_MESSAGES: "40"
+
+  secrets:
+    LLM_API_KEY: ""
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "2"
+
+  hostAliases: []

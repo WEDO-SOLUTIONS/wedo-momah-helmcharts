@@ -9,18 +9,19 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}                    # ← changed
+      app.kubernetes.io/name: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}                  # ← added
         app.kubernetes.io/name: {{ .Values.name }}
     spec:
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
           resources:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
@@ -28,4 +29,29 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
+          {{- if .Values.healthPath }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.healthPath }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.healthPath }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
 

@@ -17,11 +17,10 @@ spec:
         app.kubernetes.io/instance: {{ .Values.name }}
         app.kubernetes.io/name: {{ .Values.name }}
     spec:
-      serviceAccountName: default
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
@@ -51,5 +50,9 @@ spec:
             failureThreshold: 3
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
 

@@ -29,7 +29,8 @@ spec:
           image: {{ .Values.image }}
           imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - name: http
+              containerPort: {{ .Values.containerPort }}
               protocol: TCP
           resources:
             limits:
@@ -38,9 +39,13 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
+      securityContext:
+        fsGroup: 1000
 

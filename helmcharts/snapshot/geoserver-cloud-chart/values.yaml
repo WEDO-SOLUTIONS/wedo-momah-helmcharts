@@ -1,0 +1,21 @@
+# Default values for geoserver-cloud
+# This chart deploys multiple geoserver services
+# Override with environment-specific values files
+
+geoserver-gateway:
+  name: geoserver-gateway
+  namespace: urbi
+  replicaCount: 1
+  image: geoserver-cloud:latest
+  containerPort: 8080
+  resources:
+    limits:
+      cpu: "2"
+      memory: "2Gi"
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+  containers:
+    gateway: {}
+
+volumes: {}

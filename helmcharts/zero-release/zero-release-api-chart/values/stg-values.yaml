@@ -1,0 +1,97 @@
+# Staging environment values for zero-release-api
+name: zero-release-api
+namespace: axion-gen
+
+api:
+  replicaCount: 1
+
+  image:
+    repository: registry.momrah.gov.sa/urbi-omar/zero-release-api
+    tag: "staging"
+    pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+
+  ingress:
+    enabled: true
+    className: urbi
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+      nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    hosts:
+      - host: zero-release-api-stg.momah.gov.sa
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - zero-release-api-stg.momah.gov.sa
+
+  certificate:
+    enabled: false
+
+  cors:
+    allowedOrigins:
+      - "https://axion-gen-stg.momah.gov.sa"
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+  migration:
+    enabled: true
+    backoffLimit: 3
+    activeDeadlineSeconds: 120
+
+  rotateKeys:
+    enabled: false
+
+# OIDC
+oidc:
+  authority: ""
+  clientId: ""
+  clientSecret: ""
+  requireHttpsMetadata: true
+  clockSkew: "00:05:00"
+  scopes: "openid profile email"
+
+# Ontology API
+ontologyApi:
+  url: ""
+  authToken: ""
+
+# S3 - OCI Object Storage
+s3:
+  host: "axownvq9lhmx.compat.objectstorage.me-jeddah-1.oraclecloud.com"
+  secured: true
+  accessKey: "cb806aa1706a5311f584f0168d11d5db644650a0"
+  secretKey: "9BwNGho98DBVKIm+WQMTPI3e9hVjPn+0iqJzKLAGews="
+
+# DataSources encryption - generate a key: openssl rand -base64 32
+dataSources:
+  encryption:
+    keys:
+      1: "0EfpRWuovIhS3ZP9494DJyH8wq4aUuKl6nXwoXPEgM0="
+    currentVersion: 1
+
+# PostgreSQL
+postgres:
+  api:
+    host: "10.247.3.9"
+    port: 5432
+    database: "axion_gen"
+    username: "axion_user"
+    password: "kA8me1DE3fp5FRvaHARZpil2"
+    minPoolSize: 1
+    maxPoolSize: 20

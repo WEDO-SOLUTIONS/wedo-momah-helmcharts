@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: {{ .Values.ingress.name }}
   annotations:
-{{ toYaml .Values.ingress.annotations | indent 4 }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
 {{- if .Values.ingress.serverSnippet }}
     nginx.ingress.kubernetes.io/server-snippet: |
 {{ .Values.ingress.serverSnippet | replace "__MIDDLEWARE_HOST__" $middlewareHost | indent 6 }}
@@ -30,3 +30,6 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
+      {{- if .Values.ingress.tlsSecretName }}
+      secretName: {{ .Values.ingress.tlsSecretName }}
+      {{- end }}

@@ -23,7 +23,9 @@ spec:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: {{ .Values.name }}-config
@@ -42,3 +44,10 @@ spec:
           {{- if .Values.readinessProbe }}
           readinessProbe: {{- toYaml .Values.readinessProbe | nindent 12 }}
           {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL

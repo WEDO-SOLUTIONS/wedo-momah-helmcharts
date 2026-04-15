@@ -1,0 +1,5 @@
+{{ .Values.name }} has been deployed to namespace {{ .Values.namespace }}.
+
+To check the status:
+  kubectl get pods -n {{ .Values.namespace }} -l app.kubernetes.io/name={{ .Values.name }}
+  kubectl get svc -n {{ .Values.namespace }} {{ .Values.name }}

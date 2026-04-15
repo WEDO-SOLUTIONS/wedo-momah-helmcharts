@@ -19,7 +19,9 @@ spec:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
           ports:
-            - containerPort: {{ .Values.containerPort }}
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
           resources:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
@@ -44,4 +46,11 @@ spec:
               port: {{ .Values.containerPort }}
             initialDelaySeconds: 5
             periodSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop:
+                - ALL
 

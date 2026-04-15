@@ -1,0 +1,41 @@
+# Default values - override with environment-specific files (prod-values.yaml, stg-values.yaml)
+name: maplocator-snapshot-api
+namespace: urbi
+replicaCount: 1
+
+image: registry.momrah.gov.sa/urbi-omar/maplocator-snapshot-api:latest
+imagePullPolicy: IfNotPresent
+containerPort: 8080
+servicePort: 80
+serviceType: ClusterIP
+
+resources:
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
+# healthPath: /health
+
+env:
+  UPLOAD_FOLDER: "/uploads"
+  LOG_DIR: "/logs"
+pvc:
+  name: maplocator-pvc
+
+ingress:
+  name: maplocator-snapshot-api
+  className: urbi
+  host: maplocator-snapshot-api.momrah.gov.sa
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token"
+  paths:
+    - path: /
+      pathType: ImplementationSpecific
+      backend: maplocator-snapshot-api
