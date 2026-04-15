@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: makkah-bus
+
+securityContext:
+  enabled: false

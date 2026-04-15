@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: permissions-api
+
+securityContext:
+  enabled: false

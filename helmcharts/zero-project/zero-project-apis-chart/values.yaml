@@ -34,3 +34,6 @@ ingress:
       pathType: ImplementationSpecific
     - path: /zp/api/admin/v1
       pathType: ImplementationSpecific
+
+securityContext:
+  enabled: false

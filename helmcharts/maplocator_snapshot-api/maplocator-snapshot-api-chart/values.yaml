@@ -39,3 +39,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: maplocator-snapshot-api
+
+securityContext:
+  enabled: false

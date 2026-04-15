@@ -44,11 +44,13 @@ spec:
               port: {{ .Values.servicePort }}
             initialDelaySeconds: 5
             periodSeconds: 5
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser | default 1000 }}
             capabilities:
               drop:
                 - ALL
+          {{- end }}
 

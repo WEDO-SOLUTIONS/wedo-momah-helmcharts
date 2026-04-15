@@ -36,3 +36,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: rcmc
+
+securityContext:
+  enabled: false

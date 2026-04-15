@@ -58,3 +58,6 @@ ingress:
     - path: /1\.0/rcmc-markers/byId$
       backend: rcmc-markers-api
 
+
+securityContext:
+  enabled: false

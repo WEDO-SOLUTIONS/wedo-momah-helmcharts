@@ -42,3 +42,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: cityview-ai
+
+securityContext:
+  enabled: false

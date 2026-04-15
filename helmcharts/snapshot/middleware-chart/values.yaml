@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: middleware
+
+securityContext:
+  enabled: false

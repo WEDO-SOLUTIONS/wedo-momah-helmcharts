@@ -42,3 +42,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: zero-project-ai
+
+securityContext:
+  enabled: false

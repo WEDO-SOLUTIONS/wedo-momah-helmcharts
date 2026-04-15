@@ -33,3 +33,6 @@ ingress:
     - path: /ump/api/
       backend: cityview-custom-permissions-api
 
+
+securityContext:
+  enabled: false

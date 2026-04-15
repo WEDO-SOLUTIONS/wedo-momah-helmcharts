@@ -59,3 +59,6 @@ ingress:
       backend: maplocator-snapshot-api-service
 
 
+
+securityContext:
+  enabled: false

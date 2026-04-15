@@ -35,3 +35,6 @@ ingress:
   paths:
     - path: /customWidgets
       backend: cityview-custom-widgets
+
+securityContext:
+  enabled: false

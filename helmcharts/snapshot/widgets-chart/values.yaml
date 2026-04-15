@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: widgets
+
+securityContext:
+  enabled: false

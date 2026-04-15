@@ -65,3 +65,6 @@ mongodb:
     size: "10Gi"
     accessMode: ReadWriteOnce
 
+
+securityContext:
+  enabled: false

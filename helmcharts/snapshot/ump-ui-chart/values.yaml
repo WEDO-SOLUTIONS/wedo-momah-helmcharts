@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: ump-ui
+
+securityContext:
+  enabled: false

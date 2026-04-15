@@ -37,3 +37,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: dqp
+
+securityContext:
+  enabled: false

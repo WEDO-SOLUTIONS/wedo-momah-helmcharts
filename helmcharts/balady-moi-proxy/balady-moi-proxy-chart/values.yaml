@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: balady-moi-proxy
+
+securityContext:
+  enabled: false

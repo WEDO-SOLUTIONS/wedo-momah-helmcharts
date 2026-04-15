@@ -56,3 +56,6 @@ ingress:
     - path: /generate_map
       backend: maplocator-snapshot-api-service
 
+
+securityContext:
+  enabled: false

@@ -23,3 +23,6 @@ ingress:
     - path: /vc/ui
       pathType: ImplementationSpecific
 
+
+securityContext:
+  enabled: false

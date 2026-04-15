@@ -35,3 +35,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: cityview-frames-api
+
+securityContext:
+  enabled: false

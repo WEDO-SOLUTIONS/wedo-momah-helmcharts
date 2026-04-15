@@ -24,3 +24,6 @@ ingress:
     - path: /arcgis/query
     - path: /frames-api
     - path: /urbi
+
+securityContext:
+  enabled: false

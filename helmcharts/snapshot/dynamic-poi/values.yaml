@@ -42,3 +42,6 @@ ingress:
     - path: /1.0/dynamic-markers
       pathType: ImplementationSpecific
       backend: dynamic-poi
+
+securityContext:
+  enabled: false

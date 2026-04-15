@@ -51,12 +51,16 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 3
             failureThreshold: 3
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser | default 1000 }}
             capabilities:
               drop:
                 - ALL
+          {{- end }}
+      {{- if .Values.securityContext.enabled }}
       securityContext:
-        fsGroup: 1000
+        fsGroup: {{ .Values.securityContext.fsGroup | default 1000 }}
+      {{- end }}

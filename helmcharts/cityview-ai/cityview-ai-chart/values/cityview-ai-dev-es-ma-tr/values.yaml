@@ -126,3 +126,6 @@ ingress:
   paths:
     - path: /api-dev-es-ma-tr(/.*)
       pathType: ImplementationSpecific
+
+securityContext:
+  enabled: false

@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:ssoapp.balady.gov.sa)"
+      "WebFetch(domain:ssoapp.balady.gov.sa)",
+      "Bash([ -f \"$chart/values.yaml\" ])",
+      "Bash([ -d \"$chart/values\" ])"
     ]
   }
 }
