@@ -2,7 +2,7 @@ name: momtathel-upliftment-api
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/momtathel-upliftment-apis-stg:v0.003
+image: registry.momrah.gov.sa/urbi-omar/momtathel-upliftment-apis-stg:v0.006
 containerPort: 5000
 servicePort: 80
 serviceType: ClusterIP
@@ -22,3 +22,5 @@ ingress:
   paths:
     - path: /prweb/api
     - path: /arcgis/query
+    - path: /frames-api
+    - path: /urbi
