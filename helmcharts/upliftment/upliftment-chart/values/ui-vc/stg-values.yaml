@@ -2,7 +2,7 @@ name: momtathel-upliftment-vc-ui
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/upliftment-vc-ui-stg:v0.013
+image: registry.momrah.gov.sa/urbi-omar/upliftment-vc-ui-stg:v0.014
 containerPort: 8080
 servicePort: 8080
 serviceType: ClusterIP
