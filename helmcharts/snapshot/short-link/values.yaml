@@ -22,6 +22,24 @@ env:
   REDIS_PORT: "6379"
   REDIS_PASSWORD: "CVb7saZB4Rtu"
   REDIS_USERNAME: "default"
+  NODE_ENV: "development"
+# PostgreSQL
+  DB_HOST: "10.246.3.65"
+  DB_PORT: "5432"
+  DB_NAME: "balady"
+  DB_USER: "balady"
+  DB_PASSWORD: "QE79ujmp3fw2eYV363GcDLh0zuVOFpaZ"
+  DB_SCHEMA: "public"
+# Short URL Domain
+  SHORT_URL_DOMAIN: "https://urbi-lifestyle-stg.momrah.gov.sa"
+# Target Domain (safelist)
+  TARGET_DOMAIN: "https://plus.balady.sa"
+# Rate Limiting
+  RATE_LIMIT_CREATE: 100
+  RATE_LIMIT_READ: 1000
+  RATE_LIMIT_WINDOW_MS: 60000
+# Cache TTL (seconds)
+  CACHE_TTL: 43200
 
 # Ingress configuration for production
 ingress:
