@@ -10,7 +10,7 @@ web:
 
   image:
     repository: registry.momrah.gov.sa/urbi-omar/zero-release-web
-    tag: "staging"
+    tag: "1.0.0"
     pullPolicy: Always
 
   service:
