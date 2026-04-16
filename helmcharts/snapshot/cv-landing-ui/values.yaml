@@ -2,7 +2,7 @@ name: cv-landing-ui
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cv-landing-ui:v0.0.3
+image: registry.momrah.gov.sa/urbi-omar/cv-landing-ui:v0.0.4
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
