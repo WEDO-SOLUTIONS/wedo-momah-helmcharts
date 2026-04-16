@@ -26,7 +26,7 @@ env:
 
 # SSO / Auth Configuration
   CLIENT_ID: "Outbalady.balady.eye.pro"
-  REDIRECT_URL: "https://cityview-pro-ump.momah.gov.sa/cv-api/auth/callback"
+  REDIRECT_URL: "https://cityview-pro.momah.gov.sa/cv-api/auth/callback"
   CLIENT_SECRET: "c2bf5ab3afa84766ada157e862b4b5f6"
   UI_URL: "https://cityview-pro.momah.gov.sa/"
   SSO_AUTH_URL: "https://ssoapp.balady.gov.sa/connect/authorize"
