@@ -15,6 +15,10 @@ resources:
     cpu: "200m"
     memory: "256Mi"
 
+env:
+  VITE_API_BASE_URL: "https://cityview-pro.momah.gov.sa/cv-api"
+  VITE_SKIP_AUTH_REDIRECT: "false"
+
 # Ingress configuration for production
 ingress: 
   name: cv-landing-ui
