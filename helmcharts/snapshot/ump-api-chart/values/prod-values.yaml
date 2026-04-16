@@ -55,6 +55,5 @@ ingress:
     - path: /ump-api(/|$)(.*)
       backend: cityview-ump-api
 
-
 securityContext:
   enabled: false
