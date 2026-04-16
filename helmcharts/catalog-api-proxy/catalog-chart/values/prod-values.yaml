@@ -82,3 +82,6 @@ ingress:
       backend: catalog-api-proxy
     - path: /health
       backend: catalog-api-proxy
+
+securityContext:
+  enabled: false

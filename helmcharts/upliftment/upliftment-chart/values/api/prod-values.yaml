@@ -22,3 +22,6 @@ ingress:
   paths:
     - path: /prweb/api
 
+
+securityContext:
+  enabled: false

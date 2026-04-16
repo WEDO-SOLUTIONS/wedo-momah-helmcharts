@@ -36,3 +36,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: notifications
+
+securityContext:
+  enabled: false

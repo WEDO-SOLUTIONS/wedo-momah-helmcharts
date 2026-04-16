@@ -58,3 +58,6 @@ ingress:
     - path: /v2/ald(/|$)(.*)
       backend: moi-proxy
 
+
+securityContext:
+  enabled: false

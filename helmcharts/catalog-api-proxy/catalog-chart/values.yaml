@@ -36,3 +36,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: catalog-api-proxy
+
+securityContext:
+  enabled: false

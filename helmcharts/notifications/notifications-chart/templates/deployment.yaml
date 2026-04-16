@@ -45,13 +45,15 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser | default 1000 }}
             capabilities:
               drop:
                 - ALL
+          {{- end }}
           {{- if .Values.livenessProbe }}
           livenessProbe:
             httpGet:
@@ -60,5 +62,7 @@ spec:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 30 }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 10 }}
           {{- end }}
+      {{- if .Values.securityContext.enabled }}
       securityContext:
-        fsGroup: 1000
+        fsGroup: {{ .Values.securityContext.fsGroup | default 1000 }}
+      {{- end }}

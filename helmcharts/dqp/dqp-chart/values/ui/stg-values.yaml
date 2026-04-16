@@ -41,3 +41,6 @@ ingress:
 cronjob:
   enabled: false
 
+
+securityContext:
+  enabled: false

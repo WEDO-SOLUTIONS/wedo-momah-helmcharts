@@ -34,3 +34,6 @@ ingress:
     - path: /biban25
       backend: events-webapp-biban25
 
+
+securityContext:
+  enabled: false

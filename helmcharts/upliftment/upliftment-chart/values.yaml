@@ -35,3 +35,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: upliftment
+
+securityContext:
+  enabled: false

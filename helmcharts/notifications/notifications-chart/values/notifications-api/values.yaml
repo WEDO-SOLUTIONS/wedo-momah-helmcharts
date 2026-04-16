@@ -38,3 +38,6 @@ ingress:
   paths:
     - path: /notifications-api(/|$)(.*)
       pathType: ImplementationSpecific
+
+securityContext:
+  enabled: false

@@ -48,3 +48,6 @@ ingress:
     - path: /api/user(/|$)(.*)
       pathType: ImplementationSpecific
     
+
+securityContext:
+  enabled: false

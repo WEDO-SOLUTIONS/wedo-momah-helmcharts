@@ -91,3 +91,6 @@ ingress:
     - path: /health
       backend: catalog-api-proxy
     
+
+securityContext:
+  enabled: false

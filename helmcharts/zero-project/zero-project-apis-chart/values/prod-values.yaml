@@ -33,3 +33,6 @@ ingress:
   paths:
     - path: /zp/api/v1
       pathType: ImplementationSpecific
+
+securityContext:
+  enabled: false

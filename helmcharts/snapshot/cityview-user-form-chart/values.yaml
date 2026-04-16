@@ -33,3 +33,6 @@ ingress:
     - path: /
       pathType: ImplementationSpecific
       backend: cityview-user-form
+
+securityContext:
+  enabled: false

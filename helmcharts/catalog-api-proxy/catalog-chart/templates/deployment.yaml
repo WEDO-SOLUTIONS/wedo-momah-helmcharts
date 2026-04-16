@@ -44,10 +44,12 @@ spec:
           {{- if .Values.readinessProbe }}
           readinessProbe: {{- toYaml .Values.readinessProbe | nindent 12 }}
           {{- end }}
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser | default 1000 }}
             capabilities:
               drop:
                 - ALL
+          {{- end }}

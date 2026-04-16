@@ -58,8 +58,12 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 3
             failureThreshold: 3
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
+          {{- end }}
+      {{- if .Values.securityContext.enabled }}
       securityContext:
-        fsGroup: 1000
+        fsGroup: {{ .Values.securityContext.fsGroup | default 1000 }}
+      {{- end }}

@@ -30,3 +30,6 @@ ingress:
   paths:
     - path: /notifications-ui(/|$)(.*)
       pathType: ImplementationSpecific
+
+securityContext:
+  enabled: false

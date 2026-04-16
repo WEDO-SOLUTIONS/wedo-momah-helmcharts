@@ -16,3 +16,6 @@ cronjob:
   enabled: true
   schedule: "0 * * * *"
 
+
+securityContext:
+  enabled: false

@@ -35,13 +35,15 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser | default 1000 }}
             capabilities:
               drop:
                 - ALL
+          {{- end }}
           {{- if .Values.healthPath }}
           livenessProbe:
             httpGet:

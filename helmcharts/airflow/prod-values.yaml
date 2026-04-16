@@ -7,7 +7,7 @@ postgresql:
   enabled: false
 
 pgbouncer:
-  enabled: true
+  enabled: false
 
 data:
   metadataConnection:
@@ -210,9 +210,9 @@ dagProcessor:
     failureThreshold: 10
     periodSeconds: 60
 
-createUserJob:
-  enabled: true
+webserver:
   defaultUser:
+    enabled:   true
     role:      Admin
     username:  af_admin
     email:     app.services@wedosolutions.sa

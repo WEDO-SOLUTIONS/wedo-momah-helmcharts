@@ -68,13 +68,15 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
+          {{- if .Values.securityContext.enabled }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser | default 1000 }}
             capabilities:
               drop:
                 - ALL
+          {{- end }}
           {{- if .Values.volumeMounts }}
           volumeMounts:
             {{- range .Values.volumeMounts }}
@@ -93,5 +95,7 @@ spec:
             claimName: {{ .claimName }}
         {{- end }}
       {{- end }}
+      {{- if .Values.securityContext.enabled }}
       securityContext:
-        fsGroup: 1000
+        fsGroup: {{ .Values.securityContext.fsGroup | default 1000 }}
+      {{- end }}
