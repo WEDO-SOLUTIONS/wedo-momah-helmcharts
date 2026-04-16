@@ -83,7 +83,7 @@ ingress:
 
   # Path rules
   paths:
-    - path: /cv-api/
+    - path: /cv-api(/|$)(.*)
       backend: cv-landing-api
 
 
