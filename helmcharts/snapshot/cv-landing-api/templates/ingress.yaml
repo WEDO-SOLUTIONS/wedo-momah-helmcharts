@@ -15,7 +15,7 @@ spec:
         paths:
           {{- range .Values.ingress.paths }}
           - path: {{ .path }}
-            pathType: Prefix
+            pathType: {{ .pathType }}
             backend:
               service:
                 name: {{ .backend }}
