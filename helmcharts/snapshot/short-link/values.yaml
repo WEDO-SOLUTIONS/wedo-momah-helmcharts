@@ -30,7 +30,7 @@ env:
   DB_PASSWORD: "zHrqQqaZnyxn8roNsPzfhrmxk6a1v2Vf"
   DB_SCHEMA: "public"
 # Short URL Domain
-  SHORT_URL_DOMAIN: "https://urbi-lifestyle-stg.momrah.gov.sa/1.0/short"
+  SHORT_URL_DOMAIN: "https://urbi-lifestyle-stg.momrah.gov.sa"
 # Target Domain (safelist)
   TARGET_DOMAIN: "https://plus.balady.sa"
 # Rate Limiting
@@ -83,6 +83,6 @@ ingress:
 
   # Path rules
   paths:
-    - path: /1.0/short/
+    - path: /1.0/short(/|$)(.*)
       pathType: ImplementationSpecific
       backend: short-link
