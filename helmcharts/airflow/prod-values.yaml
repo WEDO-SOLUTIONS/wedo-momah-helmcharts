@@ -7,7 +7,7 @@ postgresql:
   enabled: false
 
 pgbouncer:
-  enabled: true
+  enabled: false
 
 data:
   metadataConnection:
