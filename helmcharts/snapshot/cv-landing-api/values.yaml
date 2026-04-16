@@ -86,7 +86,7 @@ ingress:
   # Path rules
   paths:
     - path: /cv-api(/|$)(.*)
-      pathType: ImplementationSpecific
+      #pathType: ImplementationSpecific
       backend: cv-landing-api
 
 securityContext:
