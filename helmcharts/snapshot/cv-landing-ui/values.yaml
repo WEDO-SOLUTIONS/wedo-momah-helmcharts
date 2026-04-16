@@ -15,8 +15,6 @@ resources:
     cpu: "200m"
     memory: "256Mi"
 
-
-
 # Ingress configuration for production
 ingress: 
   name: cv-landing-ui
@@ -32,9 +30,8 @@ ingress:
 
   # Path rules
   paths:
-    - path: 
+    - path: /
       backend: cv-landing-ui
-
 
 securityContext:
   enabled: false
