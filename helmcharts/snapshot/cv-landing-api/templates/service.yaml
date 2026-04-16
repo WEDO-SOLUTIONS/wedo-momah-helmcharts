@@ -1,15 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "cv-landing-api.fullname" . }}
-  labels:
-    {{- include "cv-landing-api.labels" . | nindent 4 }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  type: {{ .Values.serviceType }}
   selector:
-    {{- include "cv-landing-api.selectorLabels" . | nindent 4 }}
+    app: {{ .Values.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.servicePort }}
+      targetPort: {{ .Values.containerPort }}
