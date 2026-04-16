@@ -72,7 +72,7 @@ env:
 ingress: 
   name: cv-landing-api
   className: urbi
-  host: 
+  host: cityview-pro.momah.gov.sa
 
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -83,7 +83,7 @@ ingress:
 
   # Path rules
   paths:
-    - path: 
+    - path: /cv-api/
       backend: cv-landing-api
 
 
