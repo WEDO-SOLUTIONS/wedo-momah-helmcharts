@@ -7,7 +7,7 @@ image: registry.momrah.gov.sa/urbi-omar/cityview-ump-api:v1.5.3
 containerPort: 8080
 servicePort: 8080
 =======
-image: registry.momrah.gov.sa/urbi-omar/cityview-ump-api:v1.5.5
+image: registry.momrah.gov.sa/urbi-omar/cityview-ump-api:v1.5.8
 containerPort: 80
 servicePort: 80
 >>>>>>> 02a135d57e3dd118a2e6111c5d84b0eaf5175bda
