@@ -35,14 +35,14 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
   # Path rules
   paths:
-    # - path: /$
-    #   pathType: ImplementationSpecific
-    #   backend: cv-landing-ui
-    #   port: 80
-    - path: /
+    - path: /sharedDashboard
       pathType: ImplementationSpecific
       backend: snapshot-pro-ui
       port: 3000
+    - path: /
+      pathType: ImplementationSpecific
+      backend: cv-landing-ui
+      port: 80
 
   tls:
     enabled: true
