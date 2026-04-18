@@ -43,6 +43,10 @@ ingress:
       pathType: ImplementationSpecific
       backend: snapshot-pro-ui
       port: 3000
+    - path: /api/auth/install
+      pathType: ImplementationSpecific
+      backend: snapshot-pro-ui
+      port: 3000
     - path: /
       pathType: ImplementationSpecific
       backend: cv-landing-ui
