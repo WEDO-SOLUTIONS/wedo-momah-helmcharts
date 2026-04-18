@@ -2,7 +2,7 @@ name: cv-landing-api
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cv-landing-api:v0.0.2
+image: registry.momrah.gov.sa/urbi-omar/cv-landing-api:v0.0.3
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -40,32 +40,6 @@ env:
   BASE_URL: "https://cityview-pro-api-permissions.momah.gov.sa"
   CITYVIEW_BASE_URL: "https://cityview-pro-api-permissions.momah.gov.sa"
   CITYVIEW_AUTH_TOKEN: "28ed92f1-de4b-4060-b159-2dc19e9b8bf5"
-
-# env:
-#   API_KEY: "7945b9d8-1e95-4c1b-8886-d6a4c6c69e73"
-#   REDIS_CLUSTER_ENABLED: "true"
-#   REDIS_HOSTNAME: "redis-redis-cluster"
-#   REDIS_PORT: "6379"
-#   REDIS_PASSWORD: "CVb7saZB4Rtu"
-#   REDIS_USERNAME: "default"
-#   NODE_ENV: "development"
-# # PostgreSQL
-#   DB_HOST: "10.96.207.56"
-#   DB_PORT: "5000"
-#   DB_NAME: "balady"
-#   DB_USER: "balady"
-#   DB_PASSWORD: "zHrqQqaZnyxn8roNsPzfhrmxk6a1v2Vf"
-#   DB_SCHEMA: "public"
-# # Short URL Domain
-#   SHORT_URL_DOMAIN: "https://urbi-lifestyle-stg.momrah.gov.sa/1.0/short"
-# # Target Domain (safelist)
-#   TARGET_DOMAIN: "https://plus.balady.sa"
-# # Rate Limiting
-#   RATE_LIMIT_CREATE: "100"
-#   RATE_LIMIT_READ: "1000"
-#   RATE_LIMIT_WINDOW_MS: "60000"
-# # Cache TTL (seconds)
-#   CACHE_TTL: "43200"
 
 
 # Ingress configuration for production
