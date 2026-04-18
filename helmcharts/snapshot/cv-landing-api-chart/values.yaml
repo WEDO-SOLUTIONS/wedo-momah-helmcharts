@@ -21,7 +21,7 @@ env:
   # Redis Configuration
   REDIS_HOSTNAME: "redis-redis-cluster"
   REDIS_PORT: "6379"
-  REDIS_PASSWORD: "CVb7saZB4Rtu"
+  REDIS_PASSWORD: "Ycp0v7atlsIc"
   REDIS_USERNAME: "default"
 
 # SSO / Auth Configuration
