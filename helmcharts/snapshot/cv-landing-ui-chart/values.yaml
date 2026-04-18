@@ -2,7 +2,7 @@ name: cv-landing-ui
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cv-landing-ui:v0.0.9
+image: registry.momrah.gov.sa/urbi-omar/cv-landing-ui:v0.1.0
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -37,7 +37,17 @@ ingress:
       location = / {
           return 301 /home;
       }
-      
+
+      # Intercept /license for user auto-provisioning
+      location = /sharedDashboard {
+          proxy_read_timeout 60s;
+          proxy_pass http://__MIDDLEWARE_HOST__/middleware/api$request_uri;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+      }
+
   # Path rules
   paths:
     - path: /home
