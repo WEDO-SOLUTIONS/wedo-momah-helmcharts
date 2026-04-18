@@ -34,7 +34,7 @@ ingress:
 
   # Path rules
   paths:
-    - path: /home
+    - path: /
       backend: cv-landing-ui
 
 securityContext:
