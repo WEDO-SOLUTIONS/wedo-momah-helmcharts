@@ -1,6 +1,6 @@
 name: cityview-middleware
 namespace: urbi
-replicaCount: 1
+replicaCount: 20
 
 image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.3.6
 containerPort: 8080
