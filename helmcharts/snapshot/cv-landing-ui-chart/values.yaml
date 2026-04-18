@@ -2,7 +2,7 @@ name: cv-landing-ui
 namespace: urbi
 replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cv-landing-ui:v0.0.8
+image: registry.momrah.gov.sa/urbi-omar/cv-landing-ui:v0.0.9
 containerPort: 80
 servicePort: 80
 serviceType: ClusterIP
@@ -33,20 +33,21 @@ ingress:
     nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-share-token,x-error-screen"
     nginx.ingress.kubernetes.io/proxy-body-size: 100m
     nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location = / {
+          return 301 /home;
+      }
+      
   # Path rules
   paths:
-    - path: /sharedDashboard
-      pathType: ImplementationSpecific
-      backend: snapshot-pro-ui
-      port: 3000
-    - path: /api
-      pathType: ImplementationSpecific
-      backend: snapshot-pro-ui
-      port: 3000
-    - path: /
+    - path: /home
       pathType: ImplementationSpecific
       backend: cv-landing-ui
       port: 80
+    - path: /
+      pathType: ImplementationSpecific
+      backend: snapshot-pro-ui
+      port: 3000
 
   tls:
     enabled: true
