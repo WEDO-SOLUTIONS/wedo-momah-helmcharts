@@ -2,6 +2,8 @@ apiVersion: v2
 name: cityview-custom-widgets
 description: Helm chart for CityView Custom Widgets
 type: application
-version: 0.0.1
+version: 0.1.0
 appVersion: "v0.51"
-
+maintainers:
+  - name: WEDO
+    email: TODO@momrah.gov.sa

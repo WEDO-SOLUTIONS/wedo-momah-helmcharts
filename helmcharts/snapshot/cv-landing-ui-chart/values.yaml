@@ -39,3 +39,28 @@ ingress:
 
 securityContext:
   enabled: false
+
+# --- Standard optional blocks (disabled by default) ------------------------
+# These fields are supported by all snapshot charts for consistency. Override
+# in env-specific values files (values/stg-values.yaml, values/prod-values.yaml)
+# to enable.
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  create: false
+  name: ""
+  annotations: {}
