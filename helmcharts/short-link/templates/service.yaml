@@ -4,13 +4,13 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}   # ← FIXED: was app: {{ .Values.name }}
 spec:
   type: {{ .Values.serviceType }}
   selector:
-    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}   # ← FIXED: was app: {{ .Values.name }}
   ports:
     - name: http
       port: {{ .Values.servicePort }}
-      targetPort: {{ .Values.containerPort }}
+      targetPort: {{ .Values.containerPort }}     # ← already correct (maps 80 → 3000)
       protocol: TCP
