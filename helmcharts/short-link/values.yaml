@@ -16,6 +16,7 @@ resources:
     memory: "256Mi"
 
 env:
+  
   REDIS_CLUSTER_ENABLED: "true"
   REDIS_HOSTNAME: "redis-redis-cluster"
   REDIS_PORT: "6379"
@@ -85,8 +86,4 @@ ingress:
   paths:
     - path: /short(/|$)(.*)
       pathType: ImplementationSpecific
-      backend:
-        service:
-          name: short-link
-          port:
-            number: 80
+      backend: short-link
