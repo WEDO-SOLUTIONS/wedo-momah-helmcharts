@@ -1,8 +1,8 @@
 name: cityview-middleware
 namespace: urbi
-replicaCount: 20
+replicaCount: 1
 
-image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.3.1
+image: registry.momrah.gov.sa/urbi-omar/cityview-middleware:v0.4.1
 containerPort: 8080
 servicePort: 80
 serviceType: ClusterIP
@@ -33,7 +33,7 @@ ingress:
     nginx.ingress.kubernetes.io/cors-allow-origin: https://cityview-pro.momah.gov.sa
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 500m
-  serverSnippet: |
+    nginx.ingress.kubernetes.io/serverSnippet: |
           # Block swagger/version/metrics
           location ~* "^/swagger/" {
               deny all;
@@ -93,6 +93,7 @@ ingress:
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
               proxy_set_header X-Forwarded-Proto $scheme;
           }
+
 
 securityContext:
   enabled: false

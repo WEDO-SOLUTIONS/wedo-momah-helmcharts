@@ -1,0 +1,9 @@
+apiVersion: v2
+name: cv-landing-api
+description: Helm chart for CityView Landing API (SSO/auth gateway + short-link proxy)
+type: application
+version: 0.1.0
+appVersion: "v1.16.0"
+maintainers:
+  - name: WEDO
+    email: TODO@momrah.gov.sa

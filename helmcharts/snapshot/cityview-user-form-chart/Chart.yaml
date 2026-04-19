@@ -4,3 +4,6 @@ description: Helm chart for User Form Service in CityView application
 type: application
 version: 0.1.0
 appVersion: "v1.0.0"
+maintainers:
+  - name: WEDO
+    email: TODO@momrah.gov.sa

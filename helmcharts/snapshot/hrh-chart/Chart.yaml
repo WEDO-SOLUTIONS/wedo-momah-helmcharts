@@ -4,4 +4,6 @@ description: Helm chart for CityView HRH UI
 type: application
 version: 0.1.0
 appVersion: "v1.0.0"
-
+maintainers:
+  - name: WEDO
+    email: TODO@momrah.gov.sa

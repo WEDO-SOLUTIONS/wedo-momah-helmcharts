@@ -3,7 +3,17 @@
     "allow": [
       "WebFetch(domain:ssoapp.balady.gov.sa)",
       "Bash([ -f \"$chart/values.yaml\" ])",
-      "Bash([ -d \"$chart/values\" ])"
+      "Bash([ -d \"$chart/values\" ])",
+      "Bash(wc -l \"/c/Users/omark/Desktop/wedo-helmcharts/helmcharts/snapshot/\"*/templates/deployment.yaml)",
+      "Bash(cat)",
+      "Bash(echo __TRACKED_VAR__,__TRACKED_VAR__,__TRACKED_VAR__,__TRACKED_VAR__,__TRACKED_VAR__)",
+      "Read(//tmp/**)",
+      "Bash(ls -d */)",
+      "Bash(cp /tmp/helpers.tpl __TRACKED_VAR__/templates/_helpers.tpl)",
+      "Bash(cp /tmp/helmignore __TRACKED_VAR__/.helmignore)",
+      "Bash(helm version:*)",
+      "Bash(python -c ':*)",
+      "Bash(pip install:*)"
     ]
   }
 }
