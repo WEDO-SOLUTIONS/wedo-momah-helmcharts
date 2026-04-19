@@ -84,6 +84,6 @@ ingress:
 
   # Path rules
   paths:
-    - path: /1.0/short(/|$)(.*)
-      pathType: prefix
+    - path: /short/.*
+      pathType: ImplementationSpecific
       backend: short-link
